@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { dataDir } from "./data-dir";
 import type { Audience, ProductId } from "./pricing";
 
 export type PaymentMethod = "stripe" | "direct";
@@ -27,11 +28,11 @@ export type Booking = {
   lessonDurationMin?: number;
 };
 
-const dataDir = path.join(process.cwd(), "data");
-const dataFile = path.join(dataDir, "bookings.json");
+const storeDir = dataDir();
+const dataFile = path.join(storeDir, "bookings.json");
 
 async function ensureStore() {
-  await fs.mkdir(dataDir, { recursive: true });
+  await fs.mkdir(storeDir, { recursive: true });
   try {
     await fs.access(dataFile);
   } catch {

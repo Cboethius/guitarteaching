@@ -149,6 +149,7 @@ const de = {
     reject: "Nicht freigeben",
     empty: "Noch keine Einträge.",
     loginError: "Falsches Passwort.",
+    loadError: "Admin konnte nicht geladen werden. Bitte erneut anmelden.",
     notConfigured: "ADMIN_PASSWORD ist nicht gesetzt.",
   },
   book: {
@@ -580,6 +581,7 @@ const en = {
     reject: "Don't approve",
     empty: "No entries yet.",
     loginError: "Wrong password.",
+    loadError: "Could not load admin. Please log in again.",
     notConfigured: "ADMIN_PASSWORD is not set.",
   },
   book: {

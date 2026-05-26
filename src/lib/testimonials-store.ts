@@ -1,6 +1,7 @@
 import { randomBytes, randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
+import { dataDir } from "./data-dir";
 import type { Testimonial, TestimonialSeaCreature } from "./testimonials";
 import { TESTIMONIAL_SEA_CREATURES } from "./testimonials";
 
@@ -25,11 +26,11 @@ export type StoredTestimonial = {
   updatedAt: string;
 };
 
-const dataDir = path.join(process.cwd(), "data");
-const dataFile = path.join(dataDir, "testimonials-submissions.json");
+const storeDir = dataDir();
+const dataFile = path.join(storeDir, "testimonials-submissions.json");
 
 async function ensureStore() {
-  await fs.mkdir(dataDir, { recursive: true });
+  await fs.mkdir(storeDir, { recursive: true });
   try {
     await fs.access(dataFile);
   } catch {

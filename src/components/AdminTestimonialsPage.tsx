@@ -58,7 +58,11 @@ export function AdminTestimonialsPage() {
         setAuthenticated(false);
         return;
       }
-      if (!res.ok) return;
+      if (!res.ok) {
+        setAuthenticated(false);
+        setLoginError(ta.loadError);
+        return;
+      }
       const data = (await res.json()) as { testimonials: AdminRow[] };
       setRows(data.testimonials);
       setAuthenticated(true);
