@@ -1,58 +1,67 @@
 # Axe School — Gitarrenunterricht Zürich
 
-Marketing and booking website for Christian Boethius (Zurich). Mobile-first, responsive.
+Marketing and booking website for Christian Boethius (Zurich). Mobile-first, bilingual (DE/EN), responsive.
 
-## What this is
+## Features
 
-- **Next.js** app (not a single HTML file you upload via FTP)
-- Booking with date/time, Stripe Checkout, or direct TWINT/bank instructions
-- Runs on a **Node.js host** (recommended: [Vercel](https://vercel.com))
+- Home, About, and booking flow (adults/teens and under 14)
+- Single trial lessons and 5- or 10-lesson bundles (Zoom, neutral ground, at home)
+- Stripe Checkout or direct TWINT/bank payment
+- Intro video (Vimeo embed)
 
-## You cannot “upload one file” to a classic server
+## Tech stack
 
-Old hosting (upload `index.html` only) does **not** work for this project because it needs:
+- [Next.js 16](https://nextjs.org/) (App Router, TypeScript)
+- Tailwind CSS v4
+- Stripe (CHF)
 
-- Server routes (`/api/bookings`, Stripe webhooks)
-- Environment variables (Stripe keys)
-
-### Easiest way to go live (recommended)
-
-1. Push this folder to **GitHub**
-2. Import the repo on **Vercel** (free tier is fine)
-3. Add environment variables from `.env.example`
-4. Point **axschool.ch** DNS to Vercel (instructions in Vercel dashboard)
-
-### Swiss hosts with Node
-
-Hosts like Infomaniak, Hostpoint, etc. can run Node apps — you deploy the built app and set env vars. Ask their support for “Next.js” or “Node 20”.
+This is a **Node.js app**, not a static HTML site. It needs server routes (`/api/bookings`, Stripe webhooks) and environment variables.
 
 ## Local development
 
-**Node 20.9+ required** (Next.js 16). If you see `ERR_CONNECTION_REFUSED`, the dev server is not running — often because `node -v` is too old (e.g. 20.4 via nvm).
-
-Use Homebrew Node (installed on this Mac at `/opt/homebrew/bin/node`):
+**Node 20.9+** required.
 
 ```bash
-cd axschool-web
-cp .env.example .env.local
-PATH="/opt/homebrew/bin:$PATH" npm install
-PATH="/opt/homebrew/bin:$PATH" npm run dev
+npm install
+cp .env.example .env.local   # then fill in your values
+npm run dev
 ```
 
-Or fix nvm: your `~/.npmrc` has a global `prefix=` which blocks `nvm install`. Either remove that line or run `nvm use --delete-prefix` then `nvm install 22`.
+Open [http://localhost:3000](http://localhost:3000).
 
-Open [http://localhost:3000](http://localhost:3000) — not `https://` for local dev.
+## Environment variables
 
-## Stripe setup
+Copy `.env.example` to `.env.local` and set:
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Site URL (e.g. `https://axschool.ch`) |
+| `STRIPE_SECRET_KEY` | Stripe secret key |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
+| `PAYMENT_IBAN` | IBAN for direct bank transfer |
+| `PAYMENT_ACCOUNT_NAME` | Account holder name |
+| `TWINT_PAYLINK` | Optional TWINT payment link |
+
+## Deploy (recommended: Vercel)
+
+1. Push this repo to GitHub
+2. Import on [Vercel](https://vercel.com)
+3. Add the environment variables above
+4. Point **axschool.ch** DNS to Vercel
+
+Swiss hosts with Node (Infomaniak, Hostpoint, etc.) can also work — ask for Next.js / Node 20 support.
+
+## Stripe (test mode)
 
 1. Create a Stripe account (Switzerland, CHF)
-2. Add keys to `.env.local`
-3. For webhooks locally: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
-4. Use test card `4242 4242 4242 4242`
+2. Add test keys to `.env.local`
+3. Local webhooks: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
+4. Test card: `4242 4242 4242 4242`
 
 ## Bookings storage
 
-Bookings are saved to `data/bookings.json` on the server. On Vercel, use a database (e.g. Vercel Postgres) for production — file storage is for local dev / simple VPS only.
+Bookings are saved locally to `data/bookings.json`. For production on Vercel, use a database (e.g. Postgres) — file storage is for local dev only.
 
 ## Build
 
