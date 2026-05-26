@@ -14,6 +14,8 @@ import {
 
 const AUTO_SCROLL_PX_PER_SECOND = 15;
 const LOOP_COPIES = 3;
+/** Below this count, show each testimonial once (no infinite-loop clones). */
+const MARQUEE_MIN_COUNT = 4;
 
 type OpenCard = { item: Testimonial; key: string };
 
@@ -155,7 +157,7 @@ function TestimonialSlideCard({
         }
       }}
       className={`border-pastel flex h-[15rem] w-44 shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-3.5 shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
-        hidden ? "pointer-events-none opacity-0" : "opacity-100"
+        hidden ? "invisible" : ""
       }`}
     >
       <TestimonialCardContent
@@ -203,7 +205,7 @@ function TestimonialModal({
           onClose();
         }
       }}
-      className="testimonial-modal-pop border-pastel absolute inset-y-2 left-1/2 z-40 flex w-[22rem] max-w-[calc(100%-2rem)] -translate-x-1/2 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-5 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:p-6"
+      className="testimonial-modal-pop border-pastel absolute inset-y-2 left-1/2 z-40 flex w-[22rem] max-w-[calc(100%-2rem)] cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-5 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:p-6"
     >
       <TestimonialCardContent
         item={item}
@@ -237,7 +239,8 @@ export function TestimonialsSlider() {
   }, []);
 
   const count = testimonials.length;
-  const isMarquee = count > 1;
+  const isMarquee = count >= MARQUEE_MIN_COUNT;
+  const isCarousel = count > 1 && count < MARQUEE_MIN_COUNT;
   const loopItems = isMarquee
     ? Array.from({ length: LOOP_COPIES }, () => testimonials).flat()
     : testimonials;
@@ -254,12 +257,21 @@ export function TestimonialsSlider() {
     (cardEl: HTMLElement) => {
       const track = trackRef.current;
       const viewport = viewportRef.current;
-      if (!track || !viewport || !isMarquee) return;
+      if (!track) return;
 
-      const cardCenter = cardEl.offsetLeft + cardEl.offsetWidth / 2;
-      track.scrollTo({
-        left: cardCenter - viewport.clientWidth / 2,
+      if (isMarquee && viewport) {
+        const cardCenter = cardEl.offsetLeft + cardEl.offsetWidth / 2;
+        track.scrollTo({
+          left: cardCenter - viewport.clientWidth / 2,
+          behavior: "smooth",
+        });
+        return;
+      }
+
+      cardEl.scrollIntoView({
         behavior: "smooth",
+        inline: "center",
+        block: "nearest",
       });
     },
     [isMarquee],
@@ -278,23 +290,38 @@ export function TestimonialsSlider() {
   const scrollToIndex = useCallback(
     (index: number) => {
       const el = trackRef.current;
-      if (!el || !isMarquee) return;
+      if (!el) return;
 
       closeModal();
       const normalized = ((index % count) + count) % count;
-      const offsetInSet = indexFromScroll(el.scrollLeft, count);
-      const delta = normalized - offsetInSet;
-
-      el.scrollTo({
-        left: el.scrollLeft + delta * TESTIMONIAL_CARD_STEP_PX,
-        behavior: "smooth",
-      });
       setActiveIndex(normalized);
-      window.setTimeout(() => {
-        if (trackRef.current) normalizeLoopScroll(trackRef.current, count);
-      }, 350);
+
+      if (isMarquee) {
+        const offsetInSet = indexFromScroll(el.scrollLeft, count);
+        const delta = normalized - offsetInSet;
+
+        el.scrollTo({
+          left: el.scrollLeft + delta * TESTIMONIAL_CARD_STEP_PX,
+          behavior: "smooth",
+        });
+        window.setTimeout(() => {
+          if (trackRef.current) normalizeLoopScroll(trackRef.current, count);
+        }, 350);
+        return;
+      }
+
+      if (isCarousel) {
+        const card = el.children.item(normalized);
+        if (card instanceof HTMLElement) {
+          card.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest",
+          });
+        }
+      }
     },
-    [count, isMarquee, closeModal],
+    [count, isMarquee, isCarousel, closeModal],
   );
 
   useEffect(() => {
@@ -330,6 +357,15 @@ export function TestimonialsSlider() {
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, [count, isMarquee, syncActiveIndex]);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el || !isCarousel) return;
+
+    const onScroll = () => syncActiveIndex(el.scrollLeft);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [count, isCarousel, syncActiveIndex]);
 
   useEffect(() => {
     if (!isMarquee || openCard) return;
@@ -385,7 +421,7 @@ export function TestimonialsSlider() {
     <section
       id="testimonials"
       aria-labelledby="testimonials-heading"
-      aria-roledescription={isMarquee ? "carousel" : undefined}
+      aria-roledescription={isMarquee || isCarousel ? "carousel" : undefined}
       className="bg-pastel-light/40 border-pastel scroll-mt-24 overflow-x-hidden overflow-y-visible border-y py-16 sm:py-20"
     >
       <div className="mx-auto min-w-0 max-w-6xl px-4 sm:px-6">
@@ -419,6 +455,14 @@ export function TestimonialsSlider() {
                 renderSlideCard(item, `${item.id}-${i}`),
               )}
             </div>
+          ) : isCarousel ? (
+            <div
+              ref={trackRef}
+              className="testimonial-track flex h-[15rem] w-full max-w-full snap-x snap-mandatory items-center justify-center gap-4 overflow-x-auto overflow-y-hidden scroll-smooth px-4 sm:px-0"
+              aria-live="polite"
+            >
+              {testimonials.map((item) => renderSlideCard(item, item.id))}
+            </div>
           ) : (
             <div className="flex h-[15rem] w-full items-center justify-center">
               {renderSlideCard(testimonials[0], testimonials[0].id)}
@@ -434,7 +478,7 @@ export function TestimonialsSlider() {
           )}
         </div>
 
-        {isMarquee && (
+        {(isMarquee || isCarousel) && (
           <div
             className="mt-4 flex h-2 items-center justify-center gap-1.5"
             role="tablist"
