@@ -13,8 +13,7 @@ import {
   testimonialSeaCreatureForIndex,
 } from "@/components/TestimonialSeaCreatureIcon";
 
-/** ~24 px/s originally; 30% slower → ~17 px/s. Time-based so 120 Hz screens don't double speed. */
-const AUTO_SCROLL_PX_PER_SECOND = 17;
+const AUTO_SCROLL_PX_PER_SECOND = 15;
 const LOOP_COPIES = 3;
 
 type OpenCard = { item: Testimonial; key: string };
