@@ -3,7 +3,7 @@ export const site = {
   teacher: "Christian Boethius",
   taglineDe: "Gitarrenunterricht Zürich",
   taglineEn: "Guitar lessons in Zurich",
-  email: "Christian@boethius.ch",
+  email: "christian@boethius.ch",
   phone: "+41 76 805 86 68",
   phoneTel: "+41768058668",
   whatsappUrl: "https://wa.me/41768058668",

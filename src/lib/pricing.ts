@@ -240,6 +240,32 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
 
 export const lessonFormats: LessonFormat[] = ["zoom", "neutral", "home"];
 
+export type LessonKind = "trial" | "bundle";
+export type BundleSize = 5 | 10;
+
+export function formatFromProductId(id: ProductId): LessonFormat {
+  if (id.startsWith("zoom")) return "zoom";
+  if (id.startsWith("neutral")) return "neutral";
+  return "home";
+}
+
+export function bundleSizeFromProductId(id: ProductId): BundleSize {
+  return id.includes("-bundle-10") ? 10 : 5;
+}
+
+export function lessonKindFromProduct(product: Product): LessonKind {
+  return product.isBundle ? "bundle" : "trial";
+}
+
+export function buildProductId(
+  format: LessonFormat,
+  kind: LessonKind,
+  bundleSize: BundleSize = 5,
+): ProductId {
+  if (kind === "trial") return format;
+  return `${format}-bundle-${bundleSize}` as ProductId;
+}
+
 export function productsForFormat(
   audience: Audience,
   format: LessonFormat,

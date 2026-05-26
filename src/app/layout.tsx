@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: `%s, ${site.name}`,
   },
   description:
-    "Gitarrenunterricht in Zürich mit Christian Boethius. Probelektionen und Abos — Zoom, neutraler Ort oder bei Ihnen zu Hause.",
+    "Gitarrenunterricht in Zürich mit Christian Boethius. Probelektionen und Abos: Zoom, neutraler Ort oder bei Ihnen zu Hause.",
   openGraph: {
     title: `Gitarrenunterricht Zürich, ${site.name}`,
     description: `Einzelunterricht Gitarre mit ${site.teacher} in Zürich.`,

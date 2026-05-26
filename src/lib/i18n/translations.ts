@@ -4,7 +4,7 @@ const de = {
   meta: {
     title: "Gitarrenunterricht Zürich, Axe School, Christian Boethius",
     description:
-      "Gitarrenunterricht in Zürich mit Christian Boethius. Probelektionen und Abos — Zoom, neutraler Ort oder bei Ihnen zu Hause.",
+      "Gitarrenunterricht in Zürich mit Christian Boethius. Probelektionen und Abos: Zoom, neutraler Ort oder bei Ihnen zu Hause.",
   },
   a11y: {
     skipToContent: "Zum Inhalt springen",
@@ -25,30 +25,34 @@ const de = {
     title: "Gitarre lernen",
     titleAccent: "Mit Klarheit, Geduld und Freude.",
     subtitle:
-      "Gitarre lernen braucht Zeit und Übung, das gehört zum Weg dazu. Ich begleite dich Schritt für Schritt, damit der Unterricht verständlich, persönlich, motivierend und freudvoll bleibt.",
+      "Gitarre lernen braucht Zeit und Übung, das gehört dazu. Ich begleite dich Schritt für Schritt, damit der Unterricht verständlich und freudvoll bleibt.",
     ctaBook: "Jetzt buchen",
     ctaWhatsapp: "WhatsApp",
-    whatsappHintLabel: "Vor der Anmeldung:",
-    whatsappHint: "Schreib mir eine WhatsApp oder E-Mail.",
-    whatsappHintReason:
-      "Damit ich dir die besten Optionen, Zeit und Ort empfehlen und alle weiteren Fragen beantworten kann.",
+    ctaEmail: "E-Mail",
     signupNote: "Preise wählen Sie unten nach Alter.",
+  },
+  contact: {
+    label: "Vor der Anmeldung:",
+    sendLead: "Schreib mir eine ",
+    or: " oder ",
+    reason:
+      "Gerne klären wir Format, Zeit und Ort, oder beantworten deine Fragen.",
   },
   about: {
     title: "Über mich",
     p1: "Hi, ich bin Christian. Ursprünglich komme ich aus Schweden und lebe seit mehr als 20 Jahren immer wieder in der Schweiz.",
     p2: "Mein Hintergrund liegt in Grafikdesign und Programmierung. Viele Jahre lang habe ich Scuba- und Freediving in verschiedenen Ländern unterrichtet, von den Tropen Asiens und Mittelamerika über die Karibik bis zum eisigen Island.",
-    p3: "Jetzt beginne ich in Zürich einen neuen Weg als Gitarrenlehrer, und ich freue mich, dich auf deiner Reise mit diesem wunderbaren Instrument zu begleiten.",
-    p4: "Ich möchte ehrlich mit dir sein. Dies ist mein erster echter Schritt, Gitarre als Beruf zu unterrichten, und ich habe selbst noch viel zu lernen. Ich gebe nicht vor, der Beste der Welt zu sein, aber ich habe genug Unterrichtserfahrung, um aufrichtig motiviert zu sein und mich für deine Reise mit diesem Instrument zu interessieren.",
-    p5: "Vielleicht bin ich nicht der richtige Lehrer für dich, und das ist völlig in Ordnung. Deshalb lerne ich dich lieber zuerst kennen. Wir können über deine Schwierigkeiten sprechen, was du lernen möchtest, wo du gerade stehst und wie du weitergehen willst. Es gibt auch günstige Probelektionen, die du buchen kannst, wenn du es einfach ausprobieren möchtest.",
+    p3: "Jetzt beginne ich in Zürich als Gitarrenlehrer, und ich freue mich, dich auf dem Weg mit der Gitarre zu begleiten.",
+    p4: "Ich möchte ehrlich mit dir sein. Dies ist mein erster echter Schritt, Gitarre als Beruf zu unterrichten, und ich habe selbst noch viel zu lernen. Ich gebe nicht vor, der Beste der Welt zu sein, aber ich habe genug Unterrichtserfahrung, um aufrichtig motiviert zu sein und mich für dich zu interessieren.",
+    p5: "Vielleicht bin ich nicht der richtige Lehrer für dich, und das ist völlig in Ordnung. Deshalb lerne ich dich lieber zuerst kennen. Wir können über deine Schwierigkeiten sprechen, was du lernen möchtest, wo du gerade stehst und wie du weitergehen willst. Es gibt auch günstige Probelektionen, wenn du es einfach ausprobieren möchtest.",
     photoAltCoastal: "An der Küste, Reisen und Freizeit",
     whaleHeaderAlt: "Pottwal unter Wasser",
     pillarsTitle: "So unterrichte ich",
-    pillarsLead: "Die drei einfachen Grundpfeiler.",
+    pillarsLead: "Drei Grundpfeiler.",
     pillarsBody: [
       "**Keine Sorge, du bist gut genug.** Ja, der Anfang kann frustrierend sein, aber genau dafür bin ich da, um dich zu begleiten und dir Techniken zu zeigen, die ich mir gewünscht hätte, als ich selbst angefangen habe. Schritt für Schritt baust du eine solide Grundlage auf.",
       "**Jede Lektion gestalte ich rund um deine Art zu lernen und das, was du daraus mitnehmen willst.** Gemeinsam finden wir kleine Tipps und Tricks, damit die Gitarre einladend wirkt und nicht wie eine weitere Aufgabe auf deiner Liste.",
-      "**Ja, Üben ist wichtig, aber Konstanz ist noch wichtiger.** Das Leben wird voll und die Motivation schwankt, aber einmal pro Woche zu kommen ist viel besser, als die Gitarre gar nicht in die Hand zu nehmen.",
+      "**Ja, Üben ist wichtig, aber Konstanz noch wichtiger.** Das Leben wird voll und die Motivation schwankt, aber einmal pro Woche zu kommen ist viel besser, als die Gitarre gar nicht in die Hand zu nehmen.",
       "Vergleiche dich nicht mit anderen, **jeder lernt in seinem eigenen Tempo**. Ich hatte selbst mit Lernschwierigkeiten zu kämpfen, ich weiss, wie sich das anfühlt. **Ich bringe Geduld und echte Begeisterung in jede Lektion mit.**",
       "**Es geht nicht darum, möglichst schnell den Gipfel zu erreichen**, sondern den Weg zu geniessen und **kleine Erfolge zu feiern**, statt grossen Zielen nachzujagen und am Ende den Mut zu verlieren.",
     ],
@@ -67,10 +71,10 @@ const de = {
       },
     ],
     whatITitle: "Was ich unterrichte",
-    whatILead: "Stile und Instrumente, die wir abdecken.",
+    whatILead: "Stile und Instrumente.",
     whatIBody: [
-      "Wir können viele verschiedene Genres gemeinsam erkunden, aber am vertrautesten bin ich mit Rock, Blues, Fingerpicking, Pop, Country, Singer-Songwriter und Metal.",
-      "Ich unterrichte auch die Grundlagen: Haltung und Handstellung, Stimmen und einfache Gitarrenpflege, Akkorde und Rhythmus, sowie das Arbeiten mit einem Metronom. Darauf bauen wir Tonleitern, Melodie und Akkordfolgen auf, lernen, wie Songs aufgebaut sind, und entwickeln Übungsgewohnheiten, die zwischen den Lektionen tragen.",
+      "Wir können viele Genres gemeinsam erkunden. Am vertrautesten bin ich mit Rock, Blues, Fingerpicking, Pop, Country, Singer-Songwriter und Metal.",
+      "Dazu die Grundlagen: Haltung, Stimmen, Akkorde, Rhythmus, Metronom. Darauf bauen wir Tonleitern, Akkordfolgen und Songaufbau auf, und ich helfe dir, zwischen den Lektionen sinnvoll zu üben.",
     ],
     whatIInstruments: [
       {
@@ -105,16 +109,25 @@ const de = {
     titleRegular: "Buchung, Erwachsene/Teens",
     titleChild: "Buchung, Kinder (unter 14)",
     intro:
-      "Option wählen (Zoom, neutraler Ort oder bei Ihnen), Termin angeben und online oder per TWINT/Bank bezahlen.",
+      "Probelektion oder Abo wählen, Format festlegen und online oder per TWINT/Bank bezahlen.",
     audienceRequired: "Bitte zuerst wählen, für wen die Buchung gilt:",
     wrongAgeGroup: "Falsche Altersgruppe?",
-    signupHint:
-      "Vor dem Kauf optional: Telefon, WhatsApp oder gratis 15 Min. Zoom zum Kennenlernen, kein Unterricht.",
     loading: "Formular wird geladen…",
     who: "Für wen?",
     regular: "Erwachsene/Teens",
     child: "Kind (unter 14)",
     choose: "Option wählen",
+    lessonKind: "Art der Buchung",
+    trialLesson: "Probelektion",
+    trialHint: "Einzelne Lektion zum Kennenlernen",
+    bundle: "Abo",
+    bundleHint: "5 oder 10 Lektionen im Paket",
+    chooseFormat: "Format wählen",
+    bundleSize: "Anzahl Lektionen",
+    bundle5: "5 Lektionen",
+    bundle10: "10 Lektionen",
+    bundleTotal: "{amount} CHF gesamt",
+    selectionSummary: "Ihre Auswahl",
     payment: "Zahlung",
     paymentHint:
       "Online enthält eine kleine Stripe-Gebühr. TWINT/Bank direkt = nur Unterrichtspreis.",
@@ -153,8 +166,8 @@ const de = {
     payTwint: "Mit TWINT bezahlen",
     reference: "Referenz",
     confirmEmail:
-      "Wir bestätigen deinen Termin per E-Mail innerhalb von 24 Stunden. Bitte auch den Spam-Ordner prüfen.",
-    generic: "Deine Buchung ist eingegangen. Wir melden uns bald.",
+      "Ich bestätige deinen Termin per E-Mail innerhalb von 24 Stunden. Bitte prüfe auch den Spam-Ordner.",
+    generic: "Deine Buchung ist eingegangen. Ich melde mich bald bei dir.",
     home: "Zur Startseite",
   },
   cancel: {
@@ -170,6 +183,204 @@ const de = {
     terms: "AGB",
     copy: "Gitarrenunterricht Zürich",
   },
+  legal: {
+    impressum: {
+      title: "Impressum",
+      providerHeading: "Verantwortlich für diese Website",
+      providerBody: [
+        "Anbieterkennzeichnung gemäss schweizerischem Recht (UWG) für das Angebot von Gitarrenunterricht über Axe School.",
+      ],
+      country: "Schweiz",
+      emailLabel: "E-Mail:",
+      phoneLabel: "Telefon:",
+      sections: [
+        {
+          heading: "Angebot",
+          paragraphs: [
+            "Gitarrenunterricht für Erwachsene, Teens und Kinder. Einzelunterricht per Zoom, an einem neutralen Ort in Zürich oder bei Ihnen zu Hause.",
+          ],
+        },
+        {
+          heading: "Rechtsform",
+          paragraphs: [
+            "Einzelunternehmen, tätig in Zürich, Schweiz.",
+          ],
+        },
+        {
+          heading: "Haftung für Inhalte",
+          paragraphs: [
+            "Ich bemühe mich, die Informationen auf dieser Website aktuell und korrekt zu halten. Für externe Links übernehme ich keine Verantwortung für deren Inhalte.",
+          ],
+        },
+      ],
+    },
+    privacy: {
+      title: "Datenschutzerklärung",
+      intro:
+        "Diese Erklärung beschreibt, wie ich personenbezogene Daten bearbeite, wenn Sie diese Website nutzen oder Unterricht bei mir buchen (revDSG).",
+      controllerLabel: "Verantwortliche Person:",
+      emailLabel: "E-Mail:",
+      updated: "Stand: Mai 2026. Ich kann diese Erklärung bei Bedarf anpassen; die aktuelle Version finden Sie stets auf dieser Seite.",
+      sections: [
+        {
+          heading: "Welche Daten ich bearbeite",
+          paragraphs: [
+            "Bei einer Buchung: Name, E-Mail, Telefon, gewähltes Produkt, Zahlungsart und optionale Nachricht.",
+            "Bei Kinderunterricht (unter 14): Vorname und Alter des Kindes, Einwilligung der Erziehungsberechtigten.",
+            "Bei Unterricht bei Ihnen zu Hause: Ihre Adresse und Bestätigung zur Erreichbarkeit.",
+            "Bei Kontakt per E-Mail oder WhatsApp: die Daten, die Sie mir freiwillig mitteilen.",
+            "Technische Daten: Server-Logfiles durch den Hosting-Anbieter (z. B. IP-Adresse, Zeitpunkt des Zugriffs). Zahlungsdaten werden direkt durch Stripe verarbeitet; ich speichere keine Kartennummern.",
+          ],
+        },
+        {
+          heading: "Zweck und Rechtsgrundlage",
+          paragraphs: [
+            "Zweck: Buchung und Abwicklung von Unterricht, Terminabsprache, Rechnungsstellung, Kommunikation und gesetzliche Aufbewahrung.",
+            "Rechtsgrundlage: Erfüllung des Unterrichtsvertrags, berechtigtes Interesse an der Abwicklung meines Angebots sowie gesetzliche Pflichten (z. B. Aufbewahrung für die Buchhaltung).",
+          ],
+        },
+        {
+          heading: "Empfänger und Auftragsbearbeiter",
+          paragraphs: [
+            "Hosting: Vercel (Website-Betrieb).",
+            "Zahlungen: Stripe (Online-Zahlung).",
+            "E-Mail: mein E-Mail-Anbieter für Bestätigungen und Korrespondenz.",
+            "WhatsApp: wenn Sie mich dort kontaktieren (Meta/WhatsApp).",
+            "Diese Dienstleister verarbeiten Daten nur, soweit dies für ihre Leistung nötig ist.",
+          ],
+        },
+        {
+          heading: "Übermittlung ins Ausland",
+          paragraphs: [
+            "Einige der genannten Anbieter können Daten ausserhalb der Schweiz bearbeiten (z. B. USA/EU). Dabei sollen angemessene Schutzmassnahmen gelten, soweit der Anbieter diese anbietet.",
+          ],
+        },
+        {
+          heading: "Aufbewahrung",
+          paragraphs: [
+            "Buchungs- und Abrechnungsdaten bewahre ich so lange auf, wie es für die Vertragserfüllung und gesetzliche Pflichten nötig ist (in der Regel mehrere Jahre gemäss schweizerischen Aufbewahrungsregeln für Geschäftsunterlagen).",
+            "Kontaktanfragen ohne Buchung lösche ich, wenn sie nicht mehr benötigt werden.",
+          ],
+        },
+        {
+          heading: "Ihre Rechte",
+          paragraphs: [
+            "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Bearbeitung und Datenherausgabe, soweit gesetzlich vorgesehen.",
+          ],
+        },
+        {
+          heading: "Kinder",
+          paragraphs: [
+            "Unterricht für Kinder unter 14 Jahren wird nur über eine erziehungsberechtigte Person gebucht. Ich erhebe nur die dafür nötigen Angaben und verwende sie ausschliesslich zur Organisation des Unterrichts.",
+          ],
+        },
+        {
+          heading: "Cookies und lokale Speicherung",
+          paragraphs: [
+            "Diese Website setzt keine Werbe- oder Analyse-Cookies ein.",
+            "Ihre Sprachwahl (Deutsch/Englisch) wird im localStorage Ihres Browsers gespeichert, damit die Seite in der gewählten Sprache bleibt. Sie können dies in den Browser-Einstellungen löschen.",
+          ],
+        },
+        {
+          heading: "Eingebettete Inhalte (Video)",
+          paragraphs: [
+            "Auf der Startseite kann ein eingebettetes Video über Vimeo abgespielt werden. Beim Abspielen können Vimeo und deren Anbieter technische Daten (z. B. IP-Adresse) verarbeiten. Es gelten auch die Datenschutzhinweise von Vimeo.",
+          ],
+        },
+        {
+          heading: "Datensicherheit",
+          paragraphs: [
+            "Ich treffe angemessene technische und organisatorische Massnahmen, um Ihre Daten zu schützen (z. B. HTTPS-Verschlüsselung der Website, Zugang nur für mich, sichere Zahlungsabwicklung über Stripe).",
+            "Bitte senden Sie mir keine Passwörter oder unnötig sensiblen Informationen per E-Mail oder WhatsApp.",
+          ],
+        },
+        {
+          heading: "Automatisierte Entscheidungen",
+          paragraphs: [
+            "Ich treffe keine automatisierten Entscheidungen mit rechtlicher Wirkung gegenüber Ihnen (kein Profiling).",
+          ],
+        },
+        {
+          heading: "Datenschutzanfragen und Beschwerde",
+          paragraphs: [
+            "Für Auskunft, Berichtigung oder Löschung wenden Sie sich an mich unter der oben genannten E-Mail. Ich antworte in angemessener Frist.",
+            "Sie können sich auch an den Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) wenden: edoeb.admin.ch",
+          ],
+        },
+      ],
+    },
+    terms: {
+      title: "Allgemeine Geschäftsbedingungen (AGB)",
+      intro:
+        "Diese Bedingungen gelten für Gitarrenunterricht, den Sie über axe-school.ch bzw. diese Website bei Christian Boethius (Axe School) buchen.",
+      updated: "Stand: Mai 2026.",
+      sections: [
+        {
+          heading: "Leistung",
+          paragraphs: [
+            "Einzelunterricht in den auf der Website beschriebenen Formaten (Zoom, neutraler Ort, bei Ihnen zu Hause), als Probelektion oder im Paket (5 oder 10 Lektionen).",
+            "Termine werden nach der Buchung per E-Mail (oder telefonisch/WhatsApp) vereinbart.",
+          ],
+        },
+        {
+          heading: "Preise und Zahlung",
+          paragraphs: [
+            "Es gelten die auf der Buchungsseite angezeigten Preise zum Zeitpunkt der Buchung.",
+            "Online-Zahlung (Stripe): Preis inkl. kleiner Bearbeitungsgebühr.",
+            "Direktzahlung (TWINT/Bank): nur der reine Unterrichtspreis.",
+            "Bei Direktzahlung gilt der Termin als bestätigt, sobald die Zahlung bei mir eingegangen ist.",
+          ],
+        },
+        {
+          heading: "Pakete (5er / 10er Abos)",
+          paragraphs: [
+            "Lektionspakete (5 oder 10 Lektionen) sind 12 Monate ab Kaufdatum gültig.",
+            "Nicht bezogene Lektionen verfallen nach Ablauf der Gültigkeit, sofern nichts anderes schriftlich vereinbart wurde.",
+          ],
+        },
+        {
+          heading: "Ort und Erreichbarkeit",
+          paragraphs: [
+            "Unterricht bei Ihnen zu Hause nur innerhalb von ca. 45 Minuten mit ÖV ab Zürich.",
+            "Schülerinnen und Schüler kommen nicht zu mir nach Hause.",
+          ],
+        },
+        {
+          heading: "Kinder unter 14",
+          paragraphs: [
+            "Buchung nur durch Erziehungsberechtigte. Es gelten die Kinderpreise und -dauern gemäss Website.",
+            "Ab 14 Jahren gelten die regulären Preise für Erwachsene/Teens.",
+          ],
+        },
+        {
+          heading: "Absagen und Verschiebungen",
+          paragraphs: [
+            "Bitte sagen Sie Termine mindestens 24 Stunden im Voraus ab (E-Mail, WhatsApp oder Telefon).",
+            "Bei späterer Absage oder Nichterscheinen kann die Lektion berechnet werden.",
+            "Verschiebungen sind nach Verfügbarkeit möglich; bei Paketen verbraucht eine wahrgenommene Lektion ein Credit.",
+          ],
+        },
+        {
+          heading: "Kontakt vor der Buchung",
+          paragraphs: [
+            "Fragen zu Format, Zeit oder Ort können Sie jederzeit per WhatsApp oder E-Mail stellen, ohne zu buchen.",
+          ],
+        },
+        {
+          heading: "Haftung",
+          paragraphs: [
+            "Ich unterrichte sorgfältig nach bestem Wissen. Für Schäden durch unsachgemässe Nutzung des Instruments ausserhalb des Unterrichts übernehme ich keine Haftung.",
+          ],
+        },
+        {
+          heading: "Anwendbares Recht",
+          paragraphs: [
+            "Es gilt schweizerisches Recht. Gerichtsstand ist, soweit zulässig, Zürich.",
+          ],
+        },
+      ],
+    },
+  },
   lang: {
     de: "DE",
     en: "EN",
@@ -181,7 +392,7 @@ const en = {
   meta: {
     title: "Guitar lessons Zurich, Axe School, Christian Boethius",
     description:
-      "Guitar lessons in Zurich with Christian Boethius. Trial lessons and bundles — Zoom, neutral ground, or at your home.",
+      "Guitar lessons in Zurich with Christian Boethius. Trial lessons and bundles: Zoom, neutral ground, or at your home.",
   },
   a11y: {
     skipToContent: "Skip to content",
@@ -202,28 +413,32 @@ const en = {
     title: "Learn guitar",
     titleAccent: "With clarity, patience, and enjoyment.",
     subtitle:
-      "Learning guitar takes time and practice, that's part of the journey. I guide you step by step so lessons feel clear, personal, motivating, and enjoyable.",
+      "Learning guitar takes time and practice, and that's part of it. I guide you step by step so lessons stay clear and enjoyable.",
     ctaBook: "Book now",
     ctaWhatsapp: "WhatsApp",
-    whatsappHintLabel: "Before signing up:",
-    whatsappHint: "Send me a WhatsApp or email.",
-    whatsappHintReason:
-      "To help you select the best options, time, location, and any other questions.",
+    ctaEmail: "Email",
     signupNote: "Choose your age group below for pricing.",
+  },
+  contact: {
+    label: "Before signing up:",
+    sendLead: "Send me a ",
+    or: " or ",
+    reason:
+      "We can figure out format, time, and place, or answer any questions.",
   },
   about: {
     title: "About me",
     p1: "Hi, my name is Christian. I'm originally from Sweden, though I've lived in Switzerland for more than twenty years, on and off.",
     p2: "My background is in graphic design and programming. I've also spent many years teaching scuba diving and freediving around the world, from the tropics of Asia and Central America to the Caribbean and icy Iceland.",
-    p3: "I'm excited to be starting a new chapter as a guitar teacher in Zurich, and I'll be glad to be part of your journey with this wonderful instrument.",
-    p4: "I want to be upfront with you. This is my first real step into guitar teaching as a profession, and I still have a lot to learn myself. I'm not pretending to be the best in the world, but I do have enough teaching experience to be genuinely motivated by your journey with this instrument and interested in helping you grow.",
-    p5: "Maybe I'm not the right teacher for you, and that's perfectly okay. That's why I always prefer we get in touch first. We can talk about your struggles, what you want to learn, where you are now, and how you'd like to move forward. There are also affordable single trial lessons you can book if you'd like to try it out.",
+    p3: "I'm starting as a guitar teacher in Zurich now, and I'd be glad to help you along the way.",
+    p4: "I want to be upfront with you. This is my first real step into guitar teaching as a profession, and I still have a lot to learn myself. I'm not pretending to be the best in the world, but I have enough teaching experience to stay genuinely motivated and interested in your progress.",
+    p5: "Maybe I'm not the right teacher for you, and that's perfectly okay. That's why I always prefer we get in touch first. We can talk about your struggles, what you want to learn, where you are now, and how you'd like to move forward. There are also affordable trial lessons if you'd like to try it out.",
     photoAltCoastal: "By the coast, travel and downtime",
     whaleHeaderAlt: "Sperm whale underwater",
     pillarsTitle: "How I teach",
-    pillarsLead: "The simple three core pillars.",
+    pillarsLead: "Three core pillars.",
     pillarsBody: [
-      "**Don't worry, you are good enough.** Yes, the start can be frustrating, but that's why I'm here to guide you and share techniques I wish I'd known when I began. Step by step, you'll build a solid foundation.",
+      "**Don't worry, you're good enough.** Yes, the start can be frustrating, but that's why I'm here to guide you and share techniques I wish I'd known when I began. Step by step, you'll build a solid foundation.",
       "**Every lesson is shaped around how you learn and what you want from it.** Together we find small tips and tricks, so the guitar feels inviting, not like another task on your list.",
       "**Yes, practice matters, but consistency matters more.** Life will get busy and motivation will dip, but coming once a week is far better than not picking up the guitar at all.",
       "Try not to compare yourself with others, **everyone learns at their own pace**. I've had my own struggles with learning, so I know how it feels. **I bring patience and genuine enthusiasm to every lesson.**",
@@ -244,15 +459,15 @@ const en = {
       },
     ],
     whatITitle: "What I teach",
-    whatILead: "Styles and instruments I cover.",
+    whatILead: "Styles and instruments.",
     whatIBody: [
-      "There's a wide range of genres we can tackle together, but the styles I'm most familiar with are rock, blues, fingerpicking, pop, country, singer-songwriter, and metal.",
-      "I also teach the fundamentals: posture and hand setup, tuning and basic guitar care, chords and rhythm, and working with a metronome. From there we build scales, melody, and progressions, learn how songs are structured, and develop practice habits that carry you between lessons.",
+      "We can explore many genres together. Rock, blues, fingerpicking, pop, country, singer-songwriter, and metal are where I'm most at home.",
+      "I also cover the fundamentals: posture, tuning, chords, rhythm, metronome. From there we work on scales, progressions, and song structure, and I help you practise well between lessons.",
     ],
     whatIInstruments: [
       {
         title: "Electric guitar",
-        body: "Rhythm, lead solos, and effects, for rock, blues, and beyond.",
+        body: "Rhythm, lead solos, and effects for rock, blues, and beyond.",
       },
       {
         title: "Acoustic guitar",
@@ -282,16 +497,25 @@ const en = {
     titleRegular: "Booking, adults/teens",
     titleChild: "Booking, children (under 14)",
     intro:
-      "Choose your option (Zoom, neutral ground, or at your home), pick a time, then pay online or via TWINT/bank.",
+      "Choose a trial lesson or bundle, pick your format, then pay online or via TWINT/bank.",
     audienceRequired: "Please choose who this booking is for:",
     wrongAgeGroup: "Wrong age group?",
-    signupHint:
-      "Optional before you buy: phone, WhatsApp, or a free 15-minute Zoom intro, not a lesson.",
     loading: "Loading form…",
     who: "Who is this for?",
     regular: "Adults/teens",
     child: "Child (under 14)",
     choose: "Choose option",
+    lessonKind: "What are you booking?",
+    trialLesson: "Trial lesson",
+    trialHint: "A single lesson to get started",
+    bundle: "Bundle",
+    bundleHint: "5 or 10 lessons in one package",
+    chooseFormat: "Choose format",
+    bundleSize: "How many lessons?",
+    bundle5: "5 lessons",
+    bundle10: "10 lessons",
+    bundleTotal: "{amount} CHF total",
+    selectionSummary: "Your selection",
     payment: "Payment",
     paymentHint:
       "Online includes a small Stripe fee. TWINT/bank direct = lesson price only.",
@@ -329,8 +553,8 @@ const en = {
     payTwint: "Pay with TWINT",
     reference: "Reference",
     confirmEmail:
-      "We will confirm your time by email within 24 hours. Please check your spam folder too.",
-    generic: "Your booking was received. We will be in touch shortly.",
+      "I'll confirm your time by email within 24 hours. Please check your spam folder too.",
+    generic: "Your booking was received. I'll be in touch shortly.",
     home: "Back to home",
   },
   cancel: {
@@ -345,6 +569,204 @@ const en = {
     privacy: "Privacy",
     terms: "Terms",
     copy: "Guitar lessons in Zurich",
+  },
+  legal: {
+    impressum: {
+      title: "Impressum",
+      providerHeading: "Responsible for this website",
+      providerBody: [
+        "Provider identification under Swiss law (UWG) for guitar lessons offered through Axe School.",
+      ],
+      country: "Switzerland",
+      emailLabel: "Email:",
+      phoneLabel: "Phone:",
+      sections: [
+        {
+          heading: "Services",
+          paragraphs: [
+            "Guitar lessons for adults, teens, and children. Private lessons via Zoom, at a neutral location in Zurich, or at your home.",
+          ],
+        },
+        {
+          heading: "Legal form",
+          paragraphs: [
+            "Sole proprietorship, operating in Zurich, Switzerland.",
+          ],
+        },
+        {
+          heading: "Liability for content",
+          paragraphs: [
+            "I aim to keep information on this website accurate and up to date. I am not responsible for the content of external links.",
+          ],
+        },
+      ],
+    },
+    privacy: {
+      title: "Privacy Policy",
+      intro:
+        "This policy describes how I process personal data when you use this website or book lessons with me (Swiss FADP / revDSG).",
+      controllerLabel: "Controller:",
+      emailLabel: "Email:",
+      updated: "Last updated: May 2026. I may update this policy; the current version is always on this page.",
+      sections: [
+        {
+          heading: "What data I process",
+          paragraphs: [
+            "When you book: name, email, phone, chosen product, payment method, and optional message.",
+            "For children (under 14): child's first name and age, parent/guardian consent.",
+            "For lessons at your home: your address and travel confirmation.",
+            "If you contact me by email or WhatsApp: whatever you choose to share.",
+            "Technical data: server logs via the hosting provider (e.g. IP address, access time). Payment card data is processed by Stripe; I do not store card numbers.",
+          ],
+        },
+        {
+          heading: "Purpose and legal basis",
+          paragraphs: [
+            "Purpose: booking and delivering lessons, scheduling, invoicing, communication, and legal record-keeping.",
+            "Legal basis: performance of the lesson contract, legitimate interest in running my business, and legal obligations (e.g. accounting retention).",
+          ],
+        },
+        {
+          heading: "Recipients and processors",
+          paragraphs: [
+            "Hosting: Vercel (website operation).",
+            "Payments: Stripe (online payment).",
+            "Email: my email provider for confirmations and correspondence.",
+            "WhatsApp: if you contact me there (Meta/WhatsApp).",
+            "These providers process data only as needed to provide their service.",
+          ],
+        },
+        {
+          heading: "Transfers abroad",
+          paragraphs: [
+            "Some providers may process data outside Switzerland (e.g. USA/EU). Where applicable, they should use appropriate safeguards.",
+          ],
+        },
+        {
+          heading: "Retention",
+          paragraphs: [
+            "I keep booking and billing data as long as needed for the contract and legal obligations (typically several years under Swiss business record rules).",
+            "Contact enquiries without a booking are deleted when no longer needed.",
+          ],
+        },
+        {
+          heading: "Your rights",
+          paragraphs: [
+            "You have the right to access, rectify, delete, restrict processing, and receive your data, where provided by law.",
+          ],
+        },
+        {
+          heading: "Children",
+          paragraphs: [
+            "Lessons for children under 14 are booked only by a parent or legal guardian. I collect only what is needed to organise lessons.",
+          ],
+        },
+        {
+          heading: "Cookies and local storage",
+          paragraphs: [
+            "This website does not use advertising or analytics cookies.",
+            "Your language choice (German/English) is stored in your browser's localStorage so the site stays in that language. You can clear this in your browser settings.",
+          ],
+        },
+        {
+          heading: "Embedded content (video)",
+          paragraphs: [
+            "The home page may embed a video via Vimeo. When you play it, Vimeo and its providers may process technical data (e.g. IP address). Vimeo's privacy policy also applies.",
+          ],
+        },
+        {
+          heading: "Data security",
+          paragraphs: [
+            "I take appropriate technical and organisational measures to protect your data (e.g. HTTPS encryption, access limited to me, secure payment processing via Stripe).",
+            "Please do not send passwords or unnecessarily sensitive information by email or WhatsApp.",
+          ],
+        },
+        {
+          heading: "Automated decisions",
+          paragraphs: [
+            "I do not make automated decisions with legal effect concerning you (no profiling).",
+          ],
+        },
+        {
+          heading: "Privacy requests and complaints",
+          paragraphs: [
+            "For access, correction, or deletion requests, contact me at the email above. I will respond within a reasonable time.",
+            "You may also contact the Federal Data Protection and Information Commissioner (FDPIC): edoeb.admin.ch",
+          ],
+        },
+      ],
+    },
+    terms: {
+      title: "Terms of service",
+      intro:
+        "These terms apply to guitar lessons you book through this website with Christian Boethius (Axe School).",
+      updated: "Last updated: May 2026.",
+      sections: [
+        {
+          heading: "Service",
+          paragraphs: [
+            "Private lessons in the formats shown on the website (Zoom, neutral ground, at your home), as trial lessons or in packages (5 or 10 lessons).",
+            "Times are arranged by email (or phone/WhatsApp) after booking.",
+          ],
+        },
+        {
+          heading: "Prices and payment",
+          paragraphs: [
+            "Prices shown on the booking page at the time of booking apply.",
+            "Online payment (Stripe): price includes a small processing fee.",
+            "Direct payment (TWINT/bank): lesson price only.",
+            "For direct payment, your slot is confirmed once payment is received.",
+          ],
+        },
+        {
+          heading: "Packages (5 / 10 lessons)",
+          paragraphs: [
+            "Lesson packages (5 or 10 lessons) are valid for 12 months from purchase.",
+            "Unused lessons expire after the validity period unless otherwise agreed in writing.",
+          ],
+        },
+        {
+          heading: "Location and travel",
+          paragraphs: [
+            "Lessons at your home only within ~45 minutes of Zurich by public transport.",
+            "Students do not come to my home.",
+          ],
+        },
+        {
+          heading: "Children under 14",
+          paragraphs: [
+            "Booking by parent or guardian only. Child pricing and durations apply as on the website.",
+            "From age 14, regular adult/teen pricing applies.",
+          ],
+        },
+        {
+          heading: "Cancellation and rescheduling",
+          paragraphs: [
+            "Please cancel at least 24 hours in advance (email, WhatsApp, or phone).",
+            "Late cancellation or no-show may be charged.",
+            "Rescheduling subject to availability; for packages, each attended lesson uses one credit.",
+          ],
+        },
+        {
+          heading: "Contact before booking",
+          paragraphs: [
+            "You can ask about format, time, or location anytime via WhatsApp or email without booking.",
+          ],
+        },
+        {
+          heading: "Liability",
+          paragraphs: [
+            "I teach carefully to the best of my ability. I am not liable for damage from improper use of the instrument outside lessons.",
+          ],
+        },
+        {
+          heading: "Applicable law",
+          paragraphs: [
+            "Swiss law applies. Place of jurisdiction is Zurich, where permitted.",
+          ],
+        },
+      ],
+    },
   },
   lang: {
     de: "DE",

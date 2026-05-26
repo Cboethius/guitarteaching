@@ -1,19 +1,25 @@
 "use client";
 
+import { ContactHint } from "@/components/ContactHint";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 import {
+  buildProductId,
+  bundleSizeFromProductId,
   childLessonDurations,
+  formatFromProductId,
   formatProductDuration,
   getProduct,
   lessonFormats,
+  lessonKindFromProduct,
   productHasFlexibleDuration,
-  productsForFormat,
   resolveProductId,
   type Audience,
+  type BundleSize,
   type ChildLessonDuration,
   type LessonFormat,
+  type LessonKind,
   type ProductId,
 } from "@/lib/pricing";
 import { useLocale } from "@/lib/i18n/context";
@@ -28,17 +34,34 @@ function parseAudience(param: string | null): Audience | null {
   return null;
 }
 
+function choiceCardClass(selected: boolean) {
+  return `cursor-pointer rounded-xl border p-4 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
+    selected
+      ? "border-forest bg-pastel-light/50"
+      : "border-pastel bg-white hover:border-forest/40"
+  }`;
+}
+
 export function BookingForm() {
   const router = useRouter();
   const params = useSearchParams();
   const { locale, t } = useLocale();
 
   const audience = parseAudience(params.get("audience"));
-  const initialProduct = audience
+  const initialProductId: ProductId = audience
     ? resolveProductId(audience, params.get("product"))
     : "zoom";
+  const initialProduct = audience ? getProduct(audience, initialProductId) : null;
 
-  const [productId, setProductId] = useState<ProductId>(initialProduct);
+  const [lessonKind, setLessonKind] = useState<LessonKind>(() =>
+    initialProduct ? lessonKindFromProduct(initialProduct) : "trial",
+  );
+  const [lessonFormat, setLessonFormat] = useState<LessonFormat>(() =>
+    formatFromProductId(initialProductId),
+  );
+  const [bundleSize, setBundleSize] = useState<BundleSize>(() =>
+    bundleSizeFromProductId(initialProductId),
+  );
   const [paymentMethod, setPaymentMethod] = useState<"stripe" | "direct">(
     "stripe",
   );
@@ -46,6 +69,18 @@ export function BookingForm() {
     useState<ChildLessonDuration>(audience === "child" ? 30 : 45);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const productId = useMemo(
+    () =>
+      audience
+        ? buildProductId(
+            lessonFormat,
+            lessonKind,
+            lessonKind === "bundle" ? bundleSize : 5,
+          )
+        : "zoom",
+    [audience, lessonFormat, lessonKind, bundleSize],
+  );
 
   const product = useMemo(() => {
     if (!audience) return null;
@@ -82,6 +117,41 @@ export function BookingForm() {
     : formatProductDuration(locale, selectedProduct);
   const displayName = productName(locale, selectedProduct.nameDe, selectedProduct.nameEn);
   const otherAudience = audience === "regular" ? "child" : "regular";
+
+  function selectKind(kind: LessonKind) {
+    setLessonKind(kind);
+    const id = buildProductId(
+      lessonFormat,
+      kind,
+      kind === "bundle" ? bundleSize : 5,
+    );
+    const p = getProduct(audience!, id);
+    if (!productHasFlexibleDuration(p)) {
+      setLessonDurationMin(p.durationMin as ChildLessonDuration);
+    }
+  }
+
+  function selectFormat(format: LessonFormat) {
+    setLessonFormat(format);
+    const id = buildProductId(
+      format,
+      lessonKind,
+      lessonKind === "bundle" ? bundleSize : 5,
+    );
+    const p = getProduct(audience!, id);
+    if (!productHasFlexibleDuration(p)) {
+      setLessonDurationMin(p.durationMin as ChildLessonDuration);
+    }
+  }
+
+  function selectBundleSize(size: BundleSize) {
+    setBundleSize(size);
+    const id = buildProductId(lessonFormat, "bundle", size);
+    const p = getProduct(audience!, id);
+    if (!productHasFlexibleDuration(p)) {
+      setLessonDurationMin(p.durationMin as ChildLessonDuration);
+    }
+  }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -131,9 +201,7 @@ export function BookingForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-8">
-      <p className="border-pastel rounded-xl border bg-pastel-light/40 px-4 py-3 text-sm leading-relaxed">
-        {t.book.signupHint}
-      </p>
+      <ContactHint variant="boxed" />
 
       <p className="text-forest/70 text-sm">
         {t.book.wrongAgeGroup}{" "}
@@ -146,27 +214,86 @@ export function BookingForm() {
       </p>
 
       <fieldset>
-        <legend className="text-lg font-semibold">{t.book.choose}</legend>
-        <div className="mt-3 space-y-8">
-          {lessonFormats.map((format) => (
-            <FormatProductGroup
-              key={format}
-              format={format}
-              audience={audience}
-              productId={productId}
-              locale={locale}
-              t={t}
-              onSelect={(id) => {
-                setProductId(id);
-                const p = getProduct(audience, id);
-                if (!productHasFlexibleDuration(p)) {
-                  setLessonDurationMin(p.durationMin as ChildLessonDuration);
-                }
-              }}
-            />
-          ))}
+        <legend className="text-lg font-semibold">{t.book.lessonKind}</legend>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <KindOption
+            selected={lessonKind === "trial"}
+            title={t.book.trialLesson}
+            hint={t.book.trialHint}
+            onSelect={() => selectKind("trial")}
+          />
+          <KindOption
+            selected={lessonKind === "bundle"}
+            title={t.book.bundle}
+            hint={t.book.bundleHint}
+            onSelect={() => selectKind("bundle")}
+          />
         </div>
       </fieldset>
+
+      <fieldset>
+        <legend className="text-lg font-semibold">{t.book.chooseFormat}</legend>
+        <div className="mt-3 grid gap-3">
+          {lessonFormats.map((format) => {
+            const p = getProduct(
+              audience,
+              buildProductId(
+                format,
+                lessonKind,
+                lessonKind === "bundle" ? bundleSize : 5,
+              ),
+            );
+            const duration = formatProductDuration(locale, p);
+            return (
+              <FormatOption
+                key={format}
+                selected={lessonFormat === format}
+                title={formatTitle(locale, t, format)}
+                subtitle={duration}
+                onSelect={() => selectFormat(format)}
+              />
+            );
+          })}
+        </div>
+      </fieldset>
+
+      {lessonKind === "bundle" && (
+        <fieldset>
+          <legend className="text-lg font-semibold">{t.book.bundleSize}</legend>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {([5, 10] as const).map((size) => {
+              const p = getProduct(audience, buildProductId(lessonFormat, "bundle", size));
+              const perLesson =
+                p.perLessonChf != null && p.bundleLessons != null
+                  ? t.pricing.bundleLine
+                      .replace("{count}", String(p.bundleLessons))
+                      .replace("{price}", String(p.perLessonChf))
+                  : null;
+              return (
+                <BundleSizeOption
+                  key={size}
+                  selected={bundleSize === size}
+                  title={size === 5 ? t.book.bundle5 : t.book.bundle10}
+                  subtitle={
+                    perLesson
+                      ? `${perLesson} · ${t.book.bundleTotal.replace("{amount}", String(p.lessonValueChf))}`
+                      : undefined
+                  }
+                  onSelect={() => selectBundleSize(size)}
+                />
+              );
+            })}
+          </div>
+        </fieldset>
+      )}
+
+      <div className="border-pastel rounded-xl border bg-pastel-light/30 px-4 py-3">
+        <p className="text-sm font-medium">{t.book.selectionSummary}</p>
+        <p className="text-forest/80 mt-1 text-sm">
+          {displayName}
+          {(showChildDuration || !selectedProduct.isBundle) && ` · ${durationLabel}`}
+        </p>
+      </div>
 
       <fieldset>
         <legend className="text-lg font-semibold">{t.book.payment}</legend>
@@ -342,10 +469,6 @@ export function BookingForm() {
             ? t.book.submitPay
             : t.book.submitBook}
       </button>
-      <p className="text-forest/60 text-xs">
-        {displayName}
-        {showChildDuration || !selectedProduct.isBundle ? ` · ${durationLabel}` : ""}
-      </p>
     </form>
   );
 }
@@ -361,64 +484,79 @@ function formatTitle(
   return t.pricing[key];
 }
 
-function FormatProductGroup({
-  format,
-  audience,
-  productId,
-  locale,
-  t,
+function KindOption({
+  selected,
+  title,
+  hint,
   onSelect,
 }: {
-  format: LessonFormat;
-  audience: Audience;
-  productId: ProductId;
-  locale: "de" | "en";
-  t: ReturnType<typeof import("@/lib/i18n/translations").getTranslations>;
-  onSelect: (id: ProductId) => void;
+  selected: boolean;
+  title: string;
+  hint: string;
+  onSelect: () => void;
 }) {
-  const ids = productsForFormat(audience, format);
-
   return (
-    <div>
-      <p className="text-forest border-pastel border-b pb-1 text-sm font-semibold">
-        {formatTitle(locale, t, format)}
-      </p>
-      <div className="mt-3 grid gap-3 sm:grid-cols-1 lg:grid-cols-2">
-        {ids.map((id) => {
-          const p = getProduct(audience, id);
-          const name = productName(locale, p.nameDe, p.nameEn);
-          const bundleLine =
-            p.perLessonChf != null && p.bundleLessons != null
-              ? t.pricing.bundleLine
-                  .replace("{count}", String(p.bundleLessons))
-                  .replace("{price}", String(p.perLessonChf))
-              : null;
-          return (
-            <label
-              key={id}
-              className={`cursor-pointer rounded-xl border p-4 ${
-                productId === id
-                  ? "border-forest bg-pastel-light/50"
-                  : "border-pastel bg-white"
-              }`}
-            >
-              <input
-                type="radio"
-                name="product"
-                className="sr-only"
-                checked={productId === id}
-                onChange={() => onSelect(id)}
-              />
-              <span className="block font-medium">{name}</span>
-              <span className="text-forest/70 mt-1 block text-sm">
-                {bundleLine && `${bundleLine} · `}
-                {formatProductDuration(locale, p)} · {t.pricing.online}{" "}
-                {p.stripePriceChf} CHF · {t.pricing.direct} {p.lessonValueChf} CHF
-              </span>
-            </label>
-          );
-        })}
-      </div>
-    </div>
+    <button
+      type="button"
+      onClick={onSelect}
+      className={choiceCardClass(selected)}
+    >
+      <span className="block font-medium">{title}</span>
+      <span className="text-forest/70 mt-1 block text-sm">{hint}</span>
+    </button>
+  );
+}
+
+function FormatOption({
+  selected,
+  title,
+  subtitle,
+  onSelect,
+}: {
+  selected: boolean;
+  title: string;
+  subtitle: string;
+  onSelect: () => void;
+}) {
+  return (
+    <label className={choiceCardClass(selected)}>
+      <input
+        type="radio"
+        name="lessonFormat"
+        className="sr-only"
+        checked={selected}
+        onChange={onSelect}
+      />
+      <span className="block font-medium">{title}</span>
+      <span className="text-forest/70 mt-1 block text-sm">{subtitle}</span>
+    </label>
+  );
+}
+
+function BundleSizeOption({
+  selected,
+  title,
+  subtitle,
+  onSelect,
+}: {
+  selected: boolean;
+  title: string;
+  subtitle?: string;
+  onSelect: () => void;
+}) {
+  return (
+    <label className={choiceCardClass(selected)}>
+      <input
+        type="radio"
+        name="bundleSize"
+        className="sr-only"
+        checked={selected}
+        onChange={onSelect}
+      />
+      <span className="block font-medium">{title}</span>
+      {subtitle && (
+        <span className="text-forest/70 mt-1 block text-sm">{subtitle}</span>
+      )}
+    </label>
   );
 }

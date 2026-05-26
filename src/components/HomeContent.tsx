@@ -1,6 +1,10 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
+import { ContactHint } from "@/components/ContactHint";
+import { AcousticGuitarIcon } from "@/components/icons/AcousticGuitarIcon";
+import { ElectricGuitarIcon } from "@/components/icons/ElectricGuitarIcon";
 import { PricingTeaser } from "@/components/PricingTeaser";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
@@ -62,43 +66,10 @@ const pillarIcons = [
   ),
 ];
 
-const instrumentIcons = [
-  (
-    <svg
-      key="electric"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.6}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="h-6 w-6"
-    >
-      <path d="M3 17 L7 11 L13 11 L11 17 L7 18 Z" />
-      <path d="M13 11 L20 4" />
-      <path d="M19 3 L22 6" />
-      <circle cx="6" cy="15" r="0.6" />
-    </svg>
-  ),
-  (
-    <svg
-      key="acoustic"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.6}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="h-6 w-6"
-    >
-      <circle cx="8.5" cy="15.5" r="5.5" />
-      <circle cx="8.5" cy="15.5" r="1.6" />
-      <path d="M13 11 L20 4" />
-      <path d="M19 3 L22 6" />
-    </svg>
-  ),
+/** Index matches t.about.whatIInstruments order (electric, acoustic) */
+const instrumentIcons: (ReactNode | null)[] = [
+  <ElectricGuitarIcon key="electric" />,
+  <AcousticGuitarIcon key="acoustic" />,
 ];
 
 function renderHighlighted(text: string) {
@@ -137,14 +108,8 @@ export function HomeContent() {
             <p className="text-forest/80 mt-5 max-w-lg text-lg leading-relaxed">
               {t.hero.subtitle}
             </p>
-            <p className="text-forest/80 mt-6 max-w-lg text-base leading-relaxed">
-              <strong className="font-semibold">{t.hero.whatsappHintLabel}</strong>{" "}
-              {t.hero.whatsappHint}
-            </p>
-            <p className="text-forest/70 mt-1 max-w-lg text-base leading-relaxed">
-              {t.hero.whatsappHintReason}
-            </p>
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <ContactHint showReason />
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/#pricing"
                 className="bg-forest hover:bg-forest/90 inline-flex min-h-12 items-center justify-center rounded-full px-8 py-3 text-center font-semibold text-cream"
@@ -158,6 +123,12 @@ export function HomeContent() {
                 className="border-forest text-forest hover:bg-pastel-light/60 inline-flex min-h-12 items-center justify-center rounded-full border-2 px-8 py-3 text-center font-semibold"
               >
                 {t.hero.ctaWhatsapp}
+              </a>
+              <a
+                href={`mailto:${site.email}`}
+                className="border-forest text-forest hover:bg-pastel-light/60 inline-flex min-h-12 items-center justify-center rounded-full border-2 px-8 py-3 text-center font-semibold"
+              >
+                {t.hero.ctaEmail}
               </a>
             </div>
             <p className="text-forest/70 mt-4 max-w-md text-sm leading-relaxed">
@@ -244,9 +215,11 @@ export function HomeContent() {
                   className="border-pastel rounded-2xl border bg-white p-6 shadow-sm"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="bg-pastel-light/70 text-forest flex h-12 w-12 shrink-0 items-center justify-center rounded-full">
-                      {instrumentIcons[i]}
-                    </div>
+                    {instrumentIcons[i] ? (
+                      <div className="bg-pastel-light/70 text-forest flex h-12 w-12 shrink-0 items-center justify-center rounded-full">
+                        {instrumentIcons[i]}
+                      </div>
+                    ) : null}
                     <div>
                       <h3 className="text-lg font-semibold">{item.title}</h3>
                       <p className="text-forest/80 mt-2 text-sm leading-relaxed">
