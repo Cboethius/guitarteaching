@@ -33,9 +33,16 @@ function BookPageInner() {
   );
 }
 
+function BookPageFallback() {
+  const { t } = useLocale();
+  return (
+    <p className="text-forest/70 p-12 text-center">{t.book.loading}</p>
+  );
+}
+
 export function BookPage() {
   return (
-    <Suspense fallback={<p className="p-12 text-center">…</p>}>
+    <Suspense fallback={<BookPageFallback />}>
       <BookPageInner />
     </Suspense>
   );

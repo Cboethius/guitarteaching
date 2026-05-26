@@ -313,22 +313,6 @@ export function formatProductDuration(
     : `${product.durationMin} min`;
 }
 
-const allProductIds: ProductId[] = [
-  "zoom",
-  "neutral",
-  "home",
-  "zoom-bundle-5",
-  "zoom-bundle-10",
-  "neutral-bundle-5",
-  "neutral-bundle-10",
-  "home-bundle-5",
-  "home-bundle-10",
-];
-
-export function isProductId(id: string | null): id is ProductId {
-  return id != null && allProductIds.includes(id as ProductId);
-}
-
 /** Map legacy URL params from earlier site versions */
 const legacyProductMap: Record<string, ProductId> = {
   "zoom-bundle": "zoom-bundle-10",

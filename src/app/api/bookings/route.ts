@@ -163,7 +163,7 @@ export async function POST(request: Request) {
           lessonDurationMin: String(lessonDurationMin),
         },
         success_url: `${origin}/success?booking=${booking.id}`,
-        cancel_url: `${origin}/cancel?booking=${booking.id}`,
+        cancel_url: `${origin}/cancel?audience=${body.audience}&product=${body.productId}`,
       });
 
       return NextResponse.json({

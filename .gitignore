@@ -39,8 +39,10 @@ yarn-error.log*
 
 # cursor agent skills (local tooling)
 .agents/
+skills-lock.json
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 data/bookings.json
+data/testimonials-submissions.json

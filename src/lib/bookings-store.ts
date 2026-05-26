@@ -2,8 +2,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import type { Audience, ProductId } from "./pricing";
 
-export type PaymentMethod = "stripe" | "direct" | "none";
-export type BookingStatus = "pending_payment" | "paid" | "confirmed";
+export type PaymentMethod = "stripe" | "direct";
+export type BookingStatus = "pending_payment" | "paid";
 
 export type Booking = {
   id: string;
@@ -39,7 +39,7 @@ async function ensureStore() {
   }
 }
 
-export async function readBookings(): Promise<Booking[]> {
+async function readBookings(): Promise<Booking[]> {
   await ensureStore();
   const raw = await fs.readFile(dataFile, "utf-8");
   return JSON.parse(raw) as Booking[];

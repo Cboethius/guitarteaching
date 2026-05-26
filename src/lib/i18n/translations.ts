@@ -1,11 +1,6 @@
 import type { Locale } from "./types";
 
 const de = {
-  meta: {
-    title: "Gitarrenunterricht Zürich, Axe School, Christian Boethius",
-    description:
-      "Gitarrenunterricht in Zürich mit Christian Boethius. Probelektionen und Abos: Zoom, neutraler Ort oder bei Ihnen zu Hause.",
-  },
   a11y: {
     skipToContent: "Zum Inhalt springen",
     introVideo: "Intro-Video: Gitarrenunterricht bei Axe School",
@@ -17,7 +12,6 @@ const de = {
     home: "Startseite",
     howITeach: "So unterrichte ich",
     pricing: "Preise",
-    testimonials: "Stimmen",
     how: "Über mich",
     menu: "Menü",
   },
@@ -47,7 +41,6 @@ const de = {
     p4: "Ich möchte ehrlich mit dir sein. Dies ist mein erster echter Schritt, Gitarre als Beruf zu unterrichten, und ich habe selbst noch viel zu lernen. Ich gebe nicht vor, der Beste der Welt zu sein, aber ich habe genug Unterrichtserfahrung, um aufrichtig motiviert zu sein und mich für dich zu interessieren.",
     p5: "Vielleicht bin ich nicht der richtige Lehrer für dich, und das ist völlig in Ordnung. Deshalb lerne ich dich lieber zuerst kennen. Wir können über deine Schwierigkeiten sprechen, was du lernen möchtest, wo du gerade stehst und wie du weitergehen willst. Es gibt auch günstige Probelektionen, wenn du es einfach ausprobieren möchtest.",
     photoAltCoastal: "An der Küste, Reisen und Freizeit",
-    whaleHeaderAlt: "Pottwal unter Wasser",
     pillarsTitle: "So unterrichte ich",
     pillarsLead: "Drei Grundpfeiler.",
     pillarsBody: [
@@ -90,7 +83,6 @@ const de = {
   },
   pricing: {
     title: "Preise",
-    teaserFormats: "Zoom, neutraler Ort oder bei Ihnen zu Hause.",
     teaserAudience: "Für Erwachsene/Teens und für Kinder.",
     teaserLessons: "Einzelne Probelektionen oder 5er oder 10er Abos.",
     chooseAge: "Wer soll Unterricht nehmen?",
@@ -102,15 +94,62 @@ const de = {
     homeTitle: "Bei Ihnen zu Hause",
     bundleLine: "{count} × {price} CHF pro Lektion",
     childDurationNote: "Pro Lektion 30 oder 45 Minuten, je nach Alter und Konzentration",
-    online: "Online",
-    direct: "Direkt (TWINT/Bank)",
   },
   testimonials: {
     title: "Stimmen",
-    subtitle: "Rückmeldungen von Schülerinnen und Schülern (Platzhalter — bitte durch echte ersetzen).",
+    subtitle: "Rückmeldungen von Schülerinnen und Schülern.",
     listLabel: "Zeugnisse",
     goTo: "Zeugnis {n}",
     starsLabel: "{rating} von 5 Sternen",
+  },
+  testimonialReview: {
+    title: "Testimonial schreiben",
+    intro: "Schreiben Sie Ihr Testimonial und senden Sie es ab. Es erscheint auf der Website, sobald Christian es freigegeben hat.",
+    quote: "Zitat",
+    author: "Anzeigename (z. B. Laura M.)",
+    context: "Kontext",
+    rating: "Bewertung",
+    consentName: "Ihr vollständiger Name (nur intern, nicht veröffentlicht)",
+    consent:
+      "Ich bin einverstanden, dass dieses Zitat unter dem oben genannten Anzeigenamen auf der Website von Axe School veröffentlicht wird.",
+    submit: "Absenden",
+    thanks: "Vielen Dank! Ihr Testimonial wurde übermittelt und erscheint nach Freigabe auf der Website.",
+    alreadySubmitted: "Sie haben dieses Formular bereits abgesendet. Vielen Dank!",
+    notFound: "Dieser Link ist ungültig oder abgelaufen.",
+    closed: "Dieses Testimonial wurde bereits verarbeitet.",
+    loading: "Wird geladen…",
+    error: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+  },
+  adminTestimonials: {
+    title: "Testimonials verwalten",
+    login: "Anmelden",
+    password: "Admin-Passwort",
+    logout: "Abmelden",
+    newLink: "Neuer Link",
+    newLinkHint:
+      "Link erzeugen und an Schüler/in senden. Sie schreiben das Testimonial selbst — kein Entwurf nötig.",
+    createLink: "Link erzeugen",
+    reviewLink: "Link für Schüler/in",
+    copyLink: "Link kopieren",
+    copied: "Kopiert!",
+    openLinks: "Offene Links (noch nicht abgesendet)",
+    notSubmittedYet: "Link verschickt — wartet auf Absendung durch Schüler/in.",
+    pending: "Warten auf Freigabe",
+    published: "Veröffentlicht",
+    rejected: "Nicht freigegeben",
+    avatar: "Avatar",
+    avatarHint: "Süßes Meerestier wählen — kein Foto nötig.",
+    creatureCrab: "Krebs",
+    creatureFish: "Fisch",
+    creatureOctopus: "Krake",
+    creatureJellyfish: "Qualle",
+    creatureSeahorse: "Seepferdchen",
+    creatureStarfish: "Seestern",
+    approve: "Freigeben",
+    reject: "Nicht freigeben",
+    empty: "Noch keine Einträge.",
+    loginError: "Falsches Passwort.",
+    notConfigured: "ADMIN_PASSWORD ist nicht gesetzt.",
   },
   book: {
     title: "Unterricht buchen",
@@ -121,10 +160,8 @@ const de = {
     audienceRequired: "Bitte zuerst wählen, für wen die Buchung gilt:",
     wrongAgeGroup: "Falsche Altersgruppe?",
     loading: "Formular wird geladen…",
-    who: "Für wen?",
     regular: "Erwachsene/Teens",
     child: "Kind (unter 14)",
-    choose: "Option wählen",
     lessonKind: "Art der Buchung",
     trialLesson: "Probelektion",
     trialHint: "Einzelne Lektion zum Kennenlernen",
@@ -157,8 +194,6 @@ const de = {
     travelConfirm:
       "Ich bestätige, dass diese Adresse ca. 45 Minuten mit ÖV von Zürich entfernt ist.",
     note: "Nachricht (optional)",
-    legal:
-      "Ich akzeptiere die Datenschutzerklärung und die AGB.",
     privacy: "Datenschutz",
     terms: "AGB",
     submitPay: "Weiter zur Zahlung",
@@ -397,11 +432,6 @@ const de = {
 };
 
 const en = {
-  meta: {
-    title: "Guitar lessons Zurich, Axe School, Christian Boethius",
-    description:
-      "Guitar lessons in Zurich with Christian Boethius. Trial lessons and bundles: Zoom, neutral ground, or at your home.",
-  },
   a11y: {
     skipToContent: "Skip to content",
     introVideo: "Intro video: guitar lessons at Axe School",
@@ -413,7 +443,6 @@ const en = {
     home: "Home",
     howITeach: "How I teach",
     pricing: "Pricing",
-    testimonials: "Testimonials",
     how: "About",
     menu: "Menu",
   },
@@ -443,7 +472,6 @@ const en = {
     p4: "I want to be upfront with you. This is my first real step into guitar teaching as a profession, and I still have a lot to learn myself. I'm not pretending to be the best in the world, but I have enough teaching experience to stay genuinely motivated and interested in your progress.",
     p5: "Maybe I'm not the right teacher for you, and that's perfectly okay. That's why I always prefer we get in touch first. We can talk about your struggles, what you want to learn, where you are now, and how you'd like to move forward. There are also affordable trial lessons if you'd like to try it out.",
     photoAltCoastal: "By the coast, travel and downtime",
-    whaleHeaderAlt: "Sperm whale underwater",
     pillarsTitle: "How I teach",
     pillarsLead: "Three core pillars.",
     pillarsBody: [
@@ -486,7 +514,6 @@ const en = {
   },
   pricing: {
     title: "Pricing",
-    teaserFormats: "Zoom, neutral ground, or at your home.",
     teaserAudience: "For adults/teens and children under 14.",
     teaserLessons: "Single trial lessons or 5 or 10 lesson bundles.",
     chooseAge: "Who is this booking for?",
@@ -498,15 +525,62 @@ const en = {
     homeTitle: "At your home",
     bundleLine: "{count} × {price} CHF per lesson",
     childDurationNote: "30 or 45 minutes per lesson, depending on age and focus",
-    online: "Online",
-    direct: "Direct (TWINT/bank)",
   },
   testimonials: {
     title: "What students say",
-    subtitle: "Feedback from lessons (placeholders — replace with real quotes when you have them).",
+    subtitle: "Feedback from students and parents.",
     listLabel: "Testimonials",
     goTo: "Testimonial {n}",
     starsLabel: "{rating} out of 5 stars",
+  },
+  testimonialReview: {
+    title: "Write your testimonial",
+    intro: "Write your testimonial and submit it. It will appear on the site once Christian approves it.",
+    quote: "Quote",
+    author: "Display name (e.g. Laura M.)",
+    context: "Context",
+    rating: "Rating",
+    consentName: "Your full name (internal only, not published)",
+    consent:
+      "I agree this quote may be published on the Axe School website under the display name above.",
+    submit: "Submit",
+    thanks: "Thank you! Your testimonial was sent and will appear on the site after approval.",
+    alreadySubmitted: "You already submitted this form. Thank you!",
+    notFound: "This link is invalid or has expired.",
+    closed: "This testimonial has already been processed.",
+    loading: "Loading…",
+    error: "Something went wrong. Please try again.",
+  },
+  adminTestimonials: {
+    title: "Manage testimonials",
+    login: "Log in",
+    password: "Admin password",
+    logout: "Log out",
+    newLink: "New link",
+    newLinkHint:
+      "Generate a link and send it to your student. They write the testimonial themselves — no draft needed.",
+    createLink: "Generate link",
+    reviewLink: "Link for student",
+    copyLink: "Copy link",
+    copied: "Copied!",
+    openLinks: "Open links (not submitted yet)",
+    notSubmittedYet: "Link sent — waiting for the student to submit.",
+    pending: "Awaiting approval",
+    published: "Published",
+    rejected: "Not approved",
+    avatar: "Avatar",
+    avatarHint: "Pick a cute sea creature — no photo upload needed.",
+    creatureCrab: "Crab",
+    creatureFish: "Fish",
+    creatureOctopus: "Octopus",
+    creatureJellyfish: "Jellyfish",
+    creatureSeahorse: "Seahorse",
+    creatureStarfish: "Starfish",
+    approve: "Approve",
+    reject: "Don't approve",
+    empty: "No entries yet.",
+    loginError: "Wrong password.",
+    notConfigured: "ADMIN_PASSWORD is not set.",
   },
   book: {
     title: "Book a lesson",
@@ -517,10 +591,8 @@ const en = {
     audienceRequired: "Please choose who this booking is for:",
     wrongAgeGroup: "Wrong age group?",
     loading: "Loading form…",
-    who: "Who is this for?",
     regular: "Adults/teens",
     child: "Child (under 14)",
-    choose: "Choose option",
     lessonKind: "What are you booking?",
     trialLesson: "Trial lesson",
     trialHint: "A single lesson to get started",
@@ -553,7 +625,6 @@ const en = {
     travelConfirm:
       "I confirm this address is within ~45 minutes of Zurich by train or tram.",
     note: "Note (optional)",
-    legal: "I accept the Privacy Policy and Terms.",
     privacy: "Privacy",
     terms: "Terms",
     submitPay: "Continue to payment",
@@ -793,7 +864,7 @@ const en = {
 
 export type Messages = typeof de;
 
-export const translations: Record<Locale, Messages> = { de, en };
+const translations: Record<Locale, Messages> = { de, en };
 
 export function getTranslations(locale: Locale): Messages {
   return translations[locale];

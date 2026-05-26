@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { ScrollHashLink } from "@/components/ScrollHashLink";
 import { useLocale } from "@/lib/i18n/context";
 
 export function AboutPage() {
@@ -10,21 +10,11 @@ export function AboutPage() {
 
   return (
     <>
-      <div className="relative h-44 w-full overflow-hidden sm:h-52 md:h-60 lg:h-72">
-        <Image
-          src="/about/whale-header.png"
-          alt={a.whaleHeaderAlt}
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="absolute inset-x-0 top-4 sm:top-6">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <h1 className="text-xl font-semibold text-cream sm:text-2xl lg:text-3xl">
-              {a.title}
-            </h1>
-          </div>
+      <div className="from-forest via-forest/95 to-clay flex h-[100px] w-full items-center bg-gradient-to-br">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <h1 className="text-cream text-xl font-semibold sm:text-2xl lg:text-3xl">
+            {a.title}
+          </h1>
         </div>
       </div>
 
@@ -51,12 +41,12 @@ export function AboutPage() {
 
         <section className="text-forest/80 mt-8 leading-relaxed">
           <p>{a.p5}</p>
-          <Link
+          <ScrollHashLink
             href="/#pricing"
-            className="bg-forest hover:bg-forest/90 mt-5 inline-flex min-h-12 items-center justify-center rounded-full px-8 py-3 text-center font-semibold text-cream"
+            className="bg-forest hover:bg-forest/90 text-cream mt-5 inline-flex min-h-12 items-center justify-center rounded-full px-8 py-3 text-center font-semibold"
           >
             {t.hero.ctaBook}
-          </Link>
+          </ScrollHashLink>
         </section>
       </article>
     </>

@@ -1,22 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { ScrollHashLink } from "@/components/ScrollHashLink";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
 
 export function Footer() {
-  const { locale, t } = useLocale();
-  const tagline = locale === "de" ? site.taglineDe : site.taglineEn;
+  const { t } = useLocale();
 
   return (
     <footer className="border-pastel mt-auto border-t bg-cream">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="sm:col-span-2 lg:col-span-1">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-x-12 lg:gap-x-16">
+          <div>
             <p className="text-lg font-semibold">{site.name}</p>
             <p className="text-forest/80 mt-1 text-sm">{site.teacher}</p>
-            <p className="text-forest/80 mt-2 text-sm">{site.address}</p>
-            <p className="text-forest/70 mt-1 text-sm">{tagline}</p>
+            <p className="text-forest/80 mt-1 text-sm leading-snug">
+              {site.addressStreet}
+              <br />
+              {site.addressRest}
+            </p>
           </div>
           <div>
             <p className="font-semibold">{t.footer.contact}</p>
@@ -46,6 +49,9 @@ export function Footer() {
               <Link href="/privacy" className="hover:underline">
                 {t.footer.privacy}
               </Link>
+              <ScrollHashLink href="/#pricing" className="hover:underline">
+                {t.nav.pricing}
+              </ScrollHashLink>
               <Link href="/terms" className="hover:underline">
                 {t.footer.terms}
               </Link>

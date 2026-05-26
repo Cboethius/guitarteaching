@@ -1,0 +1,15 @@
+<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="color">
+    <path fill="#ea5a47" stroke="none" d="M36 12l5 14 14 2-10 10 3 14-12-7-12 7 3-14-10-10 14-2z"/>
+    <path fill="#d22f27" stroke="none" d="M36 26l-2 8 2 6 2-6z"/>
+    <circle cx="30" cy="30" r="1.5" fill="#d22f27"/>
+    <circle cx="42" cy="30" r="1.5" fill="#d22f27"/>
+    <circle cx="33" cy="38" r="1.5" fill="#d22f27"/>
+    <circle cx="39" cy="38" r="1.5" fill="#d22f27"/>
+    <circle cx="36" cy="34" r="1.5" fill="#d22f27"/>
+  </g>
+  <g id="line">
+    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M36 12l5 14 14 2-10 10 3 14-12-7-12 7 3-14-10-10 14-2z"/>
+    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M36 26l-2 8 2 6 2-6z"/>
+  </g>
+</svg>

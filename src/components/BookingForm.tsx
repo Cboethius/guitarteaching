@@ -42,6 +42,10 @@ function choiceCardClass(selected: boolean) {
   }`;
 }
 
+const choiceGridTwo = "mt-3 grid gap-3 sm:grid-cols-2";
+const choiceGridThree = "mt-3 grid gap-3 md:grid-cols-3";
+const fieldLegend = "text-lg font-semibold";
+
 export function BookingForm() {
   const router = useRouter();
   const params = useSearchParams();
@@ -214,8 +218,8 @@ export function BookingForm() {
       </p>
 
       <fieldset>
-        <legend className="text-lg font-semibold">{t.book.lessonKind}</legend>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <legend className={fieldLegend}>{t.book.lessonKind}</legend>
+        <div className={choiceGridTwo}>
           <KindOption
             selected={lessonKind === "trial"}
             title={t.book.trialLesson}
@@ -232,8 +236,8 @@ export function BookingForm() {
       </fieldset>
 
       <fieldset>
-        <legend className="text-lg font-semibold">{t.book.chooseFormat}</legend>
-        <div className="mt-3 grid gap-3">
+        <legend className={fieldLegend}>{t.book.chooseFormat}</legend>
+        <div className={choiceGridThree}>
           {lessonFormats.map((format) => {
             const p = getProduct(
               audience,
@@ -259,8 +263,8 @@ export function BookingForm() {
 
       {lessonKind === "bundle" && (
         <fieldset>
-          <legend className="text-lg font-semibold">{t.book.bundleSize}</legend>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <legend className={fieldLegend}>{t.book.bundleSize}</legend>
+          <div className={choiceGridTwo}>
             {([5, 10] as const).map((size) => {
               const p = getProduct(audience, buildProductId(lessonFormat, "bundle", size));
               const perLesson =
@@ -296,9 +300,9 @@ export function BookingForm() {
       </div>
 
       <fieldset>
-        <legend className="text-lg font-semibold">{t.book.payment}</legend>
+        <legend className={fieldLegend}>{t.book.payment}</legend>
         <p className="text-forest/70 mt-2 text-sm">{t.book.paymentHint}</p>
-        <div className="mt-3 flex flex-col gap-3">
+        <div className="mt-3 grid gap-3">
           <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-pastel bg-white p-4">
             <input
               type="radio"
@@ -362,15 +366,11 @@ export function BookingForm() {
                 <p className="text-forest/60 mt-1 text-xs">
                   {t.pricing.childDurationNote}
                 </p>
-                <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+                <div className={choiceGridTwo}>
                   {childLessonDurations.map((mins) => (
                     <label
                       key={mins}
-                      className={`flex flex-1 cursor-pointer items-center gap-3 rounded-xl border p-4 ${
-                        lessonDurationMin === mins
-                          ? "border-forest bg-pastel-light/50"
-                          : "border-pastel bg-white"
-                      }`}
+                      className={`${choiceCardClass(lessonDurationMin === mins)} flex items-center gap-3`}
                     >
                       <input
                         type="radio"

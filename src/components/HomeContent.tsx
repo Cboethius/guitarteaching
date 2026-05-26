@@ -1,11 +1,12 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Link from "next/link";
+import { useEffect } from "react";
 import { ContactHint } from "@/components/ContactHint";
 import { AcousticGuitarIcon } from "@/components/icons/AcousticGuitarIcon";
 import { ElectricGuitarIcon } from "@/components/icons/ElectricGuitarIcon";
 import { PricingTeaser } from "@/components/PricingTeaser";
+import { ScrollHashLink, scrollToHashId } from "@/components/ScrollHashLink";
 import { TestimonialsSlider } from "@/components/TestimonialsSlider";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
@@ -90,6 +91,14 @@ function renderHighlighted(text: string) {
 export function HomeContent() {
   const { t } = useLocale();
 
+  useEffect(() => {
+    const id = window.location.hash.replace("#", "");
+    if (!id) return;
+    scrollToHashId(id);
+    const timer = window.setTimeout(() => scrollToHashId(id), 100);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <section className="bg-pastel-light/40 border-pastel border-b">
@@ -111,12 +120,12 @@ export function HomeContent() {
             </p>
             <ContactHint showReason />
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link
+              <ScrollHashLink
                 href="/#pricing"
                 className="bg-forest hover:bg-forest/90 inline-flex min-h-12 items-center justify-center rounded-full px-8 py-3 text-center font-semibold text-cream"
               >
                 {t.hero.ctaBook}
-              </Link>
+              </ScrollHashLink>
               <a
                 href={site.whatsappUrl}
                 target="_blank"

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/context";
 import {
   TESTIMONIAL_CARD_STEP_PX,
-  testimonials,
   type Testimonial,
   type TestimonialSeaCreature,
 } from "@/lib/testimonials";
@@ -40,10 +39,12 @@ function localizedText(item: Testimonial, locale: "de" | "en") {
   };
 }
 
-function seaCreatureForItem(item: Testimonial): TestimonialSeaCreature {
+function seaCreatureForItem(
+  item: Testimonial,
+  index: number,
+): TestimonialSeaCreature {
   if (item.seaCreature) return item.seaCreature;
-  const index = testimonials.findIndex((entry) => entry.id === item.id);
-  return testimonialSeaCreatureForIndex(index >= 0 ? index : 0);
+  return testimonialSeaCreatureForIndex(index);
 }
 
 function StarRating({
@@ -78,12 +79,14 @@ function StarRating({
 
 function TestimonialCardContent({
   item,
+  itemIndex,
   quote,
   context,
   starsLabel,
   size,
 }: {
   item: Testimonial;
+  itemIndex: number;
   quote: string;
   context: string;
   starsLabel: string;
@@ -98,7 +101,7 @@ function TestimonialCardContent({
         <div
           className={`border-forest/20 relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border bg-cream ${iconClass}`}
         >
-          <TestimonialSeaCreatureIcon creature={seaCreatureForItem(item)} />
+          <TestimonialSeaCreatureIcon creature={seaCreatureForItem(item, itemIndex)} />
         </div>
         <StarRating rating={item.rating} label={starsLabel} large={large} />
       </div>
@@ -125,6 +128,7 @@ function TestimonialCardContent({
 
 function TestimonialSlideCard({
   item,
+  itemIndex,
   quote,
   context,
   starsLabel,
@@ -132,6 +136,7 @@ function TestimonialSlideCard({
   onOpen,
 }: {
   item: Testimonial;
+  itemIndex: number;
   quote: string;
   context: string;
   starsLabel: string;
@@ -155,6 +160,7 @@ function TestimonialSlideCard({
     >
       <TestimonialCardContent
         item={item}
+        itemIndex={itemIndex}
         quote={quote}
         context={context}
         starsLabel={starsLabel}
@@ -166,9 +172,11 @@ function TestimonialSlideCard({
 
 function TestimonialModal({
   item,
+  itemIndex,
   onClose,
 }: {
   item: Testimonial;
+  itemIndex: number;
   onClose: () => void;
 }) {
   const { locale, t } = useLocale();
@@ -199,6 +207,7 @@ function TestimonialModal({
     >
       <TestimonialCardContent
         item={item}
+        itemIndex={itemIndex}
         quote={quote}
         context={context}
         starsLabel={t.testimonials.starsLabel}
@@ -212,8 +221,20 @@ export function TestimonialsSlider() {
   const { locale, t } = useLocale();
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [openCard, setOpenCard] = useState<OpenCard | null>(null);
+
+  useEffect(() => {
+    fetch("/api/testimonials")
+      .then((res) => (res.ok ? res.json() : { testimonials: [] }))
+      .then((data: { testimonials?: Testimonial[] }) => {
+        setTestimonials(data.testimonials ?? []);
+      })
+      .catch(() => setTestimonials([]))
+      .finally(() => setLoaded(true));
+  }, []);
 
   const count = testimonials.length;
   const isMarquee = count > 1;
@@ -337,15 +358,20 @@ export function TestimonialsSlider() {
     return () => cancelAnimationFrame(frame);
   }, [count, isMarquee, syncActiveIndex, openCard]);
 
-  if (count === 0) return null;
+  if (!loaded || count === 0) return null;
+
+  const itemIndexFor = (item: Testimonial) =>
+    testimonials.findIndex((entry) => entry.id === item.id);
 
   const renderSlideCard = (item: Testimonial, key: string) => {
     const { quote, context } = localizedText(item, locale);
+    const itemIndex = itemIndexFor(item);
 
     return (
       <TestimonialSlideCard
         key={key}
         item={item}
+        itemIndex={itemIndex >= 0 ? itemIndex : 0}
         quote={quote}
         context={context}
         starsLabel={t.testimonials.starsLabel}
@@ -360,24 +386,24 @@ export function TestimonialsSlider() {
       id="testimonials"
       aria-labelledby="testimonials-heading"
       aria-roledescription={isMarquee ? "carousel" : undefined}
-      className="bg-pastel-light/40 border-pastel scroll-mt-24 overflow-x-hidden overflow-y-visible border-y py-10 sm:py-12"
+      className="bg-pastel-light/40 border-pastel scroll-mt-24 overflow-x-hidden overflow-y-visible border-y py-16 sm:py-20"
     >
       <div className="mx-auto min-w-0 max-w-6xl px-4 sm:px-6">
         <div className="text-center">
           <h2
             id="testimonials-heading"
-            className="text-2xl font-semibold sm:text-3xl"
+            className="text-3xl font-semibold sm:text-4xl"
           >
             {t.testimonials.title}
           </h2>
-          <p className="text-forest/70 mx-auto mt-2 max-w-md text-xs leading-relaxed sm:text-sm">
+          <p className="text-forest/80 mx-auto mt-4 max-w-md text-base leading-relaxed">
             {t.testimonials.subtitle}
           </p>
         </div>
 
         <div
           ref={viewportRef}
-          className={`testimonial-marquee-viewport relative mt-6 min-h-[16.5rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
+          className={`testimonial-marquee-viewport relative mt-10 min-h-[16.5rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
             !isMarquee ? "testimonial-marquee-viewport--single" : ""
           }`}
         >
@@ -400,7 +426,11 @@ export function TestimonialsSlider() {
           )}
 
           {openCard && (
-            <TestimonialModal item={openCard.item} onClose={closeModal} />
+            <TestimonialModal
+              item={openCard.item}
+              itemIndex={Math.max(0, itemIndexFor(openCard.item))}
+              onClose={closeModal}
+            />
           )}
         </div>
 

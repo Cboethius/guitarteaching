@@ -8,7 +8,8 @@ export const site = {
   phoneTel: "+41768058668",
   whatsappUrl: "https://wa.me/41768058668",
   address: "Birmensdorferstrasse 430, 8055 Zürich",
-  languages: "Deutsch, English, Svenska",
+  addressStreet: "Birmensdorferstrasse",
+  addressRest: "430, 8055 Zürich",
   videoUrl:
     process.env.NEXT_PUBLIC_INTRO_VIDEO_URL ??
     "https://player.vimeo.com/video/1194750080?h=1b63737d87&title=0&byline=0&portrait=0",

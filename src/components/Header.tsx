@@ -2,26 +2,42 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ScrollHashLink } from "@/components/ScrollHashLink";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [hash, setHash] = useState("");
   const { locale, t } = useLocale();
   const pathname = usePathname();
   const tagline = locale === "de" ? site.taglineDe : site.taglineEn;
 
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
+
   const links = [
-    { href: "/", label: t.nav.home },
-    { href: "/#how-i-teach", label: t.nav.howITeach },
-    { href: "/#pricing", label: t.nav.pricing },
-    { href: "/about", label: t.nav.how },
+    { href: "/", label: t.nav.home, hash: false },
+    { href: "/#how-i-teach", label: t.nav.howITeach, hash: true },
+    { href: "/#pricing", label: t.nav.pricing, hash: true },
+    { href: "/about", label: t.nav.how, hash: false },
   ];
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string, isHash: boolean) => {
+    if (isHash) {
+      return pathname === "/" && hash === `#${href.split("#")[1]}`;
+    }
+    if (href === "/") {
+      return pathname === "/" && !hash;
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   return (
     <header className="border-pastel sticky top-0 z-50 border-b bg-cream/95 backdrop-blur-sm">
@@ -38,22 +54,36 @@ export function Header() {
           aria-label={t.a11y.mainNav}
         >
           {links.map((l) => {
-            const active = isActive(l.href);
-            return (
+            const active = isActive(l.href, l.hash);
+            const className = `group relative min-h-11 inline-flex items-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
+              active ? "text-forest" : "text-forest/80 hover:text-forest"
+            }`;
+            const underline = (
+              <span
+                className={`bg-forest pointer-events-none absolute -bottom-1 left-0 h-0.5 origin-left transition-transform duration-300 ease-out ${
+                  active ? "w-full scale-x-100" : "w-full scale-x-0 group-hover:scale-x-100"
+                }`}
+              />
+            );
+            return l.hash ? (
+              <ScrollHashLink
+                key={l.href}
+                href={l.href}
+                aria-current={active ? "page" : undefined}
+                className={className}
+              >
+                <span>{l.label}</span>
+                {underline}
+              </ScrollHashLink>
+            ) : (
               <Link
                 key={l.href}
                 href={l.href}
                 aria-current={active ? "page" : undefined}
-                className={`group relative min-h-11 inline-flex items-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
-                  active ? "text-forest" : "text-forest/80 hover:text-forest"
-                }`}
+                className={className}
               >
                 <span>{l.label}</span>
-                <span
-                  className={`bg-forest pointer-events-none absolute -bottom-1 left-0 h-0.5 origin-left transition-transform duration-300 ease-out ${
-                    active ? "w-full scale-x-100" : "w-full scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+                {underline}
               </Link>
             );
           })}
@@ -82,16 +112,27 @@ export function Header() {
           aria-label={t.a11y.mainNav}
         >
           {links.map((l) => {
-            const active = isActive(l.href);
-            return (
+            const active = isActive(l.href, l.hash);
+            const className = `min-h-11 inline-flex items-center text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
+              active ? "text-forest underline underline-offset-4" : "text-forest/80"
+            }`;
+            return l.hash ? (
+              <ScrollHashLink
+                key={l.href}
+                href={l.href}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setOpen(false)}
+                className={className}
+              >
+                {l.label}
+              </ScrollHashLink>
+            ) : (
               <Link
                 key={l.href}
                 href={l.href}
                 aria-current={active ? "page" : undefined}
                 onClick={() => setOpen(false)}
-                className={`min-h-11 inline-flex items-center text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
-                  active ? "text-forest underline underline-offset-4" : "text-forest/80"
-                }`}
+                className={className}
               >
                 {l.label}
               </Link>
