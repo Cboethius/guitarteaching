@@ -1,5 +1,3 @@
-# guitarteaching
-
 # Axe School — Gitarrenunterricht Zürich
 
 Marketing and booking website for Christian Boethius (Zurich). Mobile-first, responsive.
