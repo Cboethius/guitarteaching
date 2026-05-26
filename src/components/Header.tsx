@@ -26,14 +26,17 @@ export function Header() {
   return (
     <header className="border-pastel sticky top-0 z-50 border-b bg-cream/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <Link href="/">
+        <Link href="/" className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2">
           <span className="text-forest block text-lg font-semibold">
             {site.name}
           </span>
           <span className="text-forest/70 block text-xs">{tagline}</span>
         </Link>
 
-        <nav className="hidden items-center gap-5 md:flex">
+        <nav
+          className="hidden items-center gap-5 md:flex"
+          aria-label={t.a11y.mainNav}
+        >
           {links.map((l) => {
             const active = isActive(l.href);
             return (
@@ -41,7 +44,7 @@ export function Header() {
                 key={l.href}
                 href={l.href}
                 aria-current={active ? "page" : undefined}
-                className={`group relative text-sm font-medium transition-colors ${
+                className={`group relative min-h-11 inline-flex items-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
                   active ? "text-forest" : "text-forest/80 hover:text-forest"
                 }`}
               >
@@ -61,10 +64,11 @@ export function Header() {
           <LanguageSwitcher />
           <button
             type="button"
-            className="border-pastel rounded-lg border px-3 py-2 text-sm font-medium"
+            className="border-pastel min-h-11 rounded-lg border px-3 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
-            aria-label={t.nav.menu}
+            aria-controls="mobile-nav"
+            aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
           >
             {t.nav.menu}
           </button>
@@ -72,7 +76,11 @@ export function Header() {
       </div>
 
       {open && (
-        <nav className="border-pastel flex flex-col gap-3 border-t px-4 py-4 md:hidden">
+        <nav
+          id="mobile-nav"
+          className="border-pastel flex flex-col gap-3 border-t px-4 py-4 md:hidden"
+          aria-label={t.a11y.mainNav}
+        >
           {links.map((l) => {
             const active = isActive(l.href);
             return (
@@ -81,7 +89,7 @@ export function Header() {
                 href={l.href}
                 aria-current={active ? "page" : undefined}
                 onClick={() => setOpen(false)}
-                className={`text-base font-medium ${
+                className={`min-h-11 inline-flex items-center text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
                   active ? "text-forest underline underline-offset-4" : "text-forest/80"
                 }`}
               >

@@ -167,8 +167,9 @@ export function HomeContent() {
           <div className="border-pastel aspect-video overflow-hidden rounded-2xl border bg-white shadow-sm">
             <iframe
               src={site.videoUrl}
-              title="Intro video"
+              title={t.a11y.introVideo}
               className="h-full w-full"
+              loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

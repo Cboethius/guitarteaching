@@ -4,7 +4,14 @@ const de = {
   meta: {
     title: "Gitarrenunterricht Zürich, Axe School, Christian Boethius",
     description:
-      "Privater Gitarrenunterricht in Zürich für Jugendliche ab 14 und Kinder. Online, neutraler Ort oder bei Ihnen zu Hause.",
+      "Gitarrenunterricht in Zürich mit Christian Boethius. Probelektionen und Abos — Zoom, neutraler Ort oder bei Ihnen zu Hause.",
+  },
+  a11y: {
+    skipToContent: "Zum Inhalt springen",
+    introVideo: "Intro-Video: Gitarrenunterricht bei Axe School",
+    mainNav: "Hauptnavigation",
+    openMenu: "Menü öffnen",
+    closeMenu: "Menü schliessen",
   },
   nav: {
     home: "Startseite",
@@ -174,7 +181,14 @@ const en = {
   meta: {
     title: "Guitar lessons Zurich, Axe School, Christian Boethius",
     description:
-      "Private guitar lessons in Zurich for ages 14+ and children. Online, neutral location, or at your home.",
+      "Guitar lessons in Zurich with Christian Boethius. Trial lessons and bundles — Zoom, neutral ground, or at your home.",
+  },
+  a11y: {
+    skipToContent: "Skip to content",
+    introVideo: "Intro video: guitar lessons at Axe School",
+    mainNav: "Main navigation",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
   },
   nav: {
     home: "Home",
