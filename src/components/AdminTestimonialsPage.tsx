@@ -66,10 +66,13 @@ export function AdminTestimonialsPage() {
       const data = (await res.json()) as { testimonials: AdminRow[] };
       setRows(data.testimonials);
       setAuthenticated(true);
+    } catch {
+      setAuthenticated(false);
+      setLoginError(ta.loadError);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [ta.loadError]);
 
   useEffect(() => {
     loadRows();
@@ -160,8 +163,32 @@ export function AdminTestimonialsPage() {
 
   if (authenticated === null) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-        <p className="text-forest/70 text-center">…</p>
+      <div className="mx-auto max-w-md px-4 py-12 sm:px-6 sm:py-16">
+        <h1 className="text-3xl font-semibold sm:text-4xl">{ta.title}</h1>
+        <form onSubmit={handleLogin} className="mt-8 space-y-4">
+          <label className="block text-sm font-medium">
+            {ta.password}
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 w-full min-h-11 rounded-lg border border-pastel bg-white px-3 py-2 text-base text-forest"
+              autoComplete="current-password"
+            />
+          </label>
+          {loginError && (
+            <p className="text-sm text-red-700" role="alert">
+              {loginError}
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full justify-center disabled:opacity-60"
+          >
+            {loading ? "…" : ta.login}
+          </button>
+        </form>
       </div>
     );
   }
