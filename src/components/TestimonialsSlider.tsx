@@ -13,7 +13,8 @@ import {
   testimonialSeaCreatureForIndex,
 } from "@/components/TestimonialSeaCreatureIcon";
 
-const AUTO_SCROLL_PX_PER_FRAME = 0.28;
+/** ~24 px/s originally; 30% slower → ~17 px/s. Time-based so 120 Hz screens don't double speed. */
+const AUTO_SCROLL_PX_PER_SECOND = 17;
 const LOOP_COPIES = 3;
 
 type OpenCard = { item: Testimonial; key: string };
@@ -317,12 +318,18 @@ export function TestimonialsSlider() {
     if (reducedMotion.matches) return;
 
     let frame = 0;
-    const tick = () => {
+    let lastTime = 0;
+
+    const tick = (time: number) => {
       const el = trackRef.current;
       if (el) {
-        el.scrollLeft += AUTO_SCROLL_PX_PER_FRAME;
-        normalizeLoopScroll(el, count);
-        syncActiveIndex(el.scrollLeft);
+        if (lastTime > 0) {
+          const deltaSeconds = Math.min((time - lastTime) / 1000, 0.1);
+          el.scrollLeft += AUTO_SCROLL_PX_PER_SECOND * deltaSeconds;
+          normalizeLoopScroll(el, count);
+          syncActiveIndex(el.scrollLeft);
+        }
+        lastTime = time;
       }
       frame = requestAnimationFrame(tick);
     };
