@@ -1,6 +1,4 @@
-import { promises as fs } from "fs";
-import path from "path";
-import { dataDir } from "./data-dir";
+import { readJsonStore, writeJsonStore } from "./json-store";
 import type { Audience, ProductId } from "./pricing";
 
 export type PaymentMethod = "stripe" | "direct";
@@ -28,28 +26,20 @@ export type Booking = {
   lessonDurationMin?: number;
 };
 
-const storeDir = dataDir();
-const dataFile = path.join(storeDir, "bookings.json");
-
-async function ensureStore() {
-  await fs.mkdir(storeDir, { recursive: true });
-  try {
-    await fs.access(dataFile);
-  } catch {
-    await fs.writeFile(dataFile, "[]", "utf-8");
-  }
-}
+const STORE_FILE = "bookings.json";
 
 async function readBookings(): Promise<Booking[]> {
-  await ensureStore();
-  const raw = await fs.readFile(dataFile, "utf-8");
-  return JSON.parse(raw) as Booking[];
+  return readJsonStore<Booking[]>(STORE_FILE, []);
+}
+
+async function writeBookings(all: Booking[]) {
+  await writeJsonStore(STORE_FILE, all);
 }
 
 export async function saveBooking(booking: Booking) {
   const all = await readBookings();
   all.push(booking);
-  await fs.writeFile(dataFile, JSON.stringify(all, null, 2), "utf-8");
+  await writeBookings(all);
 }
 
 export async function updateBooking(
@@ -60,7 +50,7 @@ export async function updateBooking(
   const idx = all.findIndex((b) => b.id === id);
   if (idx === -1) return null;
   all[idx] = { ...all[idx], ...patch };
-  await fs.writeFile(dataFile, JSON.stringify(all, null, 2), "utf-8");
+  await writeBookings(all);
   return all[idx];
 }
 

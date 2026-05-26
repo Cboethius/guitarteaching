@@ -68,13 +68,17 @@ export async function POST(request: Request, context: RouteContext) {
   const row = result.row!;
   const adminUrl = `${siteBaseUrl()}/admin/testimonials`;
 
-  await sendEmail({
-    to: adminNotifyEmail(),
-    subject: `Testimonial waiting for approval — ${row.author}`,
-    html: `<p><strong>${row.author}</strong> submitted a testimonial for your review.</p>
+  try {
+    await sendEmail({
+      to: adminNotifyEmail(),
+      subject: `Testimonial waiting for approval — ${row.author}`,
+      html: `<p><strong>${row.author}</strong> submitted a testimonial for your review.</p>
 <p><em>${row.quoteDe.replace(/</g, "&lt;")}</em></p>
 <p><a href="${adminUrl}">Open admin to approve</a></p>`,
-  });
+    });
+  } catch (err) {
+    console.error("[testimonial] notify email failed:", err);
+  }
 
   return NextResponse.json({ ok: true });
 }

@@ -1,7 +1,5 @@
 import { randomBytes, randomUUID } from "crypto";
-import { promises as fs } from "fs";
-import path from "path";
-import { dataDir } from "./data-dir";
+import { readJsonStore, writeJsonStore } from "./json-store";
 import type { Testimonial, TestimonialSeaCreature } from "./testimonials";
 import { TESTIMONIAL_SEA_CREATURES } from "./testimonials";
 
@@ -26,27 +24,14 @@ export type StoredTestimonial = {
   updatedAt: string;
 };
 
-const storeDir = dataDir();
-const dataFile = path.join(storeDir, "testimonials-submissions.json");
-
-async function ensureStore() {
-  await fs.mkdir(storeDir, { recursive: true });
-  try {
-    await fs.access(dataFile);
-  } catch {
-    await fs.writeFile(dataFile, "[]", "utf-8");
-  }
-}
+const STORE_FILE = "testimonials-submissions.json";
 
 async function readAll(): Promise<StoredTestimonial[]> {
-  await ensureStore();
-  const raw = await fs.readFile(dataFile, "utf-8");
-  return JSON.parse(raw) as StoredTestimonial[];
+  return readJsonStore<StoredTestimonial[]>(STORE_FILE, []);
 }
 
 async function writeAll(rows: StoredTestimonial[]) {
-  await ensureStore();
-  await fs.writeFile(dataFile, JSON.stringify(rows, null, 2), "utf-8");
+  await writeJsonStore(STORE_FILE, rows);
 }
 
 function seaCreatureForIndex(index: number): TestimonialSeaCreature {
