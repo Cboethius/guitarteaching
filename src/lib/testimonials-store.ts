@@ -1,5 +1,5 @@
 import { randomBytes, randomUUID } from "crypto";
-import { readJsonStore, writeJsonStore } from "./json-store";
+import { readJsonStore, updateJsonStore } from "./json-store";
 import type { Testimonial, TestimonialSeaCreature } from "./testimonials";
 import { TESTIMONIAL_SEA_CREATURES } from "./testimonials";
 
@@ -25,13 +25,10 @@ export type StoredTestimonial = {
 };
 
 const STORE_FILE = "testimonials-submissions.json";
+const EMPTY_STORE: StoredTestimonial[] = [];
 
 async function readAll(): Promise<StoredTestimonial[]> {
-  return readJsonStore<StoredTestimonial[]>(STORE_FILE, []);
-}
-
-async function writeAll(rows: StoredTestimonial[]) {
-  await writeJsonStore(STORE_FILE, rows);
+  return readJsonStore<StoredTestimonial[]>(STORE_FILE, EMPTY_STORE);
 }
 
 function seaCreatureForIndex(index: number): TestimonialSeaCreature {
@@ -103,9 +100,12 @@ export async function createInvite(input: CreateInviteInput = {}) {
     createdAt: now,
     updatedAt: now,
   };
-  const rows = await readAll();
-  rows.push(row);
-  await writeAll(rows);
+
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    rows.push(row);
+    return rows;
+  });
+
   return row;
 }
 
@@ -136,9 +136,12 @@ export async function createDraft(input: CreateDraftInput) {
     createdAt: now,
     updatedAt: now,
   };
-  const rows = await readAll();
-  rows.push(row);
-  await writeAll(rows);
+
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    rows.push(row);
+    return rows;
+  });
+
   return row;
 }
 
@@ -150,91 +153,151 @@ export type SubmitReviewInput = {
   consentName: string;
 };
 
-export async function submitReview(token: string, input: SubmitReviewInput) {
-  const rows = await readAll();
-  const idx = rows.findIndex((r) => r.token === token);
-  if (idx === -1) return null;
+export async function submitReview(
+  token: string,
+  input: SubmitReviewInput,
+): Promise<
+  | null
+  | { error: "already_finalized"; row: StoredTestimonial }
+  | { row: StoredTestimonial }
+> {
+  let result:
+    | null
+    | { error: "already_finalized"; row: StoredTestimonial }
+    | { row: StoredTestimonial } = null;
 
-  const row = rows[idx];
-  if (row.status !== "draft") {
-    return { error: "already_finalized" as const, row };
-  }
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    const idx = rows.findIndex((r) => r.token === token);
+    if (idx === -1) {
+      result = null;
+      return rows;
+    }
 
-  const now = new Date().toISOString();
-  rows[idx] = {
-    ...row,
-    quoteDe: input.quoteDe.trim(),
-    author: input.author.trim(),
-    contextDe: input.contextDe.trim(),
-    rating: Math.min(5, Math.max(1, Math.round(input.rating))),
-    consentName: input.consentName.trim(),
-    consentAt: now,
-    submittedAt: now,
-    status: "pending",
-    updatedAt: now,
-  };
-  await writeAll(rows);
-  return { row: rows[idx] };
+    const row = rows[idx];
+    if (row.status !== "draft") {
+      result = { error: "already_finalized", row };
+      return rows;
+    }
+
+    const now = new Date().toISOString();
+    rows[idx] = {
+      ...row,
+      quoteDe: input.quoteDe.trim(),
+      author: input.author.trim(),
+      contextDe: input.contextDe.trim(),
+      rating: Math.min(5, Math.max(1, Math.round(input.rating))),
+      consentName: input.consentName.trim(),
+      consentAt: now,
+      submittedAt: now,
+      status: "pending",
+      updatedAt: now,
+    };
+    result = { row: rows[idx] };
+    return rows;
+  });
+
+  return result;
 }
 
-export async function approveTestimonial(id: string, quoteEn?: string) {
-  const rows = await readAll();
-  const idx = rows.findIndex((r) => r.id === id);
-  if (idx === -1) return null;
+export async function approveTestimonial(
+  id: string,
+  quoteEn?: string,
+): Promise<
+  StoredTestimonial | null | { error: "not_pending"; row: StoredTestimonial }
+> {
+  let result:
+    | null
+    | StoredTestimonial
+    | { error: "not_pending"; row: StoredTestimonial } = null;
 
-  const row = rows[idx];
-  if (row.status !== "pending") return { error: "not_pending" as const, row };
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) {
+      result = null;
+      return rows;
+    }
 
-  const publishedCount = rows.filter((r) => r.status === "published").length;
-  const now = new Date().toISOString();
+    const row = rows[idx];
+    if (row.status !== "pending") {
+      result = { error: "not_pending", row };
+      return rows;
+    }
 
-  rows[idx] = {
-    ...row,
-    status: "published",
-    quoteEn: (quoteEn ?? row.quoteEn).trim() || row.quoteDe,
-    contextEn: row.contextEn.trim() || row.contextDe,
-    seaCreature: row.seaCreature ?? seaCreatureForIndex(publishedCount),
-    publishedAt: now,
-    updatedAt: now,
-  };
-  await writeAll(rows);
-  return rows[idx];
+    const publishedCount = rows.filter((r) => r.status === "published").length;
+    const now = new Date().toISOString();
+
+    rows[idx] = {
+      ...row,
+      status: "published",
+      quoteEn: (quoteEn ?? row.quoteEn).trim() || row.quoteDe,
+      contextEn: row.contextEn.trim() || row.contextDe,
+      seaCreature: row.seaCreature ?? seaCreatureForIndex(publishedCount),
+      publishedAt: now,
+      updatedAt: now,
+    };
+    result = rows[idx];
+    return rows;
+  });
+
+  return result;
 }
 
 export async function rejectTestimonial(id: string) {
-  const rows = await readAll();
-  const idx = rows.findIndex((r) => r.id === id);
-  if (idx === -1) return null;
+  let result: StoredTestimonial | null = null;
 
-  const now = new Date().toISOString();
-  rows[idx] = {
-    ...rows[idx],
-    status: "rejected",
-    updatedAt: now,
-  };
-  await writeAll(rows);
-  return rows[idx];
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) {
+      result = null;
+      return rows;
+    }
+
+    const now = new Date().toISOString();
+    rows[idx] = {
+      ...rows[idx],
+      status: "rejected",
+      updatedAt: now,
+    };
+    result = rows[idx];
+    return rows;
+  });
+
+  return result;
 }
 
 export async function updateTestimonialSeaCreature(
   id: string,
   seaCreature: TestimonialSeaCreature,
-) {
-  const rows = await readAll();
-  const idx = rows.findIndex((r) => r.id === id);
-  if (idx === -1) return null;
+): Promise<
+  StoredTestimonial | null | { error: "not_editable"; row: StoredTestimonial }
+> {
+  let result:
+    | null
+    | StoredTestimonial
+    | { error: "not_editable"; row: StoredTestimonial } = null;
 
-  const row = rows[idx];
-  if (row.status !== "pending") {
-    return { error: "not_editable" as const, row };
-  }
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) {
+      result = null;
+      return rows;
+    }
 
-  const now = new Date().toISOString();
-  rows[idx] = {
-    ...row,
-    seaCreature,
-    updatedAt: now,
-  };
-  await writeAll(rows);
-  return rows[idx];
+    const row = rows[idx];
+    if (row.status !== "pending") {
+      result = { error: "not_editable", row };
+      return rows;
+    }
+
+    const now = new Date().toISOString();
+    rows[idx] = {
+      ...row,
+      seaCreature,
+      updatedAt: now,
+    };
+    result = rows[idx];
+    return rows;
+  });
+
+  return result;
 }

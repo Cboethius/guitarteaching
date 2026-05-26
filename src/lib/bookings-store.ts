@@ -1,4 +1,4 @@
-import { readJsonStore, writeJsonStore } from "./json-store";
+import { readJsonStore, updateJsonStore } from "./json-store";
 import type { Audience, ProductId } from "./pricing";
 
 export type PaymentMethod = "stripe" | "direct";
@@ -27,31 +27,34 @@ export type Booking = {
 };
 
 const STORE_FILE = "bookings.json";
+const EMPTY_STORE: Booking[] = [];
 
 async function readBookings(): Promise<Booking[]> {
-  return readJsonStore<Booking[]>(STORE_FILE, []);
-}
-
-async function writeBookings(all: Booking[]) {
-  await writeJsonStore(STORE_FILE, all);
+  return readJsonStore<Booking[]>(STORE_FILE, EMPTY_STORE);
 }
 
 export async function saveBooking(booking: Booking) {
-  const all = await readBookings();
-  all.push(booking);
-  await writeBookings(all);
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (all) => {
+    all.push(booking);
+    return all;
+  });
 }
 
 export async function updateBooking(
   id: string,
   patch: Partial<Booking>,
 ): Promise<Booking | null> {
-  const all = await readBookings();
-  const idx = all.findIndex((b) => b.id === id);
-  if (idx === -1) return null;
-  all[idx] = { ...all[idx], ...patch };
-  await writeBookings(all);
-  return all[idx];
+  let updated: Booking | null = null;
+
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (all) => {
+    const idx = all.findIndex((b) => b.id === id);
+    if (idx === -1) return all;
+    all[idx] = { ...all[idx], ...patch };
+    updated = all[idx];
+    return all;
+  });
+
+  return updated;
 }
 
 export async function findBooking(id: string) {
