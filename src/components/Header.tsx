@@ -8,6 +8,34 @@ import { ScrollHashLink } from "@/components/ScrollHashLink";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
 
+const homeNavSectionIds = ["how-i-teach", "pricing"] as const;
+type HomeNavSection = (typeof homeNavSectionIds)[number];
+
+function isHomeNavSection(id: string): id is HomeNavSection {
+  return (homeNavSectionIds as readonly string[]).includes(id);
+}
+
+function sectionFromHash(): HomeNavSection | "" {
+  const id = window.location.hash.replace("#", "");
+  return isHomeNavSection(id) ? id : "";
+}
+
+/** Which homepage section sits under the sticky header while scrolling manually. */
+function sectionFromViewport(): HomeNavSection | "" {
+  const headerLine = 96;
+  let active: HomeNavSection | "" = "";
+
+  for (const id of homeNavSectionIds) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const { top, bottom } = el.getBoundingClientRect();
+    if (top <= headerLine && bottom > headerLine) return id;
+    if (top <= headerLine) active = id;
+  }
+
+  return active;
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [homeSection, setHomeSection] = useState("");
@@ -21,52 +49,28 @@ export function Header() {
       return;
     }
 
-    const sectionIds = ["how-i-teach", "pricing"] as const;
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el != null);
-
-    const updateFromScroll = () => {
+    const syncHomeSection = () => {
+      const fromHash = sectionFromHash();
+      if (fromHash) {
+        setHomeSection(fromHash);
+        return;
+      }
       if (window.scrollY < 120) {
         setHomeSection("");
         return;
       }
-
-      const marker = window.scrollY + 120;
-      let current = "";
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= marker) current = id;
-      }
-      setHomeSection(current);
+      setHomeSection(sectionFromViewport());
     };
 
-    updateFromScroll();
-    window.addEventListener("scroll", updateFromScroll, { passive: true });
-    window.addEventListener("hashchange", updateFromScroll);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (window.scrollY < 120) {
-          setHomeSection("");
-          return;
-        }
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) {
-          setHomeSection(visible.target.id);
-        }
-      },
-      { rootMargin: "-35% 0px -50% 0px", threshold: [0, 0.1, 0.25, 0.5] },
-    );
-
-    for (const el of elements) observer.observe(el);
+    syncHomeSection();
+    window.addEventListener("scroll", syncHomeSection, { passive: true });
+    window.addEventListener("hashchange", syncHomeSection);
+    window.addEventListener("popstate", syncHomeSection);
 
     return () => {
-      window.removeEventListener("scroll", updateFromScroll);
-      window.removeEventListener("hashchange", updateFromScroll);
-      observer.disconnect();
+      window.removeEventListener("scroll", syncHomeSection);
+      window.removeEventListener("hashchange", syncHomeSection);
+      window.removeEventListener("popstate", syncHomeSection);
     };
   }, [pathname]);
 
