@@ -6,13 +6,14 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
 } from "react";
 import { getTranslations } from "./translations";
 import type { Locale } from "./types";
 import { defaultLocale } from "./types";
 
 const STORAGE_KEY = "axe-school-locale";
+const LOCALE_EVENT = "axe-school-locale-change";
 
 type LocaleContextValue = {
   locale: Locale;
@@ -28,23 +29,30 @@ function readStoredLocale(): Locale {
   return stored === "en" ? "en" : defaultLocale;
 }
 
+function subscribeLocale(onStoreChange: () => void) {
+  const handler = () => onStoreChange();
+  window.addEventListener("storage", handler);
+  window.addEventListener(LOCALE_EVENT, handler);
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(LOCALE_EVENT, handler);
+  };
+}
+
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-  const [ready, setReady] = useState(false);
+  const locale = useSyncExternalStore(
+    subscribeLocale,
+    readStoredLocale,
+    () => defaultLocale,
+  );
 
   useEffect(() => {
-    setLocaleState(readStoredLocale());
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
     document.documentElement.lang = locale;
-    localStorage.setItem(STORAGE_KEY, locale);
-  }, [locale, ready]);
+  }, [locale]);
 
   const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
+    localStorage.setItem(STORAGE_KEY, next);
+    window.dispatchEvent(new Event(LOCALE_EVENT));
   }, []);
 
   const value = useMemo(

@@ -16,7 +16,8 @@ const de = {
   nav: {
     home: "Startseite",
     howITeach: "So unterrichte ich",
-    whatITeach: "Was ich unterrichte",
+    pricing: "Preise",
+    testimonials: "Stimmen",
     how: "Über mich",
     menu: "Menü",
   },
@@ -103,6 +104,13 @@ const de = {
     childDurationNote: "Pro Lektion 30 oder 45 Minuten, je nach Alter und Konzentration",
     online: "Online",
     direct: "Direkt (TWINT/Bank)",
+  },
+  testimonials: {
+    title: "Stimmen",
+    subtitle: "Rückmeldungen von Schülerinnen und Schülern (Platzhalter — bitte durch echte ersetzen).",
+    listLabel: "Zeugnisse",
+    goTo: "Zeugnis {n}",
+    starsLabel: "{rating} von 5 Sternen",
   },
   book: {
     title: "Unterricht buchen",
@@ -404,7 +412,8 @@ const en = {
   nav: {
     home: "Home",
     howITeach: "How I teach",
-    whatITeach: "What I teach",
+    pricing: "Pricing",
+    testimonials: "Testimonials",
     how: "About",
     menu: "Menu",
   },
@@ -491,6 +500,13 @@ const en = {
     childDurationNote: "30 or 45 minutes per lesson, depending on age and focus",
     online: "Online",
     direct: "Direct (TWINT/bank)",
+  },
+  testimonials: {
+    title: "What students say",
+    subtitle: "Feedback from lessons (placeholders — replace with real quotes when you have them).",
+    listLabel: "Testimonials",
+    goTo: "Testimonial {n}",
+    starsLabel: "{rating} out of 5 stars",
   },
   book: {
     title: "Book a lesson",

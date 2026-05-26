@@ -6,6 +6,7 @@ import { ContactHint } from "@/components/ContactHint";
 import { AcousticGuitarIcon } from "@/components/icons/AcousticGuitarIcon";
 import { ElectricGuitarIcon } from "@/components/icons/ElectricGuitarIcon";
 import { PricingTeaser } from "@/components/PricingTeaser";
+import { TestimonialsSlider } from "@/components/TestimonialsSlider";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
 
@@ -235,6 +236,7 @@ export function HomeContent() {
       </section>
 
       <PricingTeaser />
+      <TestimonialsSlider />
     </>
   );
 }

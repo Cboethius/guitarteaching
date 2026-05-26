@@ -33,6 +33,53 @@ body {
   }
 }
 
+@keyframes testimonial-modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.testimonial-modal-pop {
+  animation: testimonial-modal-pop 0.3s ease-out;
+}
+
+.testimonial-track {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.testimonial-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Soft fade on left/right edges */
+.testimonial-marquee-viewport {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.testimonial-marquee-viewport--single {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 py-2.5 text-sm font-semibold leading-tight text-cream transition-colors hover:bg-forest/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2;
