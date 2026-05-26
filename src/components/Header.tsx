@@ -10,17 +10,74 @@ import { site } from "@/lib/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [hash, setHash] = useState("");
+  const [homeSection, setHomeSection] = useState("");
   const { locale, t } = useLocale();
   const pathname = usePathname();
   const tagline = locale === "de" ? site.taglineDe : site.taglineEn;
 
   useEffect(() => {
-    const syncHash = () => setHash(window.location.hash);
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
+    if (pathname !== "/") {
+      setHomeSection("");
+      return;
+    }
+
+    const sectionIds = ["how-i-teach", "pricing"] as const;
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el != null);
+
+    const updateFromScroll = () => {
+      if (window.scrollY < 120) {
+        setHomeSection("");
+        return;
+      }
+
+      const marker = window.scrollY + 120;
+      let current = "";
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= marker) current = id;
+      }
+      setHomeSection(current);
+    };
+
+    updateFromScroll();
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+    window.addEventListener("hashchange", updateFromScroll);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (window.scrollY < 120) {
+          setHomeSection("");
+          return;
+        }
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target.id) {
+          setHomeSection(visible.target.id);
+        }
+      },
+      { rootMargin: "-35% 0px -50% 0px", threshold: [0, 0.1, 0.25, 0.5] },
+    );
+
+    for (const el of elements) observer.observe(el);
+
+    return () => {
+      window.removeEventListener("scroll", updateFromScroll);
+      window.removeEventListener("hashchange", updateFromScroll);
+      observer.disconnect();
+    };
   }, [pathname]);
+
+  const goHome = (e?: React.MouseEvent) => {
+    if (pathname !== "/") return;
+    e?.preventDefault();
+    window.history.replaceState(null, "", "/");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    setHomeSection("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const links = [
     { href: "/", label: t.nav.home, hash: false },
@@ -30,19 +87,28 @@ export function Header() {
   ];
 
   const isActive = (href: string, isHash: boolean) => {
-    if (isHash) {
-      return pathname === "/" && hash === `#${href.split("#")[1]}`;
+    if (pathname === "/") {
+      if (href === "/") return homeSection === "";
+      if (isHash) {
+        const id = href.split("#")[1];
+        return homeSection === id;
+      }
+      return false;
     }
-    if (href === "/") {
-      return pathname === "/" && !hash;
-    }
+
+    if (isHash) return false;
+    if (href === "/") return false;
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   return (
     <header className="border-pastel sticky top-0 z-50 border-b bg-cream/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <Link href="/" className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2">
+        <Link
+          href="/"
+          onClick={goHome}
+          className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
+        >
           <span className="text-forest block text-lg font-semibold">
             {site.name}
           </span>
@@ -79,6 +145,7 @@ export function Header() {
               <Link
                 key={l.href}
                 href={l.href}
+                onClick={l.href === "/" ? goHome : undefined}
                 aria-current={active ? "page" : undefined}
                 className={className}
               >
@@ -130,8 +197,11 @@ export function Header() {
               <Link
                 key={l.href}
                 href={l.href}
+                onClick={(e) => {
+                  if (l.href === "/") goHome(e);
+                  setOpen(false);
+                }}
                 aria-current={active ? "page" : undefined}
-                onClick={() => setOpen(false)}
                 className={className}
               >
                 {l.label}

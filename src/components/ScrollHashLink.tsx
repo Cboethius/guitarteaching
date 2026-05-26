@@ -29,6 +29,7 @@ export function ScrollHashLink({
       e.preventDefault();
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       window.history.pushState(null, "", `#${id}`);
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
     }
   }
 
