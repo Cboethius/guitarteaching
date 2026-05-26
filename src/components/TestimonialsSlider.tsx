@@ -13,7 +13,7 @@ import {
   testimonialSeaCreatureForIndex,
 } from "@/components/TestimonialSeaCreatureIcon";
 
-const AUTO_SCROLL_PX_PER_FRAME = 0.4;
+const AUTO_SCROLL_PX_PER_FRAME = 0.28;
 const LOOP_COPIES = 3;
 
 type OpenCard = { item: Testimonial; key: string };
