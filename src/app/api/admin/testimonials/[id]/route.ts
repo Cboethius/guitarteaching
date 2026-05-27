@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { isTestimonialSeaCreature } from "@/lib/testimonials";
-import { updateTestimonialSeaCreature } from "@/lib/testimonials-store";
+import {
+  deleteTestimonial,
+  updateTestimonialSeaCreature,
+} from "@/lib/testimonials-store";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -28,4 +31,19 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 
   return NextResponse.json({ row: result });
+}
+
+export async function DELETE(_request: Request, context: RouteContext) {
+  if (!(await isAdminAuthenticated())) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await context.params;
+  const deleted = await deleteTestimonial(id);
+
+  if (!deleted) {
+    return NextResponse.json({ error: "not_found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ ok: true });
 }

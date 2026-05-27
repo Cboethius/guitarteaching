@@ -11,29 +11,30 @@ import { site } from "@/lib/site";
 const homeNavSectionIds = ["how-i-teach", "pricing"] as const;
 type HomeNavSection = (typeof homeNavSectionIds)[number];
 
-function isHomeNavSection(id: string): id is HomeNavSection {
-  return (homeNavSectionIds as readonly string[]).includes(id);
+/** Match scroll-mt-24 sections — marker line below sticky header */
+const SCROLL_MARKER_OFFSET = 120;
+
+function activeHomeSection(): HomeNavSection | "" {
+  const pos = window.scrollY + SCROLL_MARKER_OFFSET;
+  const how = document.getElementById("how-i-teach");
+  const pricing = document.getElementById("pricing");
+  if (!how) return "";
+
+  const howTop = how.offsetTop;
+  const pricingTop = pricing?.offsetTop ?? Number.MAX_SAFE_INTEGER;
+
+  if (pos < howTop) return "";
+  if (pos < pricingTop) return "how-i-teach";
+  return "pricing";
 }
 
-function sectionFromHash(): HomeNavSection | "" {
-  const id = window.location.hash.replace("#", "");
-  return isHomeNavSection(id) ? id : "";
-}
-
-/** Which homepage section sits under the sticky header while scrolling manually. */
-function sectionFromViewport(): HomeNavSection | "" {
-  const headerLine = 96;
-  let active: HomeNavSection | "" = "";
-
-  for (const id of homeNavSectionIds) {
-    const el = document.getElementById(id);
-    if (!el) continue;
-    const { top, bottom } = el.getBoundingClientRect();
-    if (top <= headerLine && bottom > headerLine) return id;
-    if (top <= headerLine) active = id;
+function syncHashToSection(section: HomeNavSection | "") {
+  const path = window.location.pathname;
+  const nextUrl = section ? `${path}#${section}` : path;
+  const current = `${path}${window.location.hash}`;
+  if (current !== nextUrl) {
+    window.history.replaceState(null, "", nextUrl);
   }
-
-  return active;
 }
 
 export function Header() {
@@ -50,36 +51,26 @@ export function Header() {
     }
 
     const syncHomeSection = () => {
-      const fromHash = sectionFromHash();
-      if (fromHash) {
-        setHomeSection(fromHash);
-        return;
-      }
-      if (window.scrollY < 120) {
-        setHomeSection("");
-        return;
-      }
-      setHomeSection(sectionFromViewport());
+      const section = activeHomeSection();
+      setHomeSection(section);
+      syncHashToSection(section);
     };
 
     syncHomeSection();
     window.addEventListener("scroll", syncHomeSection, { passive: true });
-    window.addEventListener("hashchange", syncHomeSection);
-    window.addEventListener("popstate", syncHomeSection);
+    window.addEventListener("resize", syncHomeSection);
 
     return () => {
       window.removeEventListener("scroll", syncHomeSection);
-      window.removeEventListener("hashchange", syncHomeSection);
-      window.removeEventListener("popstate", syncHomeSection);
+      window.removeEventListener("resize", syncHomeSection);
     };
   }, [pathname]);
 
   const goHome = (e?: React.MouseEvent) => {
     if (pathname !== "/") return;
     e?.preventDefault();
-    window.history.replaceState(null, "", "/");
-    window.dispatchEvent(new HashChangeEvent("hashchange"));
     setHomeSection("");
+    window.history.replaceState(null, "", "/");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

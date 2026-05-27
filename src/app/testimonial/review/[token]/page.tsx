@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function TestimonialReviewRoute() {
-  return <TestimonialReviewPage />;
+type PageProps = {
+  params: Promise<{ token: string }>;
+};
+
+export default async function TestimonialReviewRoute({ params }: PageProps) {
+  const { token } = await params;
+  return <TestimonialReviewPage token={token} />;
 }

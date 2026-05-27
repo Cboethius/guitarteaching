@@ -157,6 +157,12 @@ export function AdminTestimonialsPage() {
     await loadRows();
   }
 
+  async function handleDelete(id: string) {
+    if (!window.confirm(ta.deleteConfirm)) return;
+    const res = await fetch(`/api/admin/testimonials/${id}`, { method: "DELETE" });
+    if (res.ok) await loadRows();
+  }
+
   function avatarForRow(row: AdminRow, index: number) {
     return row.seaCreature ?? testimonialSeaCreatureForIndex(index);
   }
@@ -239,7 +245,15 @@ export function AdminTestimonialsPage() {
     const awaitingStudent = row.status === "draft";
 
     return (
-      <li className="border-pastel rounded-xl border bg-white p-4">
+      <li className="border-pastel relative rounded-xl border bg-white p-4 pr-12">
+        <button
+          type="button"
+          onClick={() => handleDelete(row.id)}
+          className="text-forest/50 hover:text-forest hover:bg-pastel-light/60 absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-lg leading-none transition-colors"
+          aria-label={ta.delete}
+        >
+          ×
+        </button>
         {awaitingStudent ? (
           <p className="text-forest/80 text-sm leading-relaxed">
             {ta.notSubmittedYet}

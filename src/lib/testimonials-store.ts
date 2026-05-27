@@ -301,3 +301,17 @@ export async function updateTestimonialSeaCreature(
 
   return result;
 }
+
+export async function deleteTestimonial(id: string): Promise<boolean> {
+  let deleted = false;
+
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return rows;
+    rows.splice(idx, 1);
+    deleted = true;
+    return rows;
+  });
+
+  return deleted;
+}

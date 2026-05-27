@@ -19,8 +19,15 @@ type ReviewData = {
   alreadySubmitted: boolean;
 };
 
-export function TestimonialReviewPage() {
-  const { token } = useParams<{ token: string }>();
+function resolveToken(tokenProp?: string, paramToken?: string | string[]) {
+  if (tokenProp?.trim()) return tokenProp.trim();
+  if (Array.isArray(paramToken)) return paramToken[0]?.trim() ?? "";
+  return paramToken?.trim() ?? "";
+}
+
+export function TestimonialReviewPage({ token: tokenProp }: { token?: string }) {
+  const { token: paramToken } = useParams<{ token: string }>();
+  const token = resolveToken(tokenProp, paramToken);
   const { t } = useLocale();
   const tr = t.testimonialReview;
 
@@ -41,9 +48,13 @@ export function TestimonialReviewPage() {
   const [consent, setConsent] = useState(false);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      setError("not_found");
+      setLoading(false);
+      return;
+    }
 
-    fetch(`/api/testimonials/review/${token}`)
+    fetch(`/api/testimonials/review/${encodeURIComponent(token)}`)
       .then(async (res) => {
         if (res.status === 404) {
           setError("not_found");
@@ -76,7 +87,7 @@ export function TestimonialReviewPage() {
     setSubmitError(false);
 
     try {
-      const res = await fetch(`/api/testimonials/review/${token}`, {
+      const res = await fetch(`/api/testimonials/review/${encodeURIComponent(token)}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
