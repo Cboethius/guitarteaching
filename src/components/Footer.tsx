@@ -9,9 +9,9 @@ export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="border-pastel mt-auto border-t bg-cream">
+    <footer className="border-pastel mt-auto border-t bg-pastel-light/40">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-x-12 lg:gap-x-16">
+        <div className="grid grid-cols-2 items-start gap-x-6 gap-y-8 sm:flex sm:flex-row sm:gap-x-12 lg:gap-x-16">
           <div>
             <p className="text-lg font-semibold">{site.name}</p>
             <p className="text-forest/80 mt-1 text-sm">{site.teacher}</p>
@@ -21,7 +21,24 @@ export function Footer() {
               {site.addressRest}
             </p>
           </div>
-          <div>
+          <div className="text-right sm:order-3 sm:text-left">
+            <p className="font-semibold">{t.footer.legal}</p>
+            <nav className="text-forest/80 mt-2 flex flex-col items-end gap-1 text-sm sm:items-start">
+              <Link href="/impressum" className="hover:underline">
+                {t.footer.impressum}
+              </Link>
+              <Link href="/privacy" className="hover:underline">
+                {t.footer.privacy}
+              </Link>
+              <ScrollHashLink href="/#pricing" className="hover:underline">
+                {t.nav.pricing}
+              </ScrollHashLink>
+              <Link href="/terms" className="hover:underline">
+                {t.footer.terms}
+              </Link>
+            </nav>
+          </div>
+          <div className="col-span-2 sm:order-2 sm:col-span-1">
             <p className="font-semibold">{t.footer.contact}</p>
             <div className="text-forest/80 mt-2 flex flex-col gap-1 text-sm">
               <a href={`mailto:${site.email}`} className="hover:underline">
@@ -39,23 +56,6 @@ export function Footer() {
                 WhatsApp
               </a>
             </div>
-          </div>
-          <div>
-            <p className="font-semibold">{t.footer.legal}</p>
-            <nav className="text-forest/80 mt-2 flex flex-col gap-1 text-sm">
-              <Link href="/impressum" className="hover:underline">
-                {t.footer.impressum}
-              </Link>
-              <Link href="/privacy" className="hover:underline">
-                {t.footer.privacy}
-              </Link>
-              <ScrollHashLink href="/#pricing" className="hover:underline">
-                {t.nav.pricing}
-              </ScrollHashLink>
-              <Link href="/terms" className="hover:underline">
-                {t.footer.terms}
-              </Link>
-            </nav>
           </div>
         </div>
         <p className="text-forest/60 mt-8 text-center text-xs">
