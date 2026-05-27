@@ -37,5 +37,5 @@ export type Testimonial = {
   seaCreature?: TestimonialSeaCreature;
 };
 
-/** Card width (w-44) + gap (gap-4) — keep in sync with TestimonialsSlider */
-export const TESTIMONIAL_CARD_STEP_PX = 176 + 16;
+/** Card width (8.8rem) + gap (0.8rem) — keep in sync with TestimonialsSlider */
+export const TESTIMONIAL_CARD_STEP_PX = 141 + 13;

@@ -156,7 +156,7 @@ function TestimonialSlideCard({
           onOpen(e.currentTarget);
         }
       }}
-      className={`border-pastel flex h-[15rem] w-44 shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-3.5 shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
+      className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-[0.7rem] shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
         hidden ? "invisible" : ""
       }`}
     >
@@ -205,7 +205,7 @@ function TestimonialModal({
           onClose();
         }
       }}
-      className="testimonial-modal-pop border-pastel absolute inset-y-2 left-1/2 z-40 flex w-[22rem] max-w-[calc(100%-2rem)] cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-5 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:p-6"
+      className="testimonial-modal-pop border-pastel absolute inset-y-2 left-1/2 z-40 flex w-[17.6rem] max-w-[calc(100%-2rem)] cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-4 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:p-[1.2rem]"
     >
       <TestimonialCardContent
         item={item}
@@ -422,7 +422,7 @@ export function TestimonialsSlider() {
       id="testimonials"
       aria-labelledby="testimonials-heading"
       aria-roledescription={isMarquee || isCarousel ? "carousel" : undefined}
-      className="bg-pastel-light/40 border-pastel scroll-mt-24 overflow-x-hidden overflow-y-visible border-y py-16 sm:py-20"
+      className="bg-pastel-light/40 border-pastel scroll-mt-24 overflow-x-hidden overflow-y-visible border-y py-[3.2rem] sm:py-[4rem]"
     >
       <div className="mx-auto min-w-0 max-w-6xl px-4 sm:px-6">
         <div className="text-center">
@@ -439,14 +439,14 @@ export function TestimonialsSlider() {
 
         <div
           ref={viewportRef}
-          className={`testimonial-marquee-viewport relative mt-10 min-h-[16.5rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
+          className={`testimonial-marquee-viewport relative mt-8 min-h-[13.2rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
             !isMarquee ? "testimonial-marquee-viewport--single" : ""
           }`}
         >
           {isMarquee ? (
             <div
               ref={trackRef}
-              className={`testimonial-track flex h-[15rem] w-full max-w-full items-center gap-4 overflow-y-hidden ${
+              className={`testimonial-track flex h-[12rem] w-full max-w-full items-center gap-[0.8rem] overflow-y-hidden ${
                 openCard ? "overflow-x-hidden" : "overflow-x-auto"
               }`}
               aria-live="polite"
@@ -458,13 +458,13 @@ export function TestimonialsSlider() {
           ) : isCarousel ? (
             <div
               ref={trackRef}
-              className="testimonial-track flex h-[15rem] w-full max-w-full snap-x snap-mandatory items-center justify-center gap-4 overflow-x-auto overflow-y-hidden scroll-smooth px-4 sm:px-0"
+              className="testimonial-track flex h-[12rem] w-full max-w-full snap-x snap-mandatory items-center justify-center gap-[0.8rem] overflow-x-auto overflow-y-hidden scroll-smooth px-4 sm:px-0"
               aria-live="polite"
             >
               {testimonials.map((item) => renderSlideCard(item, item.id))}
             </div>
           ) : (
-            <div className="flex h-[15rem] w-full items-center justify-center">
+            <div className="flex h-[12rem] w-full items-center justify-center">
               {renderSlideCard(testimonials[0], testimonials[0].id)}
             </div>
           )}
