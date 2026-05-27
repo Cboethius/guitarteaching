@@ -21,9 +21,9 @@ export function Footer() {
               {site.addressRest}
             </p>
           </div>
-          <div className="text-right sm:order-3 sm:text-left">
+          <div className="sm:order-3">
             <p className="font-semibold">{t.footer.legal}</p>
-            <nav className="text-forest/80 mt-2 flex flex-col items-end gap-1 text-sm sm:items-start">
+            <nav className="text-forest/80 mt-2 flex flex-col gap-1 text-sm">
               <Link href="/impressum" className="hover:underline">
                 {t.footer.impressum}
               </Link>
