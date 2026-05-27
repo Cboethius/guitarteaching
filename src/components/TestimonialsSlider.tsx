@@ -20,19 +20,44 @@ const MARQUEE_MIN_COUNT = 4;
 
 type OpenCard = { item: Testimonial; key: string };
 
-function indexFromScroll(scrollLeft: number, count: number) {
-  const step = TESTIMONIAL_CARD_STEP_PX;
+function indexFromScroll(scrollLeft: number, count: number, step = TESTIMONIAL_CARD_STEP_PX) {
   return ((Math.round(scrollLeft / step) % count) + count) % count;
 }
 
-function normalizeLoopScroll(el: HTMLDivElement, count: number) {
-  const loopWidth = TESTIMONIAL_CARD_STEP_PX * count;
-  if (loopWidth <= 0) return;
-  if (el.scrollLeft >= loopWidth * 2) {
-    el.scrollLeft -= loopWidth;
-  } else if (el.scrollLeft < loopWidth * 0.5) {
-    el.scrollLeft += loopWidth;
+function measureCardStep(track: HTMLDivElement) {
+  const second = track.children.item(1);
+  const first = track.children.item(0);
+  if (first instanceof HTMLElement && second instanceof HTMLElement) {
+    const measured = second.offsetLeft - first.offsetLeft;
+    if (measured > 0) return measured;
   }
+  return TESTIMONIAL_CARD_STEP_PX;
+}
+
+function normalizeLoopScroll(
+  scrollEl: HTMLDivElement,
+  track: HTMLDivElement,
+  count: number,
+) {
+  const step = measureCardStep(track);
+  const loopWidth = step * count;
+  if (loopWidth <= 0) return step;
+
+  if (scrollEl.scrollLeft >= loopWidth * 2) {
+    scrollEl.scrollLeft -= loopWidth;
+  } else if (scrollEl.scrollLeft < loopWidth * 0.5) {
+    scrollEl.scrollLeft += loopWidth;
+  }
+
+  const maxScroll = Math.max(0, scrollEl.scrollWidth - scrollEl.clientWidth);
+  if (scrollEl.scrollLeft > maxScroll) {
+    scrollEl.scrollLeft = maxScroll;
+  }
+  if (scrollEl.scrollLeft < 0) {
+    scrollEl.scrollLeft = 0;
+  }
+
+  return step;
 }
 
 function localizedText(item: Testimonial, locale: "de" | "en") {
@@ -136,6 +161,7 @@ function TestimonialSlideCard({
   context,
   starsLabel,
   hidden,
+  snap,
   onOpen,
 }: {
   item: Testimonial;
@@ -144,6 +170,7 @@ function TestimonialSlideCard({
   context: string;
   starsLabel: string;
   hidden?: boolean;
+  snap?: boolean;
   onOpen: (el: HTMLElement) => void;
 }) {
   return (
@@ -158,8 +185,8 @@ function TestimonialSlideCard({
         }
       }}
       className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-[0.7rem] shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
-        hidden ? "invisible" : ""
-      }`}
+        snap ? "snap-center" : ""
+      } ${hidden ? "invisible" : ""}`}
     >
       <TestimonialCardContent
         item={item}
@@ -252,6 +279,23 @@ export function TestimonialsSlider() {
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [openCard, setOpenCard] = useState<OpenCard | null>(null);
+  const userScrollingRef = useRef(false);
+  const [touchPrimary, setTouchPrimary] = useState(false);
+
+  const getScrollEl = useCallback(
+    () => viewportRef.current,
+    [],
+  );
+
+  const getTrackEl = useCallback(() => trackRef.current, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none), (pointer: coarse)");
+    const update = () => setTouchPrimary(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     fetch("/api/testimonials")
@@ -271,23 +315,54 @@ export function TestimonialsSlider() {
     : testimonials;
 
   const syncActiveIndex = useCallback(
-    (scrollLeft: number) => {
+    (scrollLeft: number, step?: number) => {
       if (count === 0) return;
-      setActiveIndex(indexFromScroll(scrollLeft, count));
+      setActiveIndex(indexFromScroll(scrollLeft, count, step));
     },
     [count],
   );
 
+  const handleMarqueeScroll = useCallback(() => {
+    const scrollEl = getScrollEl();
+    const track = getTrackEl();
+    if (!scrollEl || !track) return;
+
+    const step = measureCardStep(track);
+    syncActiveIndex(scrollEl.scrollLeft, step);
+  }, [getScrollEl, getTrackEl, syncActiveIndex]);
+
+  const handleMarqueeScrollEnd = useCallback(() => {
+    const scrollEl = getScrollEl();
+    const track = getTrackEl();
+    if (!scrollEl || !track) return;
+
+    const step = normalizeLoopScroll(scrollEl, track, count);
+    syncActiveIndex(scrollEl.scrollLeft, step);
+
+    const visibleCards = Array.from(track.children).filter((child) => {
+      if (!(child instanceof HTMLElement)) return false;
+      const left = child.offsetLeft - scrollEl.scrollLeft;
+      const right = left + child.offsetWidth;
+      return right > 0 && left < scrollEl.clientWidth;
+    }).length;
+
+    if (visibleCards === 0 && track.children.length > 0) {
+      scrollEl.scrollLeft = step * count;
+    }
+
+    userScrollingRef.current = false;
+  }, [count, getScrollEl, getTrackEl, syncActiveIndex]);
+
   const centerCard = useCallback(
     (cardEl: HTMLElement) => {
-      const track = trackRef.current;
-      const viewport = viewportRef.current;
-      if (!track) return;
+      const scrollEl = getScrollEl();
+      const track = getTrackEl();
+      if (!scrollEl || !track) return;
 
-      if (isMarquee && viewport) {
+      if (isMarquee) {
         const cardCenter = cardEl.offsetLeft + cardEl.offsetWidth / 2;
-        track.scrollTo({
-          left: cardCenter - viewport.clientWidth / 2,
+        scrollEl.scrollTo({
+          left: cardCenter - scrollEl.clientWidth / 2,
           behavior: "smooth",
         });
         return;
@@ -299,7 +374,7 @@ export function TestimonialsSlider() {
         block: "nearest",
       });
     },
-    [isMarquee],
+    [isMarquee, getScrollEl, getTrackEl],
   );
 
   const closeModal = useCallback(() => setOpenCard(null), []);
@@ -314,29 +389,33 @@ export function TestimonialsSlider() {
 
   const scrollToIndex = useCallback(
     (index: number) => {
-      const el = trackRef.current;
-      if (!el) return;
+      const scrollEl = getScrollEl();
+      const track = getTrackEl();
+      if (!scrollEl || !track) return;
 
       closeModal();
       const normalized = ((index % count) + count) % count;
       setActiveIndex(normalized);
 
       if (isMarquee) {
-        const offsetInSet = indexFromScroll(el.scrollLeft, count);
+        const step = measureCardStep(track);
+        const offsetInSet = indexFromScroll(scrollEl.scrollLeft, count, step);
         const delta = normalized - offsetInSet;
 
-        el.scrollTo({
-          left: el.scrollLeft + delta * TESTIMONIAL_CARD_STEP_PX,
+        scrollEl.scrollTo({
+          left: scrollEl.scrollLeft + delta * step,
           behavior: "smooth",
         });
         window.setTimeout(() => {
-          if (trackRef.current) normalizeLoopScroll(trackRef.current, count);
+          const el = getScrollEl();
+          const inner = getTrackEl();
+          if (el && inner) normalizeLoopScroll(el, inner, count);
         }, 350);
         return;
       }
 
       if (isCarousel) {
-        const card = el.children.item(normalized);
+        const card = track.children.item(normalized);
         if (card instanceof HTMLElement) {
           card.scrollIntoView({
             behavior: "smooth",
@@ -346,28 +425,56 @@ export function TestimonialsSlider() {
         }
       }
     },
-    [count, isMarquee, isCarousel, closeModal],
+    [count, isMarquee, isCarousel, closeModal, getScrollEl, getTrackEl],
   );
 
   useEffect(() => {
-    const el = trackRef.current;
-    if (!el || !isMarquee) return;
-    el.scrollLeft = TESTIMONIAL_CARD_STEP_PX * count;
-    syncActiveIndex(el.scrollLeft);
-  }, [count, isMarquee, syncActiveIndex]);
+    const scrollEl = getScrollEl();
+    const track = getTrackEl();
+    if (!scrollEl || !track || !isMarquee) return;
+
+    const step = measureCardStep(track);
+    scrollEl.scrollLeft = step * count;
+    syncActiveIndex(scrollEl.scrollLeft, step);
+  }, [count, isMarquee, syncActiveIndex, getScrollEl, getTrackEl, loaded]);
 
   useEffect(() => {
-    const el = trackRef.current;
-    if (!el || !isMarquee) return;
+    const scrollEl = getScrollEl();
+    if (!scrollEl || !isMarquee) return;
 
-    const onScroll = () => {
-      normalizeLoopScroll(el, count);
-      syncActiveIndex(el.scrollLeft);
+    let scrollEndTimer: number | null = null;
+    const onScrollWithFallback = () => {
+      handleMarqueeScroll();
+      userScrollingRef.current = true;
+      if (scrollEndTimer !== null) window.clearTimeout(scrollEndTimer);
+      scrollEndTimer = window.setTimeout(handleMarqueeScrollEnd, 120);
     };
 
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [count, isMarquee, syncActiveIndex]);
+    scrollEl.addEventListener("scroll", onScrollWithFallback, { passive: true });
+    scrollEl.addEventListener("scrollend", handleMarqueeScrollEnd, { passive: true });
+
+    return () => {
+      scrollEl.removeEventListener("scroll", onScrollWithFallback);
+      scrollEl.removeEventListener("scrollend", handleMarqueeScrollEnd);
+      if (scrollEndTimer !== null) window.clearTimeout(scrollEndTimer);
+    };
+  }, [isMarquee, handleMarqueeScroll, handleMarqueeScrollEnd, getScrollEl]);
+
+  useEffect(() => {
+    const scrollEl = getScrollEl();
+    if (!scrollEl || !isMarquee) return;
+
+    const pauseAutoScroll = () => {
+      userScrollingRef.current = true;
+    };
+
+    scrollEl.addEventListener("touchstart", pauseAutoScroll, { passive: true });
+    scrollEl.addEventListener("pointerdown", pauseAutoScroll, { passive: true });
+    return () => {
+      scrollEl.removeEventListener("touchstart", pauseAutoScroll);
+      scrollEl.removeEventListener("pointerdown", pauseAutoScroll);
+    };
+  }, [isMarquee, getScrollEl]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -379,7 +486,7 @@ export function TestimonialsSlider() {
   }, [count, isCarousel, syncActiveIndex]);
 
   useEffect(() => {
-    if (!isMarquee || openCard) return;
+    if (!isMarquee || openCard || touchPrimary) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) return;
@@ -388,13 +495,14 @@ export function TestimonialsSlider() {
     let lastTime = 0;
 
     const tick = (time: number) => {
-      const el = trackRef.current;
-      if (el) {
+      const scrollEl = getScrollEl();
+      const track = getTrackEl();
+      if (scrollEl && track && !userScrollingRef.current) {
         if (lastTime > 0) {
           const deltaSeconds = Math.min((time - lastTime) / 1000, 0.1);
-          el.scrollLeft += AUTO_SCROLL_PX_PER_SECOND * deltaSeconds;
-          normalizeLoopScroll(el, count);
-          syncActiveIndex(el.scrollLeft);
+          scrollEl.scrollLeft += AUTO_SCROLL_PX_PER_SECOND * deltaSeconds;
+          const step = normalizeLoopScroll(scrollEl, track, count);
+          syncActiveIndex(scrollEl.scrollLeft, step);
         }
         lastTime = time;
       }
@@ -403,7 +511,7 @@ export function TestimonialsSlider() {
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [count, isMarquee, syncActiveIndex, openCard]);
+  }, [count, isMarquee, syncActiveIndex, openCard, getScrollEl, getTrackEl, touchPrimary]);
 
   if (!loaded || count === 0) return null;
 
@@ -422,6 +530,7 @@ export function TestimonialsSlider() {
         quote={quote}
         context={context}
         starsLabel={t.testimonials.starsLabel}
+        snap={isMarquee && touchPrimary}
         hidden={openCard?.key === key}
         onOpen={(el) => handleCardOpen(key, el, item)}
       />
@@ -452,16 +561,18 @@ export function TestimonialsSlider() {
       <div className="border-pastel bg-cream border-b py-8 sm:py-10">
         <div
           ref={viewportRef}
-          className={`testimonial-marquee-viewport relative min-h-[13.2rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
-            !isMarquee ? "testimonial-marquee-viewport--single" : ""
+          className={`testimonial-marquee-viewport relative mx-auto min-h-[13.2rem] w-full min-w-0 max-w-[calc(4*(8.8rem+0.8rem)-0.8rem)] overflow-y-hidden py-2 ${
+            isMarquee
+              ? `testimonial-track overflow-x-auto ${touchPrimary ? "snap-x snap-mandatory" : ""}`
+              : "overflow-x-hidden"
+          } ${!isMarquee ? "testimonial-marquee-viewport--single" : ""} ${
+            openCard ? "overflow-x-hidden" : ""
           }`}
         >
           {isMarquee ? (
             <div
               ref={trackRef}
-              className={`testimonial-track flex h-[12rem] w-full max-w-full items-center gap-[0.8rem] overflow-y-hidden ${
-                openCard ? "overflow-x-hidden" : "overflow-x-auto"
-              }`}
+              className="testimonial-track flex h-[12rem] w-max min-w-full items-center gap-[0.8rem]"
               aria-live="polite"
             >
               {loopItems.map((item, i) =>
