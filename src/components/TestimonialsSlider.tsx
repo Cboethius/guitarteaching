@@ -53,16 +53,20 @@ function StarRating({
   rating,
   label,
   large = false,
+  compact = false,
 }: {
   rating: number;
   label: string;
   large?: boolean;
+  compact?: boolean;
 }) {
   const stars = Math.min(5, Math.max(1, Math.round(rating)));
 
   return (
     <div
-      className={`flex shrink-0 gap-0.5 leading-none ${large ? "text-base" : "text-[11px]"}`}
+      className={`flex shrink-0 leading-none ${
+        large ? "gap-0.5 text-base" : compact ? "gap-px text-[8px]" : "gap-0.5 text-[11px]"
+      }`}
       role="img"
       aria-label={label.replace("{rating}", String(stars))}
     >
@@ -95,7 +99,44 @@ function TestimonialCardContent({
   size: "slide" | "modal";
 }) {
   const large = size === "modal";
-  const iconClass = large ? "h-14 w-14" : "h-11 w-11";
+  const slide = size === "slide";
+  const iconClass = large ? "h-14 w-14" : slide ? "h-6 w-6" : "h-11 w-11";
+
+  if (slide) {
+    return (
+      <>
+        <blockquote className="text-forest/85 min-h-0 flex-1 overflow-hidden text-xs leading-snug">
+          <p className="line-clamp-5 overflow-hidden">{quote}</p>
+        </blockquote>
+
+        <figcaption className="border-pastel mt-1.5 shrink-0 border-t pt-1.5">
+          <div className="flex items-center gap-1.5">
+            <div
+              className={`border-forest/20 relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border bg-cream ${iconClass}`}
+            >
+              <TestimonialSeaCreatureIcon
+                creature={seaCreatureForItem(item, itemIndex)}
+                className="h-[84%] w-[84%]"
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[10px] font-semibold leading-tight">
+                {item.author}
+              </p>
+              <p className="text-forest/60 truncate text-[9px] leading-tight">
+                {context}
+              </p>
+            </div>
+            <StarRating
+              rating={item.rating}
+              label={starsLabel}
+              compact
+            />
+          </div>
+        </figcaption>
+      </>
+    );
+  }
 
   return (
     <>
@@ -156,7 +197,7 @@ function TestimonialSlideCard({
           onOpen(e.currentTarget);
         }
       }}
-      className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-[0.7rem] shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
+      className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-2 shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
         hidden ? "invisible" : ""
       }`}
     >
