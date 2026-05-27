@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useLocale } from "@/lib/i18n/context";
 import {
   TESTIMONIAL_CARD_STEP_PX,
@@ -53,20 +54,16 @@ function StarRating({
   rating,
   label,
   large = false,
-  compact = false,
 }: {
   rating: number;
   label: string;
   large?: boolean;
-  compact?: boolean;
 }) {
   const stars = Math.min(5, Math.max(1, Math.round(rating)));
 
   return (
     <div
-      className={`flex shrink-0 leading-none ${
-        large ? "gap-0.5 text-base" : compact ? "gap-px text-[8px]" : "gap-0.5 text-[11px]"
-      }`}
+      className={`flex shrink-0 gap-0.5 leading-none ${large ? "text-base" : "text-[11px]"}`}
       role="img"
       aria-label={label.replace("{rating}", String(stars))}
     >
@@ -99,44 +96,7 @@ function TestimonialCardContent({
   size: "slide" | "modal";
 }) {
   const large = size === "modal";
-  const slide = size === "slide";
-  const iconClass = large ? "h-14 w-14" : slide ? "h-6 w-6" : "h-11 w-11";
-
-  if (slide) {
-    return (
-      <>
-        <blockquote className="text-forest/85 min-h-0 flex-1 overflow-hidden text-xs leading-snug">
-          <p className="line-clamp-5 overflow-hidden">{quote}</p>
-        </blockquote>
-
-        <figcaption className="border-pastel mt-1.5 shrink-0 border-t pt-1.5">
-          <div className="flex items-center gap-1.5">
-            <div
-              className={`border-forest/20 relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border bg-cream ${iconClass}`}
-            >
-              <TestimonialSeaCreatureIcon
-                creature={seaCreatureForItem(item, itemIndex)}
-                className="h-[84%] w-[84%]"
-              />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-[10px] font-semibold leading-tight">
-                {item.author}
-              </p>
-              <p className="text-forest/60 truncate text-[9px] leading-tight">
-                {context}
-              </p>
-            </div>
-            <StarRating
-              rating={item.rating}
-              label={starsLabel}
-              compact
-            />
-          </div>
-        </figcaption>
-      </>
-    );
-  }
+  const iconClass = large ? "h-14 w-14" : "h-11 w-11";
 
   return (
     <>
@@ -150,7 +110,7 @@ function TestimonialCardContent({
       </div>
 
       <blockquote
-        className={`text-forest/85 mt-3 min-h-0 flex-1 leading-relaxed ${large ? "overflow-y-auto text-sm" : "text-xs"}`}
+        className={`text-forest/85 mt-3 min-h-0 flex-1 leading-relaxed ${large ? "overflow-y-auto text-sm sm:text-base" : "overflow-hidden text-xs"}`}
       >
         <p className={large ? "" : "line-clamp-7 overflow-hidden"}>{quote}</p>
       </blockquote>
@@ -197,7 +157,7 @@ function TestimonialSlideCard({
           onOpen(e.currentTarget);
         }
       }}
-      className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-2 shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
+      className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-[0.7rem] shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
         hidden ? "invisible" : ""
       }`}
     >
@@ -224,6 +184,11 @@ function TestimonialModal({
 }) {
   const { locale, t } = useLocale();
   const { quote, context } = localizedText(item, locale);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -233,30 +198,49 @@ function TestimonialModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  return (
-    <figure
-      role="dialog"
-      aria-modal="true"
-      aria-label={item.author}
-      tabIndex={0}
-      onClick={onClose}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onClose();
-        }
-      }}
-      className="testimonial-modal-pop border-pastel absolute inset-y-2 left-1/2 z-40 flex w-[17.6rem] max-w-[calc(100%-2rem)] cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-4 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:p-[1.2rem]"
-    >
-      <TestimonialCardContent
-        item={item}
-        itemIndex={itemIndex}
-        quote={quote}
-        context={context}
-        starsLabel={t.testimonials.starsLabel}
-        size="modal"
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <>
+      <button
+        type="button"
+        aria-label="Close"
+        className="fixed inset-0 z-40 bg-forest/25"
+        onClick={onClose}
       />
-    </figure>
+      <figure
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.author}
+        tabIndex={0}
+        onClick={onClose}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClose();
+          }
+        }}
+        className="testimonial-modal-pop-center border-pastel fixed top-1/2 left-1/2 z-50 flex max-h-[min(32rem,85vh)] w-[min(calc(100vw-2rem),22rem)] cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-5 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:p-6"
+      >
+        <TestimonialCardContent
+          item={item}
+          itemIndex={itemIndex}
+          quote={quote}
+          context={context}
+          starsLabel={t.testimonials.starsLabel}
+          size="modal"
+        />
+      </figure>
+    </>,
+    document.body,
   );
 }
 
@@ -364,20 +348,6 @@ export function TestimonialsSlider() {
     },
     [count, isMarquee, isCarousel, closeModal],
   );
-
-  useEffect(() => {
-    if (!openCard) return;
-
-    const onPointerDown = (e: PointerEvent) => {
-      const slider = viewportRef.current;
-      if (slider && !slider.contains(e.target as Node)) {
-        closeModal();
-      }
-    };
-
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [openCard, closeModal]);
 
   useEffect(() => {
     const el = trackRef.current;
