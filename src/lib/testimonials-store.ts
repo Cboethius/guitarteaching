@@ -1,5 +1,6 @@
 import { randomBytes, randomUUID } from "crypto";
 import { readJsonStore, updateJsonStore } from "./json-store";
+import { MOCK_TESTIMONIALS } from "./testimonials-mock";
 import type { Testimonial, TestimonialSeaCreature } from "./testimonials";
 import { TESTIMONIAL_SEA_CREATURES } from "./testimonials";
 
@@ -58,7 +59,7 @@ export function toPublicTestimonial(row: StoredTestimonial): Testimonial {
 
 export async function listPublishedTestimonials(): Promise<Testimonial[]> {
   const rows = await readAll();
-  return rows
+  const published = rows
     .filter((r) => r.status === "published")
     .sort(
       (a, b) =>
@@ -66,6 +67,11 @@ export async function listPublishedTestimonials(): Promise<Testimonial[]> {
         new Date(a.publishedAt ?? a.createdAt).getTime(),
     )
     .map(toPublicTestimonial);
+
+  const publishedIds = new Set(published.map((item) => item.id));
+  const mocks = MOCK_TESTIMONIALS.filter((item) => !publishedIds.has(item.id));
+
+  return [...published, ...mocks];
 }
 
 export async function listAllTestimonials() {

@@ -422,24 +422,26 @@ export function TestimonialsSlider() {
       id="testimonials"
       aria-labelledby="testimonials-heading"
       aria-roledescription={isMarquee || isCarousel ? "carousel" : undefined}
-      className="bg-pastel-light/40 border-pastel scroll-mt-24 overflow-x-hidden overflow-y-visible border-y py-[3.2rem] sm:py-[4rem]"
+      className="scroll-mt-24 overflow-x-hidden overflow-y-visible"
     >
-      <div className="mx-auto min-w-0 max-w-6xl px-4 sm:px-6">
-        <div className="text-center">
+      <div className="bg-forest text-cream border-pastel/25 border-b">
+        <div className="mx-auto max-w-6xl px-4 py-6 text-center sm:px-6 sm:py-8">
           <h2
             id="testimonials-heading"
             className="text-3xl font-semibold sm:text-4xl"
           >
             {t.testimonials.title}
           </h2>
-          <p className="text-forest/80 mx-auto mt-4 max-w-md text-base leading-relaxed">
+          <p className="text-cream/85 mx-auto mt-3 max-w-md text-base leading-relaxed">
             {t.testimonials.subtitle}
           </p>
         </div>
+      </div>
 
+      <div className="border-pastel bg-cream border-b py-8 sm:py-10">
         <div
           ref={viewportRef}
-          className={`testimonial-marquee-viewport relative mt-8 min-h-[13.2rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
+          className={`testimonial-marquee-viewport relative min-h-[13.2rem] w-full min-w-0 overflow-x-hidden overflow-y-hidden py-2 ${
             !isMarquee ? "testimonial-marquee-viewport--single" : ""
           }`}
         >
@@ -480,7 +482,7 @@ export function TestimonialsSlider() {
 
         {(isMarquee || isCarousel) && (
           <div
-            className="mt-4 flex h-2 items-center justify-center gap-1.5"
+            className="mx-auto mt-4 flex h-2 max-w-6xl items-center justify-center gap-1.5 px-4 sm:px-6"
             role="tablist"
             aria-label={t.testimonials.listLabel}
           >
