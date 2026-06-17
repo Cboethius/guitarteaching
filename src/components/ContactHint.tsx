@@ -44,11 +44,11 @@ export function ContactHint({
 
   return (
     <>
-      <p className="text-forest/80 mt-6 max-w-lg text-base leading-relaxed">
+      <p className="text-forest/80 mt-4 max-w-lg text-sm leading-snug sm:text-base">
         {text}
       </p>
       {showReason && (
-        <p className="text-forest/70 mt-1 max-w-lg text-base leading-relaxed">
+        <p className="text-forest/70 mt-1 max-w-lg text-sm leading-snug sm:text-base">
           {t.contact.reason}
         </p>
       )}

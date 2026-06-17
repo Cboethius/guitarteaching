@@ -5,9 +5,9 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
   {
     id: "mock-laura-m",
     quoteDe:
-      "Ich hatte jahrelang Angst vor dem Griffbrett — Christian erklärt alles so geduldig, dass es endlich klickt. Nach drei Monaten spiele ich meine ersten Songs.",
+      "Ich hatte jahrelang Angst vor dem Griffbrett. Christian erklärt alles so geduldig, dass es endlich klickt. Nach drei Monaten spiele ich meine ersten Songs.",
     quoteEn:
-      "I had been afraid of the fretboard for years — Christian explains everything so patiently that it finally clicks. After three months I'm playing my first songs.",
+      "I had been afraid of the fretboard for years. Christian explains everything so patiently that it finally clicks. After three months I'm playing my first songs.",
     author: "Laura M.",
     contextDe: "Erwachsene Anfängerin · Zoom",
     contextEn: "Adult beginner · Zoom",
@@ -29,9 +29,9 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
   {
     id: "mock-sophie-r",
     quoteDe:
-      "Nach zehn Jahren Pause war ich unsicher. Christian hat einen klaren Plan und passt das Tempo an — ohne Druck.",
+      "Nach zehn Jahren Pause war ich unsicher. Christian hat einen klaren Plan und passt das Tempo an, ohne Druck.",
     quoteEn:
-      "After a ten-year break I was unsure. Christian has a clear plan and adjusts the pace — without pressure.",
+      "After a ten-year break I was unsure. Christian has a clear plan and adjusts the pace, without pressure.",
     author: "Sophie R.",
     contextDe: "Wiedereinsteigerin · neutrales Treffen",
     contextEn: "Returning player · neutral meeting spot",
@@ -65,9 +65,9 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
   {
     id: "mock-david-l",
     quoteDe:
-      "Zoom funktioniert überraschend gut. Christian zeigt alles langsam und schickt danach Notizen — sehr professionell.",
+      "Zoom funktioniert überraschend gut. Christian zeigt alles langsam und schickt danach Notizen, sehr professionell.",
     quoteEn:
-      "Zoom works surprisingly well. Christian demonstrates everything slowly and sends notes afterwards — very professional.",
+      "Zoom works surprisingly well. Christian demonstrates everything slowly and sends notes afterwards, very professional.",
     author: "David L.",
     contextDe: "Berufstätiger · Abend · Zoom",
     contextEn: "Working professional · evening · Zoom",

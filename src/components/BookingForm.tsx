@@ -35,10 +35,10 @@ function parseAudience(param: string | null): Audience | null {
 }
 
 function choiceCardClass(selected: boolean) {
-  return `cursor-pointer rounded-xl border p-4 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
+  return `cursor-pointer rounded-xl border p-4 text-left transition-[border-color,background-color,box-shadow] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
     selected
-      ? "border-forest bg-pastel-light/50"
-      : "border-pastel bg-white hover:border-forest/40"
+      ? "border-forest bg-pastel-light/50 shadow-sm"
+      : "border-pastel bg-white hover:border-forest/35 hover:shadow-sm"
   }`;
 }
 
@@ -363,9 +363,6 @@ export function BookingForm() {
             {showChildDuration && (
               <fieldset className="sm:col-span-2">
                 <legend className="text-sm font-medium">{t.book.lessonDuration}</legend>
-                <p className="text-forest/60 mt-1 text-xs">
-                  {t.pricing.childDurationNote}
-                </p>
                 <div className={choiceGridTwo}>
                   {childLessonDurations.map((mins) => (
                     <label

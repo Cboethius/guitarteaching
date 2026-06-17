@@ -13,6 +13,7 @@ import type { Locale } from "./types";
 import { defaultLocale } from "./types";
 
 const STORAGE_KEY = "axe-school-locale";
+const LOCALE_COOKIE = "axe-school-locale";
 const LOCALE_EVENT = "axe-school-locale-change";
 
 type LocaleContextValue = {
@@ -23,10 +24,30 @@ type LocaleContextValue = {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
+function readCookieLocale(): Locale | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${LOCALE_COOKIE}=([^;]*)`),
+  );
+  return match?.[1] === "en" ? "en" : match?.[1] === "de" ? "de" : null;
+}
+
+function persistLocale(next: Locale) {
+  localStorage.setItem(STORAGE_KEY, next);
+  document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+}
+
 function readStoredLocale(): Locale {
   if (typeof window === "undefined") return defaultLocale;
+  if (
+    window.location.pathname === "/en" ||
+    window.location.pathname.startsWith("/en/")
+  ) {
+    return "en";
+  }
   const stored = localStorage.getItem(STORAGE_KEY);
-  return stored === "en" ? "en" : defaultLocale;
+  if (stored === "en" || stored === "de") return stored;
+  return readCookieLocale() ?? defaultLocale;
 }
 
 function subscribeLocale(onStoreChange: () => void) {
@@ -39,19 +60,26 @@ function subscribeLocale(onStoreChange: () => void) {
   };
 }
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
+export function LocaleProvider({
+  children,
+  initialLocale = defaultLocale,
+}: {
+  children: React.ReactNode;
+  initialLocale?: Locale;
+}) {
   const locale = useSyncExternalStore(
     subscribeLocale,
     readStoredLocale,
-    () => defaultLocale,
+    () => initialLocale,
   );
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    persistLocale(locale);
   }, [locale]);
 
   const setLocale = useCallback((next: Locale) => {
-    localStorage.setItem(STORAGE_KEY, next);
+    persistLocale(next);
     window.dispatchEvent(new Event(LOCALE_EVENT));
   }, []);
 

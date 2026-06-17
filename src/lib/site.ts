@@ -18,4 +18,15 @@ export const site = {
   accountName: process.env.PAYMENT_ACCOUNT_NAME ?? "Christian Boethius",
 } as const;
 
+export const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://guitarteaching.vercel.app";
+
+export function siteHostname() {
+  try {
+    return new URL(siteUrl).hostname;
+  } catch {
+    return "guitarteaching.vercel.app";
+  }
+}
+
 export const childMaxAge = 13; // under 14

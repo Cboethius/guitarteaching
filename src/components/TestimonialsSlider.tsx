@@ -111,6 +111,7 @@ function TestimonialCardContent({
   quote,
   context,
   starsLabel,
+  exampleLabel,
   size,
 }: {
   item: Testimonial;
@@ -118,6 +119,7 @@ function TestimonialCardContent({
   quote: string;
   context: string;
   starsLabel: string;
+  exampleLabel?: string;
   size: "slide" | "modal";
 }) {
   const large = size === "modal";
@@ -126,10 +128,17 @@ function TestimonialCardContent({
   return (
     <>
       <div className="flex items-start justify-between gap-2">
-        <div
-          className={`border-forest/20 relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border bg-cream ${iconClass}`}
-        >
-          <TestimonialSeaCreatureIcon creature={seaCreatureForItem(item, itemIndex)} />
+        <div className="flex min-w-0 items-start gap-2">
+          <div
+            className={`border-forest/20 relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border bg-cream ${iconClass}`}
+          >
+            <TestimonialSeaCreatureIcon creature={seaCreatureForItem(item, itemIndex)} />
+          </div>
+          {item.isExample && exampleLabel ? (
+            <span className="bg-pastel-light/80 text-forest/70 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
+              {exampleLabel}
+            </span>
+          ) : null}
         </div>
         <StarRating rating={item.rating} label={starsLabel} large={large} />
       </div>
@@ -160,6 +169,7 @@ function TestimonialSlideCard({
   quote,
   context,
   starsLabel,
+  exampleLabel,
   hidden,
   snap,
   onOpen,
@@ -169,6 +179,7 @@ function TestimonialSlideCard({
   quote: string;
   context: string;
   starsLabel: string;
+  exampleLabel?: string;
   hidden?: boolean;
   snap?: boolean;
   onOpen: (el: HTMLElement) => void;
@@ -184,7 +195,7 @@ function TestimonialSlideCard({
           onOpen(e.currentTarget);
         }
       }}
-      className={`border-pastel flex h-[12rem] w-[8.8rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-[0.7rem] shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
+      className={`border-pastel flex h-[12.5rem] w-[9rem] shrink-0 cursor-pointer flex-col overflow-hidden rounded-xl border bg-white p-[0.7rem] transition-shadow duration-200 hover:shadow-sm select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
         snap ? "snap-center" : ""
       } ${hidden ? "invisible" : ""}`}
     >
@@ -194,6 +205,7 @@ function TestimonialSlideCard({
         quote={quote}
         context={context}
         starsLabel={starsLabel}
+        exampleLabel={exampleLabel}
         size="slide"
       />
     </figure>
@@ -263,6 +275,7 @@ function TestimonialModal({
           quote={quote}
           context={context}
           starsLabel={t.testimonials.starsLabel}
+          exampleLabel={t.testimonials.exampleLabel}
           size="modal"
         />
       </figure>
@@ -530,6 +543,7 @@ export function TestimonialsSlider() {
         quote={quote}
         context={context}
         starsLabel={t.testimonials.starsLabel}
+        exampleLabel={t.testimonials.exampleLabel}
         snap={isMarquee && touchPrimary}
         hidden={openCard?.key === key}
         onOpen={(el) => handleCardOpen(key, el, item)}
@@ -545,16 +559,13 @@ export function TestimonialsSlider() {
       className="scroll-mt-24 overflow-x-hidden overflow-y-visible"
     >
       <div className="bg-forest text-cream border-pastel/25 border-b">
-        <div className="mx-auto max-w-6xl px-4 py-6 text-center sm:px-6 sm:py-8">
+        <div className="mx-auto max-w-6xl px-4 py-2.5 text-center sm:px-6 sm:py-3">
           <h2
             id="testimonials-heading"
-            className="text-3xl font-semibold sm:text-4xl"
+            className="text-lg font-semibold tracking-tight sm:text-xl"
           >
             {t.testimonials.title}
           </h2>
-          <p className="text-cream/85 mx-auto mt-3 max-w-md text-base leading-relaxed">
-            {t.testimonials.subtitle}
-          </p>
         </div>
       </div>
 

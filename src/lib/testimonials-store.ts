@@ -69,9 +69,11 @@ export async function listPublishedTestimonials(): Promise<Testimonial[]> {
     .map(toPublicTestimonial);
 
   const publishedIds = new Set(published.map((item) => item.id));
-  const mocks = MOCK_TESTIMONIALS.filter((item) => !publishedIds.has(item.id));
+  if (published.length > 0) {
+    return published;
+  }
 
-  return [...published, ...mocks];
+  return MOCK_TESTIMONIALS.map((item) => ({ ...item, isExample: true }));
 }
 
 export async function listAllTestimonials() {

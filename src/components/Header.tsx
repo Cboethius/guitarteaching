@@ -40,6 +40,7 @@ function syncHashToSection(section: HomeNavSection | "") {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [homeSection, setHomeSection] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const { locale, t } = useLocale();
   const pathname = usePathname();
   const tagline = locale === "de" ? site.taglineDe : site.taglineEn;
@@ -65,6 +66,13 @@ export function Header() {
       window.removeEventListener("resize", syncHomeSection);
     };
   }, [pathname]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const goHome = (e?: React.MouseEvent) => {
     if (pathname !== "/") return;
@@ -97,21 +105,27 @@ export function Header() {
   };
 
   return (
-    <header className="border-pastel sticky top-0 z-50 border-b bg-cream/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+    <header
+      className={`border-pastel sticky top-0 z-50 border-b bg-cream/95 backdrop-blur-sm transition-shadow duration-200 ${
+        scrolled ? "shadow-sm" : ""
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
           onClick={goHome}
           className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
         >
-          <span className="text-forest block text-lg font-semibold">
+          <span className="text-forest block text-base font-semibold sm:text-lg">
             {site.name}
           </span>
-          <span className="text-forest/70 block text-xs">{tagline}</span>
+          <span className="text-forest/70 block text-[0.6875rem] leading-tight sm:text-xs">
+            {tagline}
+          </span>
         </Link>
 
         <nav
-          className="hidden items-center gap-5 md:flex"
+          className="hidden items-center gap-4 md:flex"
           aria-label={t.a11y.mainNav}
         >
           {links.map((l) => {
@@ -170,12 +184,12 @@ export function Header() {
       {open && (
         <nav
           id="mobile-nav"
-          className="border-pastel flex flex-col gap-3 border-t px-4 py-4 md:hidden"
+          className="border-pastel flex flex-col gap-0.5 border-t bg-cream px-4 py-3 md:hidden"
           aria-label={t.a11y.mainNav}
         >
           {links.map((l) => {
             const active = isActive(l.href, l.hash);
-            const className = `min-h-11 inline-flex items-center text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-sm ${
+            const className = `min-h-11 inline-flex items-center rounded-sm px-1 text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 ${
               active ? "text-forest underline underline-offset-4" : "text-forest/80"
             }`;
             return l.hash ? (

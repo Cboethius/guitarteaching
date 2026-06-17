@@ -103,4 +103,23 @@ body {
   .btn-primary {
     @apply inline-flex min-h-11 items-center justify-center rounded-full bg-forest px-6 py-2.5 text-sm font-semibold leading-tight text-cream transition-colors hover:bg-forest/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2;
   }
+
+  .btn-secondary {
+    @apply border-forest text-forest hover:bg-pastel-light/50 inline-flex min-h-11 items-center justify-center rounded-full border-2 px-6 py-2.5 text-sm font-semibold leading-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2;
+  }
+
+  .section-card {
+    @apply border-pastel rounded-2xl border bg-white p-6 transition-shadow duration-200 hover:shadow-sm motion-reduce:transition-none motion-reduce:hover:shadow-none;
+  }
+
+  .pricing-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: calc(50% - 9.25rem);
+    scrollbar-width: none;
+  }
+
+  .pricing-scroll::-webkit-scrollbar {
+    display: none;
+  }
 }

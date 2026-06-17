@@ -1,13 +1,35 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "@/lib/i18n/context";
 import type { Locale } from "@/lib/i18n/types";
 
+function stripLocalePrefix(pathname: string) {
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    return pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+  }
+  if (pathname === "/de" || pathname.startsWith("/de/")) {
+    return pathname.replace(/^\/de(?=\/|$)/, "") || "/";
+  }
+  return pathname;
+}
+
+function localePath(pathname: string, locale: Locale) {
+  const base = stripLocalePrefix(pathname);
+  if (locale === "en") {
+    return base === "/" ? "/en" : `/en${base}`;
+  }
+  return base;
+}
+
 export function LanguageSwitcher({ className = "" }: { className?: string }) {
   const { locale, setLocale, t } = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
 
   function select(next: Locale) {
     setLocale(next);
+    router.push(localePath(pathname, next));
   }
 
   return (

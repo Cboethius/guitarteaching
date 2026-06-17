@@ -9,8 +9,8 @@ export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="border-pastel mt-auto border-t bg-pastel-light/40">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <footer className="border-pastel mt-auto border-t bg-pastel-light/30">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-2 items-start gap-x-6 gap-y-8 sm:flex sm:flex-row sm:gap-x-12 lg:gap-x-16">
           <div>
             <p className="text-lg font-semibold">{site.name}</p>

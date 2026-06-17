@@ -88,7 +88,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     zoom: single(
       "zoom",
       "zoom",
-      "Einzelne Zoom-Probelektion",
+      "Zoom, Probelektion",
       "Single Zoom trial lesson",
       32,
       45,
@@ -96,7 +96,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     neutral: single(
       "neutral",
       "neutral",
-      "Einzelne Probelektion am neutralen Ort",
+      "Neutraler Ort, Probelektion",
       "Single trial lesson, neutral ground",
       42,
       45,
@@ -104,7 +104,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     home: single(
       "home",
       "home",
-      "Einzelne Probelektion bei Ihnen zu Hause",
+      "Bei Ihnen, Probelektion",
       "Single trial lesson, at your home",
       48,
       45,
@@ -112,7 +112,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "zoom-bundle-5": bundle(
       "zoom-bundle-5",
       "zoom",
-      "5er-Abo Zoom (45 Min./Lektion)",
+      "Zoom, 5 Lektionen",
       "5-lesson Zoom bundle (45 min each)",
       72,
       5,
@@ -120,7 +120,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "zoom-bundle-10": bundle(
       "zoom-bundle-10",
       "zoom",
-      "10er-Abo Zoom (45 Min./Lektion)",
+      "Zoom, 10 Lektionen",
       "10-lesson Zoom bundle (45 min each)",
       65,
       10,
@@ -128,7 +128,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "neutral-bundle-5": bundle(
       "neutral-bundle-5",
       "neutral",
-      "5er-Abo neutraler Ort (45 Min./Lektion)",
+      "Neutraler Ort, 5 Lektionen",
       "5-lesson bundle, neutral ground",
       78,
       5,
@@ -136,7 +136,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "neutral-bundle-10": bundle(
       "neutral-bundle-10",
       "neutral",
-      "10er-Abo neutraler Ort (45 Min./Lektion)",
+      "Neutraler Ort, 10 Lektionen",
       "10-lesson bundle, neutral ground",
       72,
       10,
@@ -144,7 +144,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "home-bundle-5": bundle(
       "home-bundle-5",
       "home",
-      "5er-Abo bei Ihnen zu Hause (45 Min./Lektion)",
+      "Bei Ihnen, 5 Lektionen",
       "5-lesson bundle, at your home",
       82,
       5,
@@ -152,7 +152,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "home-bundle-10": bundle(
       "home-bundle-10",
       "home",
-      "10er-Abo bei Ihnen zu Hause (45 Min./Lektion)",
+      "Bei Ihnen, 10 Lektionen",
       "10-lesson bundle, at your home",
       76,
       10,
@@ -162,7 +162,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     zoom: single(
       "zoom",
       "zoom",
-      "Einzelne Zoom-Probelektion, Kind",
+      "Zoom, Probelektion (Kind)",
       "Single Zoom trial lesson, child",
       26,
       30,
@@ -170,7 +170,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     neutral: single(
       "neutral",
       "neutral",
-      "Einzelne Probelektion am neutralen Ort, Kind",
+      "Neutraler Ort, Probelektion (Kind)",
       "Single trial lesson, neutral ground, child",
       34,
       30,
@@ -178,7 +178,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     home: single(
       "home",
       "home",
-      "Einzelne Probelektion bei Ihnen zu Hause, Kind",
+      "Bei Ihnen, Probelektion (Kind)",
       "Single trial lesson, at your home, child",
       38,
       30,
@@ -186,7 +186,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "zoom-bundle-5": bundle(
       "zoom-bundle-5",
       "zoom",
-      "5er-Abo Zoom, Kind (45 Min./Lektion)",
+      "Zoom, 5 Lektionen (Kind)",
       "5-lesson Zoom bundle, child",
       58,
       5,
@@ -194,7 +194,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "zoom-bundle-10": bundle(
       "zoom-bundle-10",
       "zoom",
-      "10er-Abo Zoom, Kind (45 Min./Lektion)",
+      "Zoom, 10 Lektionen (Kind)",
       "10-lesson Zoom bundle, child",
       52,
       10,
@@ -202,7 +202,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "neutral-bundle-5": bundle(
       "neutral-bundle-5",
       "neutral",
-      "5er-Abo neutraler Ort, Kind (30–45 Min./Lektion)",
+      "Neutraler Ort, 5 Lektionen (Kind, 30–45 Min.)",
       "5-lesson neutral, child (30–45 min)",
       62,
       5,
@@ -211,7 +211,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "neutral-bundle-10": bundle(
       "neutral-bundle-10",
       "neutral",
-      "10er-Abo neutraler Ort, Kind (30–45 Min./Lektion)",
+      "Neutraler Ort, 10 Lektionen (Kind, 30–45 Min.)",
       "10-lesson neutral, child (30–45 min)",
       58,
       10,
@@ -220,7 +220,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "home-bundle-5": bundle(
       "home-bundle-5",
       "home",
-      "5er-Abo bei Ihnen zu Hause, Kind (30–45 Min./Lektion)",
+      "Bei Ihnen, 5 Lektionen (Kind, 30–45 Min.)",
       "5-lesson at home, child (30–45 min)",
       66,
       5,
@@ -229,7 +229,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     "home-bundle-10": bundle(
       "home-bundle-10",
       "home",
-      "10er-Abo bei Ihnen zu Hause, Kind (30–45 Min./Lektion)",
+      "Bei Ihnen, 10 Lektionen (Kind, 30–45 Min.)",
       "10-lesson at home, child (30–45 min)",
       60,
       10,
@@ -328,4 +328,29 @@ export function resolveProductId(
   const list = productListFor(audience);
   if (mapped && list.includes(mapped as ProductId)) return mapped as ProductId;
   return defaultProductFor(audience);
+}
+
+export type PricingTeaserRow = {
+  format: LessonFormat;
+  trialChf: number;
+  bundle5TotalChf: number;
+  bundle10TotalChf: number;
+};
+
+export function getPricingTeaserRows(audience: Audience): PricingTeaserRow[] {
+  return lessonFormats.map((format) => {
+    const trial = getProduct(audience, format);
+    const bundle5 = getProduct(audience, buildProductId(format, "bundle", 5));
+    const bundle10 = getProduct(audience, buildProductId(format, "bundle", 10));
+    return {
+      format,
+      trialChf: trial.lessonValueChf,
+      bundle5TotalChf: bundle5.lessonValueChf,
+      bundle10TotalChf: bundle10.lessonValueChf,
+    };
+  });
+}
+
+export function getLowestTrialChf(audience: Audience): number {
+  return Math.min(...getPricingTeaserRows(audience).map((row) => row.trialChf));
 }

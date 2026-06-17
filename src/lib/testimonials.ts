@@ -35,7 +35,8 @@ export type Testimonial = {
   /** 1–5 stars */
   rating: number;
   seaCreature?: TestimonialSeaCreature;
+  /** Shown when using placeholder content */
+  isExample?: boolean;
 };
 
-/** Card width (8.8rem) + gap (0.8rem) — keep in sync with TestimonialsSlider */
-export const TESTIMONIAL_CARD_STEP_PX = 141 + 13;
+export const TESTIMONIAL_CARD_STEP_PX = 157;
