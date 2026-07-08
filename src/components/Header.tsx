@@ -114,14 +114,24 @@ export function Header() {
         <Link
           href="/"
           onClick={goHome}
-          className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
+          className="flex min-w-0 items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 sm:gap-3"
         >
-          <span className="text-forest block text-base font-semibold sm:text-lg">
-            {site.name}
-          </span>
-          <span className="text-forest/70 block text-[0.6875rem] leading-tight sm:text-xs">
-            {tagline}
-          </span>
+          <img
+            src={site.logoSrc}
+            alt={site.name}
+            width={48}
+            height={48}
+            className="h-10 w-auto shrink-0 sm:h-11"
+            decoding="async"
+          />
+          <div className="min-w-0">
+            <span className="text-forest block text-base font-semibold leading-tight sm:text-lg">
+              {site.displayName}
+            </span>
+            <span className="text-forest/70 block text-[0.6875rem] leading-tight sm:text-xs">
+              {tagline}
+            </span>
+          </div>
         </Link>
 
         <nav

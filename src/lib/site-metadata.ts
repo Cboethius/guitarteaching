@@ -23,6 +23,10 @@ export function buildSiteMetadata(locale: "de" | "en"): Metadata {
       template: `%s, ${site.name}`,
     },
     description,
+    icons: {
+      icon: "/logo.png",
+      apple: "/logo.png",
+    },
     alternates: {
       canonical: isEn ? "/en" : "/",
       languages: {
@@ -75,7 +79,7 @@ export function musicSchoolJsonLd(locale: "de" | "en") {
       ? `Guitar lessons in Zurich with ${site.teacher}`
       : `Gitarrenunterricht in Zürich mit ${site.teacher}`,
     url: isEn ? `${siteUrl}/en` : siteUrl,
-    image: `${siteUrl}/hero/DSCF3249-hero.jpg`,
+    image: `${siteUrl}/logo.png`,
     email: site.email,
     telephone: site.phone,
     address: {

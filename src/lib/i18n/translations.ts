@@ -3,7 +3,7 @@ import type { Locale } from "./types";
 const de = {
   a11y: {
     skipToContent: "Zum Inhalt springen",
-    introVideo: "Vorstellungsvideo: Gitarrenunterricht bei Axe School",
+    introVideo: "Vorstellungsvideo: Gitarrenunterricht bei Learn2Strum",
     mainNav: "Hauptnavigation",
     openMenu: "Menü öffnen",
     closeMenu: "Menü schliessen",
@@ -20,7 +20,7 @@ const de = {
   },
   hero: {
     tagline: "Gitarrenunterricht Zürich",
-    title: "Gitarre lernen",
+    title: "Gitarre spielen lernen",
     titleAccent: "Klar erklärt. Mit Geduld und Spass.",
     subtitle:
       "Gitarre lernen braucht Zeit, das ist normal. Ich erkläre Ihnen alles verständlich und passe das Tempo an Sie an.",
@@ -35,7 +35,7 @@ const de = {
     sendLead: "Schreiben Sie mir per ",
     or: " oder ",
     reason:
-      "Melden Sie sich gern: Wir klären Format, Termin und Ort, oder ich beantworte Ihre Fragen.",
+      "Wir besprechen zusammen Format, Termin und Ort, oder ich beantworte Ihre Fragen.",
   },
   about: {
     title: "Über mich",
@@ -243,7 +243,7 @@ const de = {
       title: "Impressum",
       providerHeading: "Verantwortlich für diese Website",
       providerBody: [
-        "Angaben gemäss schweizerischem Recht (UWG) zum Gitarrenunterricht über Axe School.",
+        "Angaben gemäss schweizerischem Recht (UWG) zum Gitarrenunterricht über Learn2Strum.",
       ],
       country: "Schweiz",
       emailLabel: "E-Mail:",
@@ -367,7 +367,7 @@ const de = {
     terms: {
       title: "Allgemeine Geschäftsbedingungen (AGB)",
       intro:
-        "Diese Bedingungen gelten für Gitarrenunterricht, den Sie über diese Website bei Christian Boethius (Axe School) buchen.",
+        "Diese Bedingungen gelten für Gitarrenunterricht, den Sie über diese Website bei Christian Boethius (Learn2Strum) buchen.",
       updated: "Stand: Mai 2026.",
       sections: [
         {
@@ -446,7 +446,7 @@ const de = {
 const en = {
   a11y: {
     skipToContent: "Skip to content",
-    introVideo: "Intro video: guitar lessons at Axe School",
+    introVideo: "Intro video: guitar lessons at Learn2Strum",
     mainNav: "Main navigation",
     openMenu: "Open menu",
     closeMenu: "Close menu",
@@ -463,7 +463,7 @@ const en = {
   },
   hero: {
     tagline: "Guitar lessons in Zurich",
-    title: "Learn guitar",
+    title: "Learn to play guitar",
     titleAccent: "With clarity, patience, and enjoyment.",
     subtitle:
       "Learning guitar takes time and practice, and that's part of it. I guide you step by step, so lessons stay clear and enjoyable.",
@@ -478,7 +478,7 @@ const en = {
     sendLead: "Message me on ",
     or: " or ",
     reason:
-      "We can figure out format, time, and place together, or I can answer any questions.",
+      "We can discuss format, time, and place together. Happy to answer any other questions you have.",
   },
   about: {
     title: "About me",
@@ -686,7 +686,7 @@ const en = {
       title: "Impressum",
       providerHeading: "Responsible for this website",
       providerBody: [
-        "Provider identification under Swiss law (UWG) for guitar lessons offered through Axe School.",
+        "Provider identification under Swiss law (UWG) for guitar lessons offered through Learn2Strum.",
       ],
       country: "Switzerland",
       emailLabel: "Email:",
@@ -810,7 +810,7 @@ const en = {
     terms: {
       title: "Terms of service",
       intro:
-        "These terms apply to guitar lessons you book through this website with Christian Boethius (Axe School).",
+        "These terms apply to guitar lessons you book through this website with Christian Boethius (Learn2Strum).",
       updated: "Last updated: May 2026.",
       sections: [
         {

@@ -1,5 +1,7 @@
 export const site = {
-  name: "Axe School",
+  name: "Learn2Strum",
+  displayName: "Learn2Strum",
+  logoSrc: "/logo.png",
   teacher: "Christian Boethius",
   taglineDe: "Gitarrenunterricht Zürich",
   taglineEn: "Guitar lessons in Zurich",
