@@ -28,10 +28,11 @@ function resolveToken(tokenProp?: string, paramToken?: string | string[]) {
 export function TestimonialReviewPage({ token: tokenProp }: { token?: string }) {
   const { token: paramToken } = useParams<{ token: string }>();
   const token = resolveToken(tokenProp, paramToken);
+  const missingToken = !token;
   const { t } = useLocale();
   const tr = t.testimonialReview;
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!missingToken);
   const [error, setError] = useState<"not_found" | "closed" | "load" | null>(
     null,
   );
@@ -48,11 +49,7 @@ export function TestimonialReviewPage({ token: tokenProp }: { token?: string }) 
   const [consent, setConsent] = useState(false);
 
   useEffect(() => {
-    if (!token) {
-      setError("not_found");
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
 
     fetch(`/api/testimonials/review/${encodeURIComponent(token)}`)
       .then(async (res) => {
@@ -78,6 +75,15 @@ export function TestimonialReviewPage({ token: tokenProp }: { token?: string }) 
       .catch(() => setError("load"))
       .finally(() => setLoading(false));
   }, [token]);
+
+  if (missingToken) {
+    return (
+      <div className={pageShell}>
+        <h1 className={pageTitle}>{tr.title}</h1>
+        <p className={pageLead}>{tr.notFound}</p>
+      </div>
+    );
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();

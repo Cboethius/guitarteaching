@@ -223,11 +223,6 @@ function TestimonialModal({
 }) {
   const { locale, t } = useLocale();
   const { quote, context } = localizedText(item, locale);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -245,7 +240,7 @@ function TestimonialModal({
     };
   }, []);
 
-  if (!mounted) return null;
+  if (typeof document === "undefined") return null;
 
   return createPortal(
     <>

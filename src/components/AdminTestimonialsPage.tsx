@@ -75,7 +75,10 @@ export function AdminTestimonialsPage() {
   }, [ta.loadError]);
 
   useEffect(() => {
-    loadRows();
+    const timer = window.setTimeout(() => {
+      void loadRows();
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [loadRows]);
 
   async function handleLogin(e: React.FormEvent) {

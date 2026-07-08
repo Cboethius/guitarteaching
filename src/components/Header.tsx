@@ -8,8 +8,7 @@ import { ScrollHashLink } from "@/components/ScrollHashLink";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
 
-const homeNavSectionIds = ["how-i-teach", "pricing"] as const;
-type HomeNavSection = (typeof homeNavSectionIds)[number];
+type HomeNavSection = "how-i-teach" | "pricing";
 
 /** Match scroll-mt-24 sections — marker line below sticky header */
 const SCROLL_MARKER_OFFSET = 120;
@@ -46,10 +45,7 @@ export function Header() {
   const tagline = locale === "de" ? site.taglineDe : site.taglineEn;
 
   useEffect(() => {
-    if (pathname !== "/") {
-      setHomeSection("");
-      return;
-    }
+    if (pathname !== "/") return;
 
     const syncHomeSection = () => {
       const section = activeHomeSection();

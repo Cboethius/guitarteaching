@@ -16,7 +16,7 @@ export const site = {
     process.env.NEXT_PUBLIC_INTRO_VIDEO_URL ??
     "https://player.vimeo.com/video/1194750080?h=1b63737d87&title=0&byline=0&portrait=0",
   twintLink: process.env.TWINT_PAYLINK ?? "",
-  iban: process.env.PAYMENT_IBAN ?? "CH00 0000 0000 0000 0000 0",
+  iban: process.env.PAYMENT_IBAN ?? "CH15 0070 0114 5000 9980 7",
   accountName: process.env.PAYMENT_ACCOUNT_NAME ?? "Christian Boethius",
 } as const;
 
