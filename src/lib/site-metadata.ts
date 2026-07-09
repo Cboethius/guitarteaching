@@ -23,6 +23,30 @@ export function buildSiteMetadata(locale: "de" | "en"): Metadata {
       template: `%s, ${site.name}`,
     },
     description,
+    icons: {
+      icon: [
+        {
+          url: "/favicons/icon-light.png",
+          type: "image/png",
+          media: "(prefers-color-scheme: light)",
+        },
+        {
+          url: "/favicons/icon-dark.png",
+          type: "image/png",
+          media: "(prefers-color-scheme: dark)",
+        },
+      ],
+      apple: [
+        {
+          url: "/favicons/apple-light.png",
+          media: "(prefers-color-scheme: light)",
+        },
+        {
+          url: "/favicons/apple-dark.png",
+          media: "(prefers-color-scheme: dark)",
+        },
+      ],
+    },
     alternates: {
       canonical: isEn ? "/en" : "/",
       languages: {
