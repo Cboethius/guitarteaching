@@ -24,11 +24,8 @@ export function buildSiteMetadata(locale: "de" | "en"): Metadata {
     },
     description,
     icons: {
-      icon: [
-        { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/logo.png", type: "image/png" },
-      ],
-      apple: "/logo.png",
+      icon: [{ url: "/favicon.png", type: "image/png" }],
+      apple: "/favicon.png",
     },
     alternates: {
       canonical: isEn ? "/en" : "/",
