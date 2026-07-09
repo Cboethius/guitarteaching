@@ -14,6 +14,8 @@ type AdminRow = {
   status: "draft" | "pending" | "published" | "rejected";
   quoteDe: string;
   quoteEn: string;
+  teacherReplyDe?: string;
+  teacherReplyEn?: string;
   author: string;
   contextDe: string;
   contextEn: string;
@@ -36,6 +38,9 @@ export function AdminTestimonialsPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [newReviewUrl, setNewReviewUrl] = useState<string | null>(null);
+  const [replyDrafts, setReplyDrafts] = useState<Record<string, string>>({});
+  const [savingReplyId, setSavingReplyId] = useState<string | null>(null);
+  const [savedReplyId, setSavedReplyId] = useState<string | null>(null);
 
   const creatureLabels = useMemo(
     () =>
@@ -158,6 +163,33 @@ export function AdminTestimonialsPage() {
       body: JSON.stringify({ seaCreature }),
     });
     await loadRows();
+  }
+
+  function replyForRow(row: AdminRow) {
+    return replyDrafts[row.id] ?? row.teacherReplyDe ?? "";
+  }
+
+  async function handleReplySave(row: AdminRow) {
+    setSavingReplyId(row.id);
+    setSavedReplyId(null);
+    const teacherReplyDe = replyForRow(row);
+    try {
+      const res = await fetch(`/api/admin/testimonials/${row.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          teacherReplyDe,
+          teacherReplyEn: row.teacherReplyEn ?? "",
+        }),
+      });
+      if (res.ok) {
+        setSavedReplyId(row.id);
+        window.setTimeout(() => setSavedReplyId((prev) => (prev === row.id ? null : prev)), 1800);
+        await loadRows();
+      }
+    } finally {
+      setSavingReplyId(null);
+    }
   }
 
   async function handleDelete(id: string) {
@@ -290,6 +322,36 @@ export function AdminTestimonialsPage() {
               value={avatar}
               onChange={(creature) => handleAvatarChange(row.id, creature)}
             />
+          </div>
+        )}
+
+        {row.status !== "draft" && (
+          <div className="mt-3">
+            <label className="block text-sm font-medium">
+              {ta.replyLabel}
+              <textarea
+                value={replyForRow(row)}
+                onChange={(e) =>
+                  setReplyDrafts((prev) => ({ ...prev, [row.id]: e.target.value }))
+                }
+                rows={3}
+                className="border-pastel mt-1 w-full rounded-lg border bg-cream px-3 py-2 text-sm leading-relaxed"
+                placeholder={ta.replyHint}
+              />
+            </label>
+            <div className="mt-2 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleReplySave(row)}
+                disabled={savingReplyId === row.id}
+                className="border-forest text-forest hover:bg-pastel-light/60 rounded-full border px-4 py-1.5 text-sm font-medium disabled:opacity-60"
+              >
+                {savingReplyId === row.id ? "…" : ta.saveReply}
+              </button>
+              {savedReplyId === row.id ? (
+                <span className="text-forest/60 text-xs">{ta.replySaved}</span>
+              ) : null}
+            </div>
           </div>
         )}
 

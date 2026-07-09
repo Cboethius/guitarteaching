@@ -5,7 +5,7 @@ export const site = {
   teacher: "Christian Boethius",
   taglineDe: "Gitarrenunterricht Zürich",
   taglineEn: "Guitar lessons in Zurich",
-  email: "christian@boethius.ch",
+  email: "info@learn2strum.com",
   phone: "+41 76 805 86 68",
   phoneTel: "+41768058668",
   whatsappUrl: "https://wa.me/41768058668",
@@ -16,6 +16,7 @@ export const site = {
     process.env.NEXT_PUBLIC_INTRO_VIDEO_URL ??
     "https://player.vimeo.com/video/1194750080?h=1b63737d87&title=0&byline=0&portrait=0",
   twintLink: process.env.TWINT_PAYLINK ?? "",
+  twintPhone: process.env.TWINT_PHONE ?? "+41 76 805 86 68",
   iban: process.env.PAYMENT_IBAN ?? "CH15 0070 0114 5000 9980 7",
   accountName: process.env.PAYMENT_ACCOUNT_NAME ?? "Christian Boethius",
 } as const;

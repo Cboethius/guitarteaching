@@ -3,6 +3,7 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { isTestimonialSeaCreature } from "@/lib/testimonials";
 import {
   deleteTestimonial,
+  updateTestimonialReply,
   updateTestimonialSeaCreature,
 } from "@/lib/testimonials-store";
 
@@ -14,13 +15,30 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 
   const { id } = await context.params;
-  const body = (await request.json()) as { seaCreature?: string };
+  const body = (await request.json()) as {
+    seaCreature?: string;
+    teacherReplyDe?: string;
+    teacherReplyEn?: string;
+  };
 
-  if (!body.seaCreature || !isTestimonialSeaCreature(body.seaCreature)) {
-    return NextResponse.json({ error: "invalid_creature" }, { status: 400 });
+  let result:
+    | Awaited<ReturnType<typeof updateTestimonialSeaCreature>>
+    | Awaited<ReturnType<typeof updateTestimonialReply>>;
+
+  if (body.seaCreature != null) {
+    if (!isTestimonialSeaCreature(body.seaCreature)) {
+      return NextResponse.json({ error: "invalid_creature" }, { status: 400 });
+    }
+    result = await updateTestimonialSeaCreature(id, body.seaCreature);
+  } else if (body.teacherReplyDe != null || body.teacherReplyEn != null) {
+    result = await updateTestimonialReply(
+      id,
+      body.teacherReplyDe ?? "",
+      body.teacherReplyEn ?? "",
+    );
+  } else {
+    return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
   }
-
-  const result = await updateTestimonialSeaCreature(id, body.seaCreature);
 
   if (!result) {
     return NextResponse.json({ error: "not_found" }, { status: 404 });

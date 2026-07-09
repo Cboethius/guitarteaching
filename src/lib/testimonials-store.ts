@@ -1,6 +1,5 @@
 import { randomBytes, randomUUID } from "crypto";
 import { readJsonStore, updateJsonStore } from "./json-store";
-import { MOCK_TESTIMONIALS } from "./testimonials-mock";
 import type { Testimonial, TestimonialSeaCreature } from "./testimonials";
 import { TESTIMONIAL_SEA_CREATURES } from "./testimonials";
 
@@ -12,6 +11,8 @@ export type StoredTestimonial = {
   status: TestimonialStatus;
   quoteDe: string;
   quoteEn: string;
+  teacherReplyDe: string;
+  teacherReplyEn: string;
   author: string;
   contextDe: string;
   contextEn: string;
@@ -49,6 +50,8 @@ export function toPublicTestimonial(row: StoredTestimonial): Testimonial {
     id: row.id,
     quoteDe: row.quoteDe,
     quoteEn: row.quoteEn || row.quoteDe,
+    teacherReplyDe: row.teacherReplyDe || undefined,
+    teacherReplyEn: row.teacherReplyEn || row.teacherReplyDe || undefined,
     author: row.author,
     contextDe: row.contextDe,
     contextEn: row.contextEn || row.contextDe,
@@ -59,7 +62,7 @@ export function toPublicTestimonial(row: StoredTestimonial): Testimonial {
 
 export async function listPublishedTestimonials(): Promise<Testimonial[]> {
   const rows = await readAll();
-  const published = rows
+  return rows
     .filter((r) => r.status === "published")
     .sort(
       (a, b) =>
@@ -67,13 +70,6 @@ export async function listPublishedTestimonials(): Promise<Testimonial[]> {
         new Date(a.publishedAt ?? a.createdAt).getTime(),
     )
     .map(toPublicTestimonial);
-
-  const publishedIds = new Set(published.map((item) => item.id));
-  if (published.length > 0) {
-    return published;
-  }
-
-  return MOCK_TESTIMONIALS.map((item) => ({ ...item, isExample: true }));
 }
 
 export async function listAllTestimonials() {
@@ -100,6 +96,8 @@ export async function createInvite(input: CreateInviteInput = {}) {
     status: "draft",
     quoteDe: "",
     quoteEn: "",
+    teacherReplyDe: "",
+    teacherReplyEn: "",
     author: "",
     contextDe: "",
     contextEn: "",
@@ -136,6 +134,8 @@ export async function createDraft(input: CreateDraftInput) {
     status: "draft",
     quoteDe: input.quoteDe.trim(),
     quoteEn: (input.quoteEn ?? "").trim(),
+    teacherReplyDe: "",
+    teacherReplyEn: "",
     author: input.author.trim(),
     contextDe: input.contextDe.trim(),
     contextEn: (input.contextEn ?? "").trim(),
@@ -301,6 +301,45 @@ export async function updateTestimonialSeaCreature(
     rows[idx] = {
       ...row,
       seaCreature,
+      updatedAt: now,
+    };
+    result = rows[idx];
+    return rows;
+  });
+
+  return result;
+}
+
+export async function updateTestimonialReply(
+  id: string,
+  teacherReplyDe: string,
+  teacherReplyEn?: string,
+): Promise<
+  StoredTestimonial | null | { error: "not_editable"; row: StoredTestimonial }
+> {
+  let result:
+    | null
+    | StoredTestimonial
+    | { error: "not_editable"; row: StoredTestimonial } = null;
+
+  await updateJsonStore(STORE_FILE, EMPTY_STORE, (rows) => {
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) {
+      result = null;
+      return rows;
+    }
+
+    const row = rows[idx];
+    if (row.status === "draft") {
+      result = { error: "not_editable", row };
+      return rows;
+    }
+
+    const now = new Date().toISOString();
+    rows[idx] = {
+      ...row,
+      teacherReplyDe: teacherReplyDe.trim(),
+      teacherReplyEn: (teacherReplyEn ?? "").trim(),
       updatedAt: now,
     };
     result = rows[idx];

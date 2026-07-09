@@ -63,6 +63,7 @@ function normalizeLoopScroll(
 function localizedText(item: Testimonial, locale: "de" | "en") {
   return {
     quote: locale === "de" ? item.quoteDe : item.quoteEn,
+    teacherReply: locale === "de" ? item.teacherReplyDe : item.teacherReplyEn,
     context: locale === "de" ? item.contextDe : item.contextEn,
   };
 }
@@ -109,18 +110,24 @@ function TestimonialCardContent({
   item,
   itemIndex,
   quote,
+  teacherReply,
   context,
   starsLabel,
   exampleLabel,
+  replyLabel,
   size,
+  onReplyOpen,
 }: {
   item: Testimonial;
   itemIndex: number;
   quote: string;
+  teacherReply?: string;
   context: string;
   starsLabel: string;
   exampleLabel?: string;
+  replyLabel: string;
   size: "slide" | "modal";
+  onReplyOpen?: () => void;
 }) {
   const large = size === "modal";
   const iconClass = large ? "h-14 w-14" : "h-11 w-11";
@@ -147,6 +154,26 @@ function TestimonialCardContent({
         className={`text-forest/85 mt-3 min-h-0 flex-1 leading-relaxed ${large ? "overflow-y-auto text-sm sm:text-base" : "overflow-hidden text-xs"}`}
       >
         <p className={large ? "" : "line-clamp-7 overflow-hidden"}>{quote}</p>
+        {teacherReply?.trim() ? (
+          large ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onReplyOpen?.();
+              }}
+              className="bg-pastel-light/40 text-forest/80 mt-2 w-full rounded-md p-2 text-left text-sm leading-snug"
+            >
+              <strong>{replyLabel}: </strong>
+              {teacherReply}
+            </button>
+          ) : (
+            <p className="bg-pastel-light/40 text-forest/80 mt-2 line-clamp-3 rounded-md p-2 text-[11px] leading-snug">
+              <strong>{replyLabel}: </strong>
+              {teacherReply}
+            </p>
+          )
+        ) : null}
       </blockquote>
 
       <figcaption className="mt-3 shrink-0 border-pastel border-t pt-2.5">
@@ -167,9 +194,11 @@ function TestimonialSlideCard({
   item,
   itemIndex,
   quote,
+  teacherReply,
   context,
   starsLabel,
   exampleLabel,
+  replyLabel,
   hidden,
   snap,
   onOpen,
@@ -177,9 +206,11 @@ function TestimonialSlideCard({
   item: Testimonial;
   itemIndex: number;
   quote: string;
+  teacherReply?: string;
   context: string;
   starsLabel: string;
   exampleLabel?: string;
+  replyLabel: string;
   hidden?: boolean;
   snap?: boolean;
   onOpen: (el: HTMLElement) => void;
@@ -203,9 +234,11 @@ function TestimonialSlideCard({
         item={item}
         itemIndex={itemIndex}
         quote={quote}
+        teacherReply={teacherReply}
         context={context}
         starsLabel={starsLabel}
         exampleLabel={exampleLabel}
+        replyLabel={replyLabel}
         size="slide"
       />
     </figure>
@@ -222,15 +255,22 @@ function TestimonialModal({
   onClose: () => void;
 }) {
   const { locale, t } = useLocale();
-  const { quote, context } = localizedText(item, locale);
+  const { quote, teacherReply, context } = localizedText(item, locale);
+  const [replyModalOpen, setReplyModalOpen] = useState(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (replyModalOpen) {
+          setReplyModalOpen(false);
+          return;
+        }
+        onClose();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  }, [onClose, replyModalOpen]);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -248,7 +288,13 @@ function TestimonialModal({
         type="button"
         aria-label="Close"
         className="fixed inset-0 z-40 bg-forest/25"
-        onClick={onClose}
+        onClick={() => {
+          if (replyModalOpen) {
+            setReplyModalOpen(false);
+            return;
+          }
+          onClose();
+        }}
       />
       <figure
         role="dialog"
@@ -268,12 +314,34 @@ function TestimonialModal({
           item={item}
           itemIndex={itemIndex}
           quote={quote}
+          teacherReply={teacherReply}
           context={context}
           starsLabel={t.testimonials.starsLabel}
           exampleLabel={t.testimonials.exampleLabel}
+          replyLabel={t.testimonials.replyLabel}
           size="modal"
+          onReplyOpen={() => setReplyModalOpen(true)}
         />
       </figure>
+      {replyModalOpen && teacherReply?.trim() ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close reply"
+            className="fixed inset-0 z-[55] bg-black/10"
+            onClick={() => setReplyModalOpen(false)}
+          />
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.testimonials.replyLabel}
+            className="border-pastel fixed right-4 bottom-4 left-4 z-[60] mx-auto w-[min(calc(100vw-2rem),34rem)] rounded-xl border bg-white p-4 shadow-xl sm:right-6 sm:bottom-6 sm:left-6"
+          >
+            <p className="text-sm font-semibold">{t.testimonials.replyLabel}</p>
+            <p className="text-forest/80 mt-2 text-sm leading-relaxed">{teacherReply}</p>
+          </section>
+        </>
+      ) : null}
     </>,
     document.body,
   );
@@ -527,7 +595,7 @@ export function TestimonialsSlider() {
     testimonials.findIndex((entry) => entry.id === item.id);
 
   const renderSlideCard = (item: Testimonial, key: string) => {
-    const { quote, context } = localizedText(item, locale);
+    const { quote, teacherReply, context } = localizedText(item, locale);
     const itemIndex = itemIndexFor(item);
 
     return (
@@ -536,9 +604,11 @@ export function TestimonialsSlider() {
         item={item}
         itemIndex={itemIndex >= 0 ? itemIndex : 0}
         quote={quote}
+        teacherReply={teacherReply}
         context={context}
         starsLabel={t.testimonials.starsLabel}
         exampleLabel={t.testimonials.exampleLabel}
+        replyLabel={t.testimonials.replyLabel}
         snap={isMarquee && touchPrimary}
         hidden={openCard?.key === key}
         onOpen={(el) => handleCardOpen(key, el, item)}

@@ -48,6 +48,11 @@ export function SuccessContent({ booking }: { booking: Booking | null }) {
                 <p className="mt-2">
                   <strong>IBAN:</strong> {site.iban}
                 </p>
+                {site.twintPhone && (
+                  <p className="mt-2">
+                    <strong>TWINT:</strong> {site.twintPhone}
+                  </p>
+                )}
                 {site.twintLink && (
                   <p className="mt-2">
                     <a href={site.twintLink} className="underline">

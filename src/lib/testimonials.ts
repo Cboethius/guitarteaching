@@ -29,6 +29,8 @@ export type Testimonial = {
   id: string;
   quoteDe: string;
   quoteEn: string;
+  teacherReplyDe?: string;
+  teacherReplyEn?: string;
   author: string;
   contextDe: string;
   contextEn: string;
