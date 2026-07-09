@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useLocale } from "@/lib/i18n/context";
 import {
   getPricingTeaserRows,
+  type Audience,
   type LessonFormat,
   type PricingTeaserRow,
 } from "@/lib/pricing";
@@ -13,6 +14,7 @@ const CARD_CLASS =
   "w-[18.5rem] max-w-[calc(100vw-2rem)] shrink-0 snap-center";
 
 function PricingCard({
+  audience,
   row,
   formatTitle,
   trialPrice,
@@ -21,6 +23,7 @@ function PricingCard({
   bundle10,
   className = "",
 }: {
+  audience: Audience;
   row: PricingTeaserRow;
   formatTitle: (format: LessonFormat) => string;
   trialPrice: string;
@@ -30,19 +33,27 @@ function PricingCard({
   className?: string;
 }) {
   return (
-    <article className={`section-card p-4 text-center ${className}`.trim()}>
-      <h4 className="text-sm font-semibold sm:text-base">
-        {formatTitle(row.format)}
-      </h4>
-      <p className="text-forest mt-1 text-base font-semibold tracking-tight sm:text-lg">
-        {trialPrice.replace("{price}", String(row.trialChf))}
-      </p>
-      <p className="text-forest/75 mt-1 text-sm leading-snug">{trialNote}</p>
-      <ul className="text-forest/75 mt-2 space-y-1 text-sm leading-snug">
-        <li>{bundle5.replace("{price}", String(row.bundle5TotalChf))}</li>
-        <li>{bundle10.replace("{price}", String(row.bundle10TotalChf))}</li>
-      </ul>
-    </article>
+    <Link
+      href={`/book?audience=${audience}&product=${row.format}`}
+      className="block"
+      aria-label={`${formatTitle(row.format)}, ${trialPrice.replace("{price}", String(row.trialChf))}`}
+    >
+      <article
+        className={`section-card hover:border-forest/35 hover:shadow-sm p-4 text-center transition-[border-color,box-shadow] ${className}`.trim()}
+      >
+        <h4 className="text-sm font-semibold sm:text-base">
+          {formatTitle(row.format)}
+        </h4>
+        <p className="text-forest mt-1 text-base font-semibold tracking-tight sm:text-lg">
+          {trialPrice.replace("{price}", String(row.trialChf))}
+        </p>
+        <p className="text-forest/75 mt-1 text-sm leading-snug">{trialNote}</p>
+        <ul className="text-forest/75 mt-2 space-y-1 text-sm leading-snug">
+          <li>{bundle5.replace("{price}", String(row.bundle5TotalChf))}</li>
+          <li>{bundle10.replace("{price}", String(row.bundle10TotalChf))}</li>
+        </ul>
+      </article>
+    </Link>
   );
 }
 
@@ -55,9 +66,11 @@ type CardProps = {
 };
 
 function PricingCarousel({
+  audience,
   rows,
   ...cardProps
 }: {
+  audience: Audience;
   rows: PricingTeaserRow[];
 } & CardProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -145,6 +158,7 @@ function PricingCarousel({
       {loopRows.map(({ row, key }) => (
         <PricingCard
           key={key}
+          audience={audience}
           row={row}
           {...cardProps}
           className={CARD_CLASS}
@@ -156,6 +170,7 @@ function PricingCarousel({
 }
 
 function PricingGrid({
+  audience,
   rows,
   formatTitle,
   trialPrice,
@@ -163,6 +178,7 @@ function PricingGrid({
   bundle5,
   bundle10,
 }: {
+  audience: Audience;
   rows: PricingTeaserRow[];
   formatTitle: (format: LessonFormat) => string;
   trialPrice: string;
@@ -180,11 +196,11 @@ function PricingGrid({
 
   return (
     <>
-      <PricingCarousel rows={rows} {...cardProps} />
+      <PricingCarousel audience={audience} rows={rows} {...cardProps} />
 
       <div className="mt-4 hidden gap-3 sm:grid sm:grid-cols-3">
         {rows.map((row) => (
-          <PricingCard key={row.format} row={row} {...cardProps} />
+          <PricingCard key={row.format} audience={audience} row={row} {...cardProps} />
         ))}
       </div>
     </>
@@ -225,14 +241,14 @@ export function PricingTeaser() {
             <h3 className="text-center text-sm font-semibold sm:text-base">
               {t.pricing.sectionRegular}
             </h3>
-            <PricingGrid rows={regularRows} {...gridProps} />
+            <PricingGrid audience="regular" rows={regularRows} {...gridProps} />
           </div>
 
           <div className="mt-6">
             <h3 className="text-center text-sm font-semibold sm:text-base">
               {t.pricing.sectionChild}
             </h3>
-            <PricingGrid rows={childRows} {...gridProps} />
+            <PricingGrid audience="child" rows={childRows} {...gridProps} />
           </div>
 
           <p className="text-forest/80 mt-6 text-center text-sm leading-snug sm:text-base">
