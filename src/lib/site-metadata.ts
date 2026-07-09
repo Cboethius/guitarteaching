@@ -23,10 +23,6 @@ export function buildSiteMetadata(locale: "de" | "en"): Metadata {
       template: `%s, ${site.name}`,
     },
     description,
-    icons: {
-      icon: [{ url: "/favicon-v2.png", type: "image/png" }],
-      apple: "/favicon-v2.png",
-    },
     alternates: {
       canonical: isEn ? "/en" : "/",
       languages: {
