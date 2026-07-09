@@ -7,6 +7,13 @@ import { site } from "@/lib/site";
 
 export function Footer() {
   const { t } = useLocale();
+  const [houseNumber, cityLine] = site.addressRest
+    .split(",")
+    .map((part) => part.trim());
+  const streetLine = houseNumber
+    ? `${site.addressStreet} ${houseNumber}`
+    : site.addressStreet;
+  const postalLine = cityLine ?? site.addressRest;
 
   return (
     <footer className="border-pastel mt-auto border-t bg-pastel-light/30">
@@ -17,9 +24,8 @@ export function Footer() {
               <p className="text-lg font-semibold">{site.displayName}</p>
               <p className="text-forest/80 mt-1 text-sm">{site.teacher}</p>
               <p className="text-forest/80 mt-1 text-sm leading-snug">
-                {site.addressStreet}
-                <br />
-                {site.addressRest}
+                <span className="block">{streetLine}</span>
+                <span className="mt-1 block">{postalLine}</span>
               </p>
             </div>
             <div className="md:order-3">
