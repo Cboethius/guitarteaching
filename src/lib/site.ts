@@ -1,6 +1,6 @@
 export const site = {
-  name: "Learn2Strum",
-  displayName: "Learn2Strum",
+  name: "learn2strum.ch",
+  displayName: "learn2strum.ch",
   logoSrc: "/logo.png",
   teacher: "Christian Boethius",
   taglineDe: "Gitarrenunterricht Zürich",

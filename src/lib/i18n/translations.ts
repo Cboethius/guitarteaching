@@ -3,7 +3,7 @@ import type { Locale } from "./types";
 const de = {
   a11y: {
     skipToContent: "Zum Inhalt springen",
-    introVideo: "Vorstellungsvideo: Gitarrenunterricht bei Learn2Strum",
+    introVideo: "Vorstellungsvideo: Gitarrenunterricht bei learn2strum.ch",
     mainNav: "Hauptnavigation",
     openMenu: "Menü öffnen",
     closeMenu: "Menü schliessen",
@@ -247,7 +247,7 @@ const de = {
       title: "Impressum",
       providerHeading: "Verantwortlich für diese Website",
       providerBody: [
-        "Angaben gemäss schweizerischem Recht (UWG) zum Gitarrenunterricht über Learn2Strum.",
+        "Angaben gemäss schweizerischem Recht (UWG) zum Gitarrenunterricht über learn2strum.ch.",
       ],
       country: "Schweiz",
       emailLabel: "E-Mail:",
@@ -371,7 +371,7 @@ const de = {
     terms: {
       title: "Allgemeine Geschäftsbedingungen (AGB)",
       intro:
-        "Diese Bedingungen gelten für Gitarrenunterricht, den Sie über diese Website bei Christian Boethius (Learn2Strum) buchen.",
+        "Diese Bedingungen gelten für Gitarrenunterricht, den Sie über diese Website bei Christian Boethius (learn2strum.ch) buchen.",
       updated: "Stand: Mai 2026.",
       sections: [
         {
@@ -450,7 +450,7 @@ const de = {
 const en = {
   a11y: {
     skipToContent: "Skip to content",
-    introVideo: "Intro video: guitar lessons at Learn2Strum",
+    introVideo: "Intro video: guitar lessons at learn2strum.ch",
     mainNav: "Main navigation",
     openMenu: "Open menu",
     closeMenu: "Close menu",
@@ -694,7 +694,7 @@ const en = {
       title: "Impressum",
       providerHeading: "Responsible for this website",
       providerBody: [
-        "Provider identification under Swiss law (UWG) for guitar lessons offered through Learn2Strum.",
+        "Provider identification under Swiss law (UWG) for guitar lessons offered through learn2strum.ch.",
       ],
       country: "Switzerland",
       emailLabel: "Email:",
@@ -818,7 +818,7 @@ const en = {
     terms: {
       title: "Terms of service",
       intro:
-        "These terms apply to guitar lessons you book through this website with Christian Boethius (Learn2Strum).",
+        "These terms apply to guitar lessons you book through this website with Christian Boethius (learn2strum.ch).",
       updated: "Last updated: May 2026.",
       sections: [
         {
