@@ -5,7 +5,7 @@ import {
   productHasFlexibleDuration,
 } from "@/lib/pricing";
 import { saveBooking, type Booking } from "@/lib/bookings-store";
-import { getStripe } from "@/lib/stripe";
+import { getStripe, stripeClientErrorMessage } from "@/lib/stripe";
 import { checkoutOrigin } from "@/lib/checkout-origin";
 import { site } from "@/lib/site";
 import { getClientIp } from "@/lib/client-ip";
@@ -112,13 +112,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ bookingId: booking.id });
   } catch (e) {
+    const stripeMessage = stripeClientErrorMessage(e);
     const message = e instanceof Error ? e.message : "Server error";
-    console.error("[booking]", message);
-    const hint =
-      process.env.NODE_ENV === "development" &&
-      message.toLowerCase().includes("stripe")
-        ? message
-        : "Server error";
-    return NextResponse.json({ error: hint }, { status: 500 });
+    console.error("[booking]", stripeMessage ?? message, e);
+    return NextResponse.json(
+      { error: stripeMessage ?? "Server error" },
+      { status: stripeMessage ? 502 : 500 },
+    );
   }
 }
