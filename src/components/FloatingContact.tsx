@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "@/lib/i18n/context";
-import { site } from "@/lib/site";
+import { primaryMailtoHref, site } from "@/lib/site";
 
 const buttonClass =
   "bg-forest text-cream flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-colors hover:bg-forest/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2";
@@ -31,7 +31,7 @@ export function FloatingContact() {
         </svg>
       </a>
       <a
-        href={`mailto:${site.email}`}
+        href={primaryMailtoHref()}
         className={buttonClass}
         aria-label={t.a11y.contactEmail}
       >

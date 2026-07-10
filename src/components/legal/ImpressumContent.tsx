@@ -1,5 +1,6 @@
 "use client";
 
+import { ContactEmails } from "@/components/ContactEmails";
 import { LegalSection } from "@/components/legal/LegalSection";
 import { useLocale } from "@/lib/i18n/context";
 import { site } from "@/lib/site";
@@ -23,9 +24,10 @@ export function ImpressumContent() {
           </p>
           <p>
             {l.emailLabel}{" "}
-            <a href={`mailto:${site.email}`} className="underline">
-              {site.email}
-            </a>
+            <ContactEmails
+              className="mt-1 flex flex-col gap-0.5"
+              linkClassName="underline"
+            />
             <br />
             {l.phoneLabel}{" "}
             <a href={`tel:${site.phoneTel}`} className="underline">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "@/lib/i18n/context";
-import { site } from "@/lib/site";
+import { primaryMailtoHref, site } from "@/lib/site";
 
 const linkClass = "text-forest font-medium underline";
 
@@ -27,7 +27,7 @@ export function ContactHint({
         {t.hero.ctaWhatsapp}
       </a>
       {t.contact.or}
-      <a href={`mailto:${site.email}`} className={linkClass}>
+      <a href={primaryMailtoHref()} className={linkClass}>
         {t.hero.ctaEmail}
       </a>
       .

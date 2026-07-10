@@ -2,7 +2,7 @@
 
 import { LegalSection } from "@/components/legal/LegalSection";
 import { useLocale } from "@/lib/i18n/context";
-import { site } from "@/lib/site";
+import { primaryMailtoHref, site } from "@/lib/site";
 
 export function PrivacyContent() {
   const { t } = useLocale();
@@ -19,8 +19,12 @@ export function PrivacyContent() {
           <p>
             <strong>{l.controllerLabel}</strong> {site.teacher}, {site.address},{" "}
             {t.legal.impressum.country}. {l.emailLabel}{" "}
-            <a href={`mailto:${site.email}`} className="underline">
+            <a href={primaryMailtoHref()} className="underline">
               {site.email}
+            </a>
+            {" · "}
+            <a href={`mailto:${site.emailSecondary}`} className="underline">
+              {site.emailSecondary}
             </a>
           </p>
         </div>

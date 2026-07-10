@@ -6,6 +6,7 @@ export const site = {
   taglineDe: "Gitarrenunterricht Zürich",
   taglineEn: "Guitar lessons in Zurich",
   email: "info@learn2strum.com",
+  emailSecondary: "christian@boethius.ch",
   phone: "+41 76 805 86 68",
   phoneTel: "+41768058668",
   whatsappUrl: "https://wa.me/41768058668",
@@ -33,3 +34,9 @@ export function siteHostname() {
 }
 
 export const childMaxAge = 13; // under 14
+
+/** mailto: primary address with secondary on CC (for website contact links). */
+export function primaryMailtoHref() {
+  const params = new URLSearchParams({ cc: site.emailSecondary });
+  return `mailto:${site.email}?${params.toString()}`;
+}

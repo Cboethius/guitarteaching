@@ -4,9 +4,10 @@ type SendEmailInput = {
   to: string;
   subject: string;
   html: string;
+  cc?: string[];
 };
 
-export async function sendEmail({ to, subject, html }: SendEmailInput) {
+export async function sendEmail({ to, subject, html, cc }: SendEmailInput) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.warn("[email] RESEND_API_KEY not set — skipping send:", subject);
@@ -22,7 +23,13 @@ export async function sendEmail({ to, subject, html }: SendEmailInput) {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ from, to, subject, html }),
+    body: JSON.stringify({
+      from,
+      to,
+      subject,
+      html,
+      ...(cc?.length ? { cc } : {}),
+    }),
   });
 
   if (!res.ok) {
@@ -36,6 +43,13 @@ export async function sendEmail({ to, subject, html }: SendEmailInput) {
 
 export function adminNotifyEmail() {
   return process.env.BOOKING_NOTIFY_EMAIL ?? site.email;
+}
+
+export function adminNotifyCc(): string[] {
+  const cc = site.emailSecondary;
+  const to = adminNotifyEmail();
+  if (!cc || cc === to) return [];
+  return [cc];
 }
 
 export function siteBaseUrl() {
