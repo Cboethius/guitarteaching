@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:copy": "tsx scripts/check-copy.ts"
+    "check:copy": "tsx scripts/check-copy.ts",
+    "stripe:listen": "stripe listen --forward-to localhost:3001/api/webhooks/stripe"
   },
   "dependencies": {
     "@vercel/blob": "^2.4.0",

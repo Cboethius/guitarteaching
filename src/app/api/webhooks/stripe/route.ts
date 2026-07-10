@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import { findBooking, updateBooking } from "@/lib/bookings-store";
 import { getStripe } from "@/lib/stripe";
-import { updateBooking } from "@/lib/bookings-store";
+import { stripeSessionAmountMatches } from "@/lib/stripe-session";
 
 export async function POST(request: Request) {
   const stripe = getStripe();
@@ -26,7 +27,19 @@ export async function POST(request: Request) {
     const session = event.data.object;
     const bookingId = session.metadata?.bookingId;
     if (bookingId) {
-      await updateBooking(bookingId, { status: "paid" });
+      const booking = await findBooking(bookingId);
+      if (!booking) {
+        console.warn(`[stripe webhook] booking not found: ${bookingId}`);
+      } else if (!stripeSessionAmountMatches(session, booking.amountChf)) {
+        console.warn(
+          `[stripe webhook] amount mismatch for booking ${bookingId}`,
+        );
+      } else {
+        const updated = await updateBooking(bookingId, { status: "paid" });
+        if (!updated) {
+          console.warn(`[stripe webhook] booking not found: ${bookingId}`);
+        }
+      }
     }
   }
 

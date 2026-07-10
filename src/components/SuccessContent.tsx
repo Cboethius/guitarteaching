@@ -3,11 +3,15 @@
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/context";
 import { productName } from "@/lib/i18n/translations";
-import type { Booking } from "@/lib/bookings-store";
+import type { BookingSuccessSummary } from "@/lib/booking-summary";
 import { formatProductDuration, getProduct } from "@/lib/pricing";
 import { site } from "@/lib/site";
 
-export function SuccessContent({ booking }: { booking: Booking | null }) {
+export function SuccessContent({
+  booking,
+}: {
+  booking: BookingSuccessSummary | null;
+}) {
   const { locale, t } = useLocale();
   const product = booking
     ? getProduct(booking.audience, booking.productId)
@@ -61,7 +65,7 @@ export function SuccessContent({ booking }: { booking: Booking | null }) {
                   </p>
                 )}
                 <p className="text-forest/60 mt-3 text-xs">
-                  {t.success.reference}: booking {booking.id.slice(0, 8)}
+                  {t.success.reference}: booking {booking.idPrefix}
                 </p>
               </div>
             </>

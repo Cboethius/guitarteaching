@@ -4,8 +4,16 @@ import {
   ADMIN_COOKIE,
   verifyAdminPassword,
 } from "@/lib/admin-auth";
+import { getClientIp } from "@/lib/client-ip";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const limited = rateLimit(`admin-login:${ip}`, 5, 15 * 60 * 1000);
+  if (!limited.ok) {
+    return rateLimitResponse(limited.retryAfterSec);
+  }
+
   const body = (await request.json()) as { password?: string };
   const password = body.password?.trim() ?? "";
 
