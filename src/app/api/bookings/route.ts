@@ -6,6 +6,7 @@ import {
 } from "@/lib/pricing";
 import { saveBooking, type Booking } from "@/lib/bookings-store";
 import { getStripe } from "@/lib/stripe";
+import { checkoutOrigin } from "@/lib/checkout-origin";
 import { site } from "@/lib/site";
 import { getClientIp } from "@/lib/client-ip";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
@@ -70,8 +71,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const origin =
-        process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+      const origin = checkoutOrigin(request);
 
       const session = await stripe.checkout.sessions.create({
         mode: "payment",
@@ -112,7 +112,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ bookingId: booking.id });
   } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    const message = e instanceof Error ? e.message : "Server error";
+    console.error("[booking]", message);
+    const hint =
+      process.env.NODE_ENV === "development" &&
+      message.toLowerCase().includes("stripe")
+        ? message
+        : "Server error";
+    return NextResponse.json({ error: hint }, { status: 500 });
   }
 }

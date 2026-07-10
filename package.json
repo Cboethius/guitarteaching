@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "check:copy": "tsx scripts/check-copy.ts",
+    "check:stripe": "tsx scripts/check-stripe.ts",
     "stripe:listen": "stripe listen --forward-to localhost:3001/api/webhooks/stripe"
   },
   "dependencies": {

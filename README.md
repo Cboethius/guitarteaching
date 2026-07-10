@@ -70,8 +70,27 @@ Swiss hosts with Node (Infomaniak, Hostpoint, etc.) can also work — ask for Ne
 
 1. Create a Stripe account (Switzerland, CHF)
 2. Add test keys to `.env.local`
-3. Local webhooks: `npm run stripe:listen` (forwards to port 3001)
-4. Test card: `4242 4242 4242 4242`
+3. Run `npm run check:stripe` to verify keys and API connectivity
+4. Local webhooks: `npm run stripe:listen` (forwards to port 3001; paste `whsec_...` into `.env.local`)
+5. Restart the dev server, then book at `/book` with card `4242 4242 4242 4242`
+
+### Verify production payments
+
+1. In Vercel Production env: `sk_live_...`, `pk_live_...`, live `whsec_...`, `NEXT_PUBLIC_SITE_URL`, `BLOB_READ_WRITE_TOKEN`
+2. Stripe Dashboard (live mode) → Webhooks → `https://www.learn2strum.ch/api/webhooks/stripe` → event `checkout.session.completed`
+3. Redeploy after env changes
+4. Make a real small test payment on `/book` (or use Stripe test mode on a Preview deployment first)
+5. In Stripe → Webhooks → recent deliveries should show **200** for `checkout.session.completed`
+6. Success page should confirm payment; booking status becomes `paid` in storage
+
+**Common errors**
+
+| Message | Fix |
+|---------|-----|
+| Online payment is not configured yet | Add `STRIPE_SECRET_KEY` in Vercel and redeploy |
+| Request was in test mode, but used a non-test card | Use live keys in Production, or test card with test keys |
+| Webhook signature invalid | `STRIPE_WEBHOOK_SECRET` must match the endpoint (live vs test) |
+| Booking not found in webhook logs | Set `BLOB_READ_WRITE_TOKEN` on Vercel |
 
 ## Bookings storage
 
