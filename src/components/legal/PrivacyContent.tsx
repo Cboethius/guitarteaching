@@ -22,10 +22,6 @@ export function PrivacyContent() {
             <a href={primaryMailtoHref()} className="underline">
               {site.email}
             </a>
-            {" · "}
-            <a href={`mailto:${site.emailSecondary}`} className="underline">
-              {site.emailSecondary}
-            </a>
           </p>
         </div>
         {l.sections.map((section, i) => (

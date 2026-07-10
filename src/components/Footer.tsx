@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ContactEmails } from "@/components/ContactEmails";
+import { ScrollHashLink } from "@/components/ScrollHashLink";
 import { useLocale } from "@/lib/i18n/context";
-import { site } from "@/lib/site";
+import { primaryMailtoHref, site } from "@/lib/site";
 
 export function Footer() {
   const { t } = useLocale();
@@ -48,7 +48,9 @@ export function Footer() {
             <div className="col-span-1 md:order-2">
               <p className="font-semibold">{t.footer.contact}</p>
               <div className="text-forest/80 mt-2 flex flex-col gap-1 text-sm">
-                <ContactEmails />
+                <a href={primaryMailtoHref()} className="hover:underline">
+                  {site.email}
+                </a>
                 <a href={`tel:${site.phoneTel}`} className="hover:underline">
                   {site.phone}
                 </a>
