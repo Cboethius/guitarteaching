@@ -45,13 +45,6 @@ export function adminNotifyEmail() {
   return process.env.BOOKING_NOTIFY_EMAIL ?? site.email;
 }
 
-export function adminNotifyCc(): string[] {
-  const cc = site.emailSecondary;
-  const to = adminNotifyEmail();
-  if (!cc || cc === to) return [];
-  return [cc];
-}
-
 export function siteBaseUrl() {
   return (
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??

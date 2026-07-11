@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { findByToken, submitReview } from "@/lib/testimonials-store";
-import { adminNotifyCc, adminNotifyEmail, sendEmail, siteBaseUrl } from "@/lib/email";
+import { adminNotifyEmail, sendEmail, siteBaseUrl } from "@/lib/email";
 
 type RouteContext = { params: Promise<{ token: string }> };
 
@@ -71,7 +71,6 @@ export async function POST(request: Request, context: RouteContext) {
   try {
     await sendEmail({
       to: adminNotifyEmail(),
-      cc: adminNotifyCc(),
       subject: `Testimonial waiting for approval — ${row.author}`,
       html: `<p><strong>${row.author}</strong> submitted a testimonial for your review.</p>
 <p><em>${row.quoteDe.replace(/</g, "&lt;")}</em></p>
