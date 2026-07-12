@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
@@ -138,13 +139,14 @@ export function HomeContent() {
             </div>
 
             <div className="bg-pastel-light/40 relative order-1 left-1/2 w-screen max-w-[100vw] -translate-x-1/2 shrink-0 overflow-hidden sm:left-auto sm:order-2 sm:w-[40%] sm:max-w-none sm:translate-x-0 sm:self-stretch md:w-1/2">
-              <div className="aspect-[3/2] w-full sm:aspect-auto sm:h-full sm:min-h-[20rem] md:min-h-[22rem]">
-                <img
+              <div className="relative aspect-[3/2] w-full sm:aspect-auto sm:h-full sm:min-h-[20rem] md:min-h-[22rem]">
+                <Image
                   src="/hero/DSCF3249-hero.jpg"
                   alt={t.hero.photoAlt}
-                  className="absolute inset-0 h-full w-full object-cover object-[48%_18%]"
-                  decoding="sync"
-                  fetchPriority="high"
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-cover object-[48%_18%]"
                 />
               </div>
             </div>
