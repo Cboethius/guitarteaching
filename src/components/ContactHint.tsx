@@ -8,16 +8,33 @@ const linkClass = "text-forest font-medium underline";
 export function ContactHint({
   showReason = false,
   variant = "default",
+  tone = "formal",
 }: {
   showReason?: boolean;
   variant?: "default" | "boxed";
+  /** Informal German (du) on homepage; formal Sie on booking. */
+  tone?: "formal" | "informal";
 }) {
   const { t } = useLocale();
+  const informal = tone === "informal";
+  const sendLead = informal ? t.contact.sendLeadInformal : t.contact.sendLead;
+  const reason = informal ? t.contact.reasonInformal : t.contact.reason;
 
   const text = (
     <>
-      <strong className="font-semibold">{t.contact.label}</strong>{" "}
-      {t.contact.sendLead}
+      {!informal && (
+        <>
+          <strong className="font-semibold">{t.contact.label}</strong>{" "}
+        </>
+      )}
+      {informal && (
+        <>
+          <strong className="font-semibold">
+            {t.contact.interestPromptInformal}
+          </strong>
+        </>
+      )}
+      {sendLead}
       <a
         href={site.whatsappUrl}
         target="_blank"
@@ -47,11 +64,11 @@ export function ContactHint({
       <p className="text-forest/80 mt-4 max-w-lg text-sm leading-snug sm:text-base">
         {text}
       </p>
-      {showReason && (
+      {showReason && reason ? (
         <p className="text-forest/70 mt-1 max-w-lg text-sm leading-snug sm:text-base">
-          {t.contact.reason}
+          {reason}
         </p>
-      )}
+      ) : null}
     </>
   );
 }

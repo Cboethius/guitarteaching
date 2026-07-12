@@ -92,15 +92,22 @@ export function BookingForm() {
   }, [audience, productId]);
 
   if (!audience) {
+    const productParam = params.get("product");
+    const productQuery = productParam
+      ? `&product=${encodeURIComponent(productParam)}`
+      : "";
     return (
       <div className="border-pastel rounded-xl border bg-white p-6 text-center">
         <p className="font-medium">{t.book.audienceRequired}</p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Link href="/book?audience=regular" className="btn-primary min-w-[11rem] justify-center">
+          <Link
+            href={`/book?audience=regular${productQuery}`}
+            className="btn-primary min-w-[11rem] justify-center"
+          >
             {t.pricing.ctaRegular}
           </Link>
           <Link
-            href="/book?audience=child"
+            href={`/book?audience=child${productQuery}`}
             className="border-forest text-forest hover:bg-pastel-light/60 inline-flex min-h-12 min-w-[11rem] items-center justify-center rounded-full border-2 px-6 font-semibold"
           >
             {t.pricing.ctaChild}

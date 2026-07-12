@@ -40,9 +40,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [homeSection, setHomeSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const { locale, t } = useLocale();
+  const { t } = useLocale();
   const pathname = usePathname();
-  const tagline = locale === "de" ? site.taglineDe : site.taglineEn;
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -123,9 +122,6 @@ export function Header() {
           <div className="min-w-0">
             <span className="text-forest block text-base font-semibold leading-tight sm:text-lg">
               {site.displayName}
-            </span>
-            <span className="text-forest/70 block text-[0.6875rem] leading-tight sm:text-xs">
-              {tagline}
             </span>
           </div>
         </Link>

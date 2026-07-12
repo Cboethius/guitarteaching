@@ -67,6 +67,7 @@ function single(
   nameEn: string,
   directChf: number,
   durationMin: number,
+  extra?: Partial<Product>,
 ): Product {
   return {
     id,
@@ -78,6 +79,7 @@ function single(
     stripePriceChf: stripeGross(directChf),
     isBundle: false,
     paid: true,
+    ...extra,
   };
 }
 
@@ -90,7 +92,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
       "zoom",
       "Zoom, Probelektion",
       "Single Zoom trial lesson",
-      32,
+      36,
       45,
     ),
     neutral: single(
@@ -98,7 +100,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
       "neutral",
       "Neutraler Ort, Probelektion",
       "Single trial lesson, neutral ground",
-      42,
+      39,
       45,
     ),
     home: single(
@@ -106,7 +108,7 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
       "home",
       "Bei Ihnen, Probelektion",
       "Single trial lesson, at your home",
-      48,
+      41,
       45,
     ),
     "zoom-bundle-5": bundle(
@@ -162,17 +164,18 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
     zoom: single(
       "zoom",
       "zoom",
-      "Zoom, Probelektion (Kind)",
-      "Single Zoom trial lesson, child",
-      26,
+      "Zoom, Probelektion (Kind, 30–45 Min.)",
+      "Single Zoom trial lesson, child (30–45 min)",
+      36,
       30,
+      childFlex,
     ),
     neutral: single(
       "neutral",
       "neutral",
       "Neutraler Ort, Probelektion (Kind)",
       "Single trial lesson, neutral ground, child",
-      34,
+      39,
       30,
     ),
     home: single(
@@ -180,24 +183,26 @@ export const products: Record<Audience, Record<ProductId, Product>> = {
       "home",
       "Bei Ihnen, Probelektion (Kind)",
       "Single trial lesson, at your home, child",
-      38,
+      41,
       30,
     ),
     "zoom-bundle-5": bundle(
       "zoom-bundle-5",
       "zoom",
-      "Zoom, 5 Lektionen (Kind)",
-      "5-lesson Zoom bundle, child",
+      "Zoom, 5 Lektionen (Kind, 30–45 Min.)",
+      "5-lesson Zoom bundle, child (30–45 min)",
       58,
       5,
+      childFlex,
     ),
     "zoom-bundle-10": bundle(
       "zoom-bundle-10",
       "zoom",
-      "Zoom, 10 Lektionen (Kind)",
-      "10-lesson Zoom bundle, child",
+      "Zoom, 10 Lektionen (Kind, 30–45 Min.)",
+      "10-lesson Zoom bundle, child (30–45 min)",
       52,
       10,
+      childFlex,
     ),
     "neutral-bundle-5": bundle(
       "neutral-bundle-5",

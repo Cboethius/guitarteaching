@@ -121,7 +121,7 @@ export function HomeContent() {
               <p className="text-forest/80 mt-2.5 max-w-lg text-sm leading-snug sm:mt-3 sm:text-base">
                 {t.hero.subtitle}
               </p>
-              <ContactHint showReason />
+              <ContactHint showReason tone="informal" />
               <div className="mt-2.5 flex flex-wrap gap-2 sm:mt-3 sm:gap-2.5">
                 <ScrollHashLink
                   href="/#pricing"

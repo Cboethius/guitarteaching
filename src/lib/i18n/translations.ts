@@ -21,9 +21,9 @@ const de = {
   hero: {
     tagline: "Gitarrenunterricht Zürich",
     title: "Gitarre spielen lernen",
-    titleAccent: "Klar erklärt. Mit Geduld und Spass.",
+    titleAccent: "Klar erklärt. Mit Spass und Verständnis.",
     subtitle:
-      "Gitarre lernen braucht Zeit, das ist normal. Ich erkläre Ihnen alles verständlich und passe das Tempo an Sie an.",
+      "Gitarre lernen braucht Zeit, das ist normal. Ich erkläre dir alles verständlich und passe das Tempo an dich an.",
     photoAlt: "Christian Boethius spielt E-Gitarre",
     videoTitle: "Intro-Video",
     ctaBook: "Jetzt buchen",
@@ -33,9 +33,13 @@ const de = {
   contact: {
     label: "Vor der Anmeldung:",
     sendLead: "Schreiben Sie mir per ",
+    interestPromptInformal: "Bist du interessiert?",
+    sendLeadInformal: " Schreib mir per ",
     or: " oder ",
     reason:
       "Wir besprechen zusammen Format, Termin und Ort, oder ich beantworte Ihre Fragen.",
+    reasonInformal:
+      "Wir besprechen zusammen Format, Termin und Ort, oder ich beantworte deine Fragen.",
   },
   about: {
     title: "Über mich",
@@ -88,8 +92,12 @@ const de = {
   },
   pricing: {
     title: "Preise",
+    trialSectionTitle: "Probelektion",
+    trialExplainer:
+      "Die Probelektion ist eine gute Gelegenheit, uns kennenzulernen. Gemeinsam sprechen wir darüber, was du mit der Gitarre erreichen möchtest, was du lernen willst und welche Ziele du hast.",
     trialPrice: "CHF {price}",
-    trialNote: "Probelektion",
+    trialNote: "Eine einzelne Lektion",
+    bundleSectionTitle: "Lektionspakete",
     bundle5: "5 Lektionen: CHF {price} gesamt",
     bundle10: "10 Lektionen: CHF {price} gesamt",
     chooseAge: "Für wen buchen Sie?",
@@ -480,17 +488,21 @@ const en = {
   contact: {
     label: "Before signing up:",
     sendLead: "Message me on ",
+    interestPromptInformal: "Are you interested?",
+    sendLeadInformal: " Message me on ",
     or: " or ",
     reason:
+      "We can discuss format, time, and place together. Happy to answer any other questions you have.",
+    reasonInformal:
       "We can discuss format, time, and place together. Happy to answer any other questions you have.",
   },
   about: {
     title: "About me",
     p1: "I am Christian, originally from Sweden, and I have lived in Switzerland on and off for more than twenty years.",
     p2: "I work in graphic design and programming. I also spent a long time teaching scuba diving and freediving, from Asia and Central America to the Caribbean and Iceland.",
-    p3: "I now teach guitar in Zurich, and I would be glad to support you on your journey with this instrument.",
-    p4: "To be clear, I have only recently made guitar teaching my profession. I am not the best guitarist in the world. From my experience teaching freediving and scuba diving, I am with you for the long run: with patience, figuring out how you learn best, and working together towards your goals on the guitar.",
-    p5: "We may not be the right fit, and that is fine. Affordable trial lessons are available, but I prefer that you contact me first so we can talk about where you are with the guitar, what is holding you back, what you would like to learn, and the best programme for you.",
+    p3: "I now teach guitar in Zurich, and I'd be delighted to support you on your journey with this instrument.",
+    p4: "Although I have only recently made guitar teaching my profession, teaching itself is something I've loved for years. As a freediving and scuba diving instructor, I discovered how rewarding it is to help people overcome challenges and learn in a way that suits them. I taught myself to play the guitar while working as a freediving and scuba diving instructor, and that experience showed me there is no single “right” way to learn. Everyone learns differently, and that's where my focus lies: finding the approach that works best for you and helping you enjoy the process along the way.",
+    p5: "Finding the right teacher is important, which is why I offer affordable trial lessons. Before we meet, I'd love to hear about your experience with the guitar, what you'd like to learn, and what you feel is holding you back. That way, we can decide together whether I'm the right teacher for you and build a programme that fits your goals.",
     photoAltCoastal: "Portrait of Christian Boethius",
     galleryTitle: "Photos",
     galleryIntro:
@@ -498,9 +510,9 @@ const en = {
     pillarsTitle: "How I teach",
     pillarsLead: "Three core pillars.",
     pillarsBody: [
-      "**I tailor each lesson to your needs and your level.** Whether you want to learn a particular song or build routines you can use at home or wherever you play, **I bring patience, understanding, and clarity.**",
-      "**Together, we work out how you learn best,** so the frustration eases when progress feels slow or hard to see. I gladly share the tips and tricks **I wish I had known when I started,** and that still help me today, because I am still learning too. **Guitar is something you can enjoy for the rest of your life:** there is always something new to discover.",
-      "**Practice is important,** but motivation and life do not always line up. **Coming to a lesson still counts when daily practice is difficult.** Yes, guitar is a challenge, but broken into smaller segments it feels more digestible than one big mountain to climb. **Taking your time matters more than racing to the top.**",
+      "**I tailor each lesson to your needs and your current level.** Whether you want to learn a particular song, improve your technique, or build a practice routine that fits you, **we'll work towards the goals that matter most to you.**",
+      "**Together, we'll discover how you learn best.** I'll gladly share the tips and tricks **I wish I'd known when I started,** many of which still help me today. **Guitar is something you can enjoy for the rest of your life,** and there's always something new to discover.",
+      "**Practice is important,** but life doesn't always make it easy to stay motivated. That's okay. **A lesson is still valuable, even when you haven't had much time to practise.** My role is to help you keep moving forward, one step at a time. Learning guitar is a challenge, but when we break it down into smaller, manageable pieces, it becomes far less overwhelming than trying to climb the whole mountain at once. **There's no rush to reach the top:** what matters is enjoying the journey and building confidence along the way.",
     ],
     pillars: [
       {
@@ -535,8 +547,12 @@ const en = {
   },
   pricing: {
     title: "Pricing",
+    trialSectionTitle: "Try a lesson",
+    trialExplainer:
+      "The trial lesson is a single lesson. We get to know each other and go into more depth about what you want to achieve with the guitar: your wishes, your goals, and the direction you want to take.",
     trialPrice: "CHF {price}",
-    trialNote: "Trial lesson",
+    trialNote: "One lesson only",
+    bundleSectionTitle: "Lesson packages",
     bundle5: "5 lessons: CHF {price} total",
     bundle10: "10 lessons: CHF {price} total",
     chooseAge: "Who is this booking for?",
